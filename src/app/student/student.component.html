@@ -116,103 +116,123 @@
  <app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
           <h3>Add Student</h3>
           <div>
-            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'" [config]="config">
+            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
 		    <form [formGroup]="studentForm" (ngSubmit) ="putStudent(studentForm.value)">
 		   <div class="text-center">
-		     
+		    <label for="basic-addon1" style="display:block;text-align:left">Full Name</label> 
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Full Name" formControlName = "name">
+		      <input type="text" class="form-control" formControlName = "name">
 		      <p *ngIf="!studentForm.controls['name'].valid && studentForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">ERP ID</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="ERP_ID" formControlName = "erp_id">
+		      <input type="text" class="form-control"  formControlName = "erp_id">
 		        <p *ngIf="!studentForm.controls['erp_id'].valid && studentForm.controls['erp_id'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the erp id</p>
 		    </div>
+         <label for="basic-addon1" style="display:block;text-align:left">Student Contact</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Student Contact" formControlName = "student_contact">
+		      <input type="text" class="form-control"  formControlName = "student_contact">
 		     <p *ngIf="!studentForm.controls['student_contact'].valid && studentForm.controls['student_contact'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the student contact</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Parent Contact</label>
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Parent Contact" formControlName = "parent_contact">
+		      <input type="text" class="form-control"  formControlName = "parent_contact">
 	        <p *ngIf="!studentForm.controls['parent_contact'].valid && studentForm.controls['parent_contact'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the parent contact</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Gender</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <select type="text" class="form-control" placeholder="Gender"  formControlName = "gender">
-		      	<option value = "" selected id="data-default-tag">Gender</option>
 		      	<option ngValue="Male">Male</option>
 		      	<option ngValue="Female">Female</option>
 		      	<option ngValue="Other">Other</option>
 		      </select>
               <p *ngIf="!studentForm.controls['gender'].valid && studentForm.controls['gender'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the gender</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Address</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Address" formControlName = "address">
+		      <input type="text" class="form-control"  formControlName = "address">
 		      <p *ngIf="!studentForm.controls['address'].valid && studentForm.controls['address'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the address</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Birthday</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="date" class="form-control" placeholder="DOB" formControlName = "birthday">
+		      <input type="date" class="form-control"  formControlName = "birthday">
 		      <p *ngIf="!studentForm.controls['birthday'].valid && studentForm.controls['birthday'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the birthday</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Email</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" disabled = "editMode" placeholder="Email" formControlName = "email">
+		      <input type="text" class="form-control" [readOnly] = "editMode"  formControlName = "email">
 		      <p *ngIf="!studentForm.controls['email'].valid && studentForm.controls['email'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the valid email</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Class</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <select type="text" #getClassVal class="form-control" placeholder="Class" formControlName = "class" (change)="getClassMethodForm(getClassVal.value)">
+		      <select type="text" #getClassVal class="form-control" formControlName = "class" (change)="getClassMethodForm(getClassVal.value)">
 		      	<option value = "" selected id="data-default-tag">Class</option>
 		      	<option *ngFor = "let getClassform of filterClass" [value]="getClassform">{{getClassform}}</option>
 		      </select>
 		      <p *ngIf="!studentForm.controls['class'].valid && studentForm.controls['class'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the class</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Section</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <select type="text" class="form-control" placeholder="Section" formControlName = "section">
+		      <select type="text" class="form-control" formControlName = "section">
                 <option value = "" selected id="data-default-tag">Section</option>
 		      	<option *ngFor= "let getSectionForm of getSectionOfClassForm" [value]="getSectionForm.section">{{getSectionForm.section}}</option></select>
 		      	<p *ngIf="!studentForm.controls['section'].valid && studentForm.controls['section'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the section</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Date of joining</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="date" class="form-control" placeholder="Date of Joining" formControlName = "date_of_join">
+		      <input type="date" class="form-control"  formControlName = "date_of_join">
 		      <p *ngIf="!studentForm.controls['date_of_join'].valid && studentForm.controls['date_of_join'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the date of joining</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Aadhaar number</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Aadhar Number" formControlName = "aadhar_num">
+		      <input type="text" class="form-control"  formControlName = "aadhar_num">
 		      <p *ngIf="!studentForm.controls['aadhar_num'].valid && studentForm.controls['aadhar_num'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the aadhaar</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Account name</label>
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Account Name" formControlName = "account_name">
+		      <input type="text" class="form-control"  formControlName = "account_name">
 		       <p *ngIf="!studentForm.controls['account_name'].valid && studentForm.controls['account_name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the account name</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Account number</label>
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Account Number" formControlName = "account_number">
+		      <input type="text" class="form-control"  formControlName = "account_number">
 		      <p *ngIf="!studentForm.controls['account_number'].valid && studentForm.controls['account_number'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the account number</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">IFSC Code</label>
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="IFSC code" formControlName = "ifsc">
+		      <input type="text" class="form-control"  formControlName = "ifsc">
 		      <p *ngIf="!studentForm.controls['ifsc'].valid && studentForm.controls['ifsc'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the ifsc code</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Category</label>
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Caste" formControlName = "caste">
-		      <p *ngIf="!studentForm.controls['caste'].valid && studentForm.controls['caste'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the caste</p>
+		      <select type="text" class="form-control" formControlName = "caste">
+          <option value='General'>General</option>
+          <option value='OBC'>OBC</option> 
+          <option value='SC'>SC</option>
+          <option value='ST'>ST</option>
+          </select>
+		      <p *ngIf="!studentForm.controls['caste'].valid && studentForm.controls['caste'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the category</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Session</label> 
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Session" formControlName = "session">
+		      <input type="text" class="form-control"  formControlName = "session">
 		      <p *ngIf="!studentForm.controls['session'].valid && studentForm.controls['session'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the session</p>
 		    </div>
             
@@ -223,21 +243,3 @@
           </div>
           <button (click)="closeMyModal($event)" aria-label="Close" class="md-close-btn"><i class="icofont icofont-ui-close"></i></button>
 </app-modal-animation>
-
-
- <!-- <h3 class="font-header">ADD STUDENT</h3>
- 
-  <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'" [config]="config">
-    
-   <div class="text-center">
-     <form [formGroup]="studentForm" (ngSubmit) ="putStudent(studentForm.value)">
-    <div class="input-group">
-      <span class="input-group-prepend" id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-      <input type="text" class="form-control" placeholder="Full Name" formControlName = "name">
-    </div>
-    <button type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block">Save</button>
-</form>
-    <button (click)="closeMyModal($event)" class="btn btn-danger waves-effect m-r-20 f-w-600 md-close d-inline-block">Close</button>
-  </div>
-               
-    </perfect-scrollbar> -->

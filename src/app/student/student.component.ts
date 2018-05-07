@@ -151,18 +151,18 @@ public url:any = 'http://localhost:3000';
     	"parent_contact": value.parent_contact,
     	"gender": value.gender,
     	"address": value.address,
-        "birthday": value.birthday,
-        "email": value.email,
-        "class_ref": class_ref._id,
-        "dormitory": value.dormitory,
-        "transport": value.transport,
-        "date_of_join": value.date_of_join,
-        "aadhar_num":value.aadhar_num,
-        "account_name": value.account_name,
-        "account_number":value.account_number,
-        "ifsc":value.ifsc,
-        "caste": value.caste,
-        "session": value.session
+      "birthday": value.birthday,
+      "email": value.email,
+      "class_ref": class_ref._id,
+      "dormitory": value.dormitory,
+      "transport": value.transport,
+      "date_of_join": value.date_of_join,
+      "aadhar_num":value.aadhar_num,
+      "account_name": value.account_name,
+      "account_number":value.account_number,
+      "ifsc":value.ifsc,
+      "caste": value.caste,
+      "session": value.session
 
 
     }).subscribe((student:any)=>{
@@ -182,8 +182,8 @@ public url:any = 'http://localhost:3000';
   }
 
   addStudent(){
-  	    this.editMode = false; 
-  	    this.name = '';
+	    this.editMode = false; 
+	    this.name = '';
   		this.erp_id =  '';
   		this.student_contact= '';
   		this.parent_contact = '';
@@ -212,8 +212,8 @@ public url:any = 'http://localhost:3000';
   }
 
   editStudent(student){
-  	    this.editMode = false;
-  	    this.name = (this.studentList[student]).name;
+  	  this.editMode = true;
+      this.name = (this.studentList[student]).name;    
   		this.erp_id =  (this.studentList[student]).erp_id;
   		this.student_contact=  (this.studentList[student]).student_contact;
   		this.parent_contact =  (this.studentList[student]).parent_contact;

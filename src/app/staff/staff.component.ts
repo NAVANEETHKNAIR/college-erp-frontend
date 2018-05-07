@@ -58,7 +58,7 @@ public editMode:boolean;
     }
 
     else if(value == 'ACCOUNTANT'){
-      this.urladd = '/accountant/acountant_get_all';
+      this.urladd = '/accountant/accountant_get_all';
       this.type = 'ACCOUNTANT';
     }
 

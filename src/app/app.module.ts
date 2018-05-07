@@ -17,7 +17,6 @@ import { SubjectComponent } from './subject/subject.component';
 import { TransportComponent } from './transport/transport.component';
 import { DormitoryComponent } from './dormitory/dormitory.component';
 import { RoutineComponent } from './routine/routine.component';
-import { KeysPipe } from './routine/keyspipe';
 import { LibraryComponent } from './library/library.component';
 import { AttendanceStudentComponent } from './attendance-student/attendance-student.component';
 import { AttendanceStaffComponent } from './attendance-staff/attendance-staff.component';
@@ -50,7 +49,7 @@ import { ExamComponent } from './exam/exam.component';
     SharedModule,
     HttpModule
   ],
-  providers: [KeysPipe],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

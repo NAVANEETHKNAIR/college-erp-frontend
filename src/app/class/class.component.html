@@ -15,7 +15,7 @@
             <div class="col-xs-12 col-sm-4 col-md-4">
               <div>
                 <label for= "getStaff" class="label-control">Select Class
-                  <select name="getStaff" #getClass class="form-control" [(ngModel)]="selectClass" (change)="getClassMethod(getClass.value)">
+                  <select name="getStaff" #getClass class="form-control" (change)="getClassMethod(getClass.value)">
                     <option value = '' default selected id="data-default-tag">Choose</option>
                     <option *ngFor="let getClass of filterClass;let i= index;" [value]="getClass">{{getClass}}</option>
                   </select>
@@ -94,7 +94,7 @@
           <h3 *ngIf="!editMode">Add Class</h3>
           <h3 *ngIf="editMode">Edit Class</h3>
           <div>
-            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'" [config]="config">
+            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
 		    <form [formGroup]="classForm">
 		   <div class="text-center">
 		     

@@ -78,20 +78,21 @@
  </app-modal-basic> -->
 
  <app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
-          <h3>Add Staff</h3>
+          <h3>Add Subject</h3>
           <div>
-            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'" [config]="config">
+            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
 		   <form [formGroup]="subjectForm">
 		   <div class="text-center">
-		     
+		    <label for="basic-addon1" style="display:block;text-align:left">Subject</label>
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Full Name" formControlName = "name">
-		      <p *ngIf="!subjectForm.controls['name'].valid && subjectForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
+		      <input type="text" class="form-control" formControlName = "name">
+		      <p *ngIf="!subjectForm.controls['name'].valid && subjectForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please add the subject</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Session</label>
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Session" formControlName = "session">
+		      <input type="text" class="form-control" formControlName = "session">
 		      <p *ngIf="!subjectForm.controls['session'].valid && subjectForm.controls['session'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the session</p>
 		    </div>
          

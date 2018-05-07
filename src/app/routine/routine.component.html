@@ -74,45 +74,50 @@
  <app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
           <h3>Add routine</h3>
           <div>
-            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'" [config]="config">
+            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
 		   <form [formGroup]="routineForm">
 		   <div class="text-center">
-		     
+		    <label for="basic-addon1" style="display:block;text-align:left">Day</label> 
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <select type="text"  class="form-control" placeholder="Day" formControlName = "day">
           <option *ngFor= "let day of dayList" [value] = "day">{{day}}</option>  
           </select>
 
-		      <p *ngIf="!routineForm.controls['day'].valid && routineForm.controls['day'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
+		      <p *ngIf="!routineForm.controls['day'].valid && routineForm.controls['day'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the day</p>
 		    </div>
+        <label for="basic-addon2" style="display:block;text-align:left">Subject</label>
         <div class="input-group">
-          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <span class="input-group-prepend"  id="basic-addon2"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <select type="text" class="form-control" placeholder="Subject" formControlName = "subject_ref">
               <option *ngFor="let subject of getSubjectAll" [value] = "subject.name">{{subject.name}}</option>
           </select>
-          <p *ngIf="!routineForm.controls['subject_ref'].valid && routineForm.controls['subject_ref'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
+          <p *ngIf="!routineForm.controls['subject_ref'].valid && routineForm.controls['subject_ref'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the subject</p>
         </div>
+        <label for="basic-addon2" style="display:block;text-align:left">Teacher</label>
         <div class="input-group">
-          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <span class="input-group-prepend"  id="basic-addon3"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <select type="text" class="form-control" placeholder="Teacher" formControlName = "teacher_ref" #teacherEdit>
              <option *ngFor="let teacher of getTeacherAll" [value]="teacher.erp_id">{{teacher.name}} {{teacher.erp_id}}</option>
           </select>
-          <p *ngIf="!routineForm.controls['teacher_ref'].valid && routineForm.controls['teacher_ref'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
+          <p *ngIf="!routineForm.controls['teacher_ref'].valid && routineForm.controls['teacher_ref'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the subject teacher</p>
         </div>
+        <label for="basic-addon2" style="display:block;text-align:left">Start time</label>
         <div class="input-group">
-          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-          <input type="text" class="form-control" placeholder="Start time" formControlName = "start_time">
-          <p *ngIf="!routineForm.controls['start_time'].valid && routineForm.controls['start_time'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
+          <span class="input-group-prepend"  id="basic-addon4"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="time" class="form-control" placeholder="Start time" formControlName = "start_time">
+          <p *ngIf="!routineForm.controls['start_time'].valid && routineForm.controls['start_time'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the start time</p>
         </div>
+        <label for="basic-addon2" style="display:block;text-align:left">End time</label>
          <div class="input-group">
-          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-          <input type="text" class="form-control" placeholder="End Time" formControlName = "end_time">
-          <p *ngIf="!routineForm.controls['end_time'].valid && routineForm.controls['end_time'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
+          <span class="input-group-prepend"  id="basic-addon5"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="time" class="form-control" placeholder="End Time" formControlName = "end_time">
+          <p *ngIf="!routineForm.controls['end_time'].valid && routineForm.controls['end_time'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the end time</p>
         </div>
+        <label for="basic-addon2" style="display:block;text-align:left">Session</label>
 		    <div class="input-group">
-		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Session" formControlName = "session">
+		      <span class="input-group-prepend"  id="basic-addon6"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+		      <input type="text" class="form-control" formControlName = "session">
 		      <p *ngIf="!routineForm.controls['session'].valid && routineForm.controls['session'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the session</p>
 		    </div>
          

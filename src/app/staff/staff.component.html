@@ -116,7 +116,7 @@
  <app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
           <h3>Add Staff</h3>
           <div>
-            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'" [config]="config">
+            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
 		    <form [formGroup]="staffForm" (ngSubmit) ="putStaff(staffForm.value)">
 		   <div class="text-center">
 		     
@@ -132,7 +132,7 @@
 		    </div>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Student Contact" formControlName = "phone">
+		      <input type="text" class="form-control" placeholder="Staff Contact" formControlName = "phone">
 		     <p *ngIf="!staffForm.controls['phone'].valid && staffForm.controls['phone'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the staff contact</p>
 		    </div>
 		     <div class="input-group">
@@ -157,7 +157,7 @@
 		    </div>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" [disabled] = "editMode" placeholder="Email" formControlName = "email">
+		      <input type="text" class="form-control" [readOnly] = "editMode" placeholder="Email" formControlName = "email">
 		      <p *ngIf="!staffForm.controls['email'].valid && staffForm.controls['email'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the valid email</p>
 		    </div>
 		     <div class="input-group">
@@ -211,21 +211,3 @@
           </div>
           <button (click)="closeMyModal($event)" aria-label="Close" class="md-close-btn"><i class="icofont icofont-ui-close"></i></button>
 </app-modal-animation>
-
-
- <!-- <h3 class="font-header">ADD STUDENT</h3>
- 
-  <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'" [config]="config">
-    
-   <div class="text-center">
-     <form [formGroup]="staffForm" (ngSubmit) ="putStudent(staffForm.value)">
-    <div class="input-group">
-      <span class="input-group-prepend" id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-      <input type="text" class="form-control" placeholder="Full Name" formControlName = "name">
-    </div>
-    <button type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block">Save</button>
-</form>
-    <button (click)="closeMyModal($event)" class="btn btn-danger waves-effect m-r-20 f-w-600 md-close d-inline-block">Close</button>
-  </div>
-               
-    </perfect-scrollbar> -->
