@@ -1,0 +1,149 @@
+<div class="card">
+  <div class="card-header">
+    <h5>Dormitory Setup</h5>
+    <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="addDormitory()"> <i class="icofont icofont-plus m-r-5"></i> Add Dormitory
+    </button>
+<!--     <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="modalOverflow.show()"> <i class="icofont icofont-plus m-r-5"></i> Add Student
+    </button> -->
+  
+  </div>
+  <div class="card-body">
+    <div class="table-content crm-table">
+      <div class="project-table">
+        <div id="crm-contact" class="dt-responsive">
+          <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-4">
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4">
+              <div style="text-align: right;">
+                <label>Search:
+                  <input type="search" [(ngModel)]="filterQuery" class="form-control input-sm full-data-search" placeholder="Search name">
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="panel-heading">User information</div>-->
+          <div class="table-responsive">
+          <table class="table table-striped table-bordered full-data-table" [mfData]="alldormitory | dataFilter : filterQuery" #mf="mfDataTable"
+                 [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <thead>
+            <tr>
+              <th>
+                <mfDefaultSorter  by="Dormitory">Dormitories</mfDefaultSorter>
+              </th>
+               <th>
+                <mfDefaultSorter  by="Room Number">Room Num</mfDefaultSorter>
+              </th>
+               <th>
+                <mfDefaultSorter  by="Room Type">Room Type</mfDefaultSorter>
+              </th>
+               <th>
+                <mfDefaultSorter  by="Fare">Fare</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter>Action</mfDefaultSorter>
+              </th>
+            </tr>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of mf.data;let i=index">
+              <td>{{item.name}}</td>
+              <td>{{item.room_num}}</td>
+              <td>{{item.room_type}}</td>
+              <td>{{item.fare}}</td>
+              <td class="action-icon">
+                <button type="button" (click)="editDormitory(i)" class="m-r-15 crm-action-edit text-muted text-primary"><i class="icofont icofont-ui-edit"></i></button>
+                <a href="javascript:;" class="crm-action-delete text-muted text-danger"><i class="icofont icofont-delete-alt"></i></a>
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <th>Dormitories</th>
+              <th>Room Num</th>
+              <th>Room Type</th>
+              <th>Fare</th>
+              <th>Action</th>
+            </tr>
+            <tr>
+              <td colspan="10">
+                <mfBootstrapPaginator class="pagination-main f-right"></mfBootstrapPaginator>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+         
+<!--  <app-modal-basic #modalOverflow [hideHeader]="true" [hideFooter]="true">
+<div class="app-modal-body">
+  <button type="button" class="close basic-close-light-box" (click)="modalOverflow.hide()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+ 
+     <br>
+     </div>
+ </app-modal-basic> -->
+
+ <app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
+          <h3>Add Staff</h3>
+          <div>
+            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'" [config]="config">
+		   <form [formGroup]="dormitoryForm">
+		   <div class="text-center">
+		     
+		    <div class="input-group">
+		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+		      <input type="text" class="form-control" placeholder="Name" formControlName = "name">
+		      <p *ngIf="!dormitoryForm.controls['name'].valid && dormitoryForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
+		    </div>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" placeholder="Room Number" formControlName = "room_num">
+          <p *ngIf="!dormitoryForm.controls['room_num'].valid && dormitoryForm.controls['room_num'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the room number</p>
+        </div>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <select type="text" class="form-control" #roomType (change)="changeRoomType(roomType.value)" placeholder="Room Type" formControlName = "room_type">
+          <option value='' selected id="data-default-tag">Room Type</option>
+          <option value='AC'>Air Conditioned</option> 
+          <option value='Non AC'>Non Air Conditioned</option>
+          </select> 
+          <p *ngIf="!dormitoryForm.controls['room_type'].valid && dormitoryForm.controls['room_type'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the room type</p>
+        </div>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" placeholder="Fare" formControlName = "fare">
+          <p *ngIf="!dormitoryForm.controls['fare'].valid && dormitoryForm.controls['fare'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the Fare</p>
+        </div>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" placeholder="ERP_ID" formControlName = "erp_id">
+          <p *ngIf="!dormitoryForm.controls['erp_id'].valid && dormitoryForm.controls['erp_id'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the ERP_ID</p>
+        </div>
+		    <div class="input-group">
+		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+		      <input type="text" class="form-control" placeholder="Session" formControlName = "session">
+		      <p *ngIf="!dormitoryForm.controls['session'].valid && dormitoryForm.controls['session'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the session</p>
+		    </div>
+         
+		    <button *ngIf="dormitoryForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putdormitory(dormitoryForm.value)">Save</button>
+        <button *ngIf="dormitoryForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedDormitory(dormitoryForm.value)">Save</button>
+
+
+       </div>
+		     </form>          
+		    </perfect-scrollbar>
+            <br>
+          </div>
+          <button (click)="closeMyModal($event)" aria-label="Close" class="md-close-btn"><i class="icofont icofont-ui-close"></i></button>
+</app-modal-animation>
+
+

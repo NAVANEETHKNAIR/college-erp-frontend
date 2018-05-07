@@ -1,0 +1,153 @@
+<div class="card">
+  <div class="card-header">
+    <h5>Exam</h5>
+    <button  [disabled] = "!fetch" type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="addExam()"> <i class="icofont icofont-plus m-r-5"></i> Add Subject
+    </button>
+    <br>
+    <br>
+    <br>
+    <p style="color:red;text-align:right" *ngIf="!fetch">Please select class and section first</p>
+</div>
+
+
+<app-card [title]="'Manage Exam'" [classHeader]="true" [blockClass]="'table-border-style'">
+  <div class="card-body">
+    <div class="table-content crm-table">
+      <div class="project-table">
+        <div id="crm-contact" class="dt-responsive">
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4">
+    
+             <!--  <label for="date" class="label-control">Input Date
+              <input type="text" id="date" [(ngModel)] = "date" class="form-control col-xs-12" [readOnly] = true>
+              <ngb-datepicker (select)="selectDate($event)"  class="col-xs-12"></ngb-datepicker>
+              </label> -->
+            
+          </div>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+              <div>
+                <label for= "getClass" class="label-control">Select Class
+                  <select name="getClass" #getClass class="form-control" [(ngModel)]="selectClass" (change)="getClassMethod(getClass.value)">
+                    <option *ngFor="let getClass of filterClass;let i= index;" [value]="getClass">{{getClass}}</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+              <div *ngIf ="selectClass!==''">
+                <label for= "getSection" class="label-control">Select Section
+                  <select name="getSection" #getSection class="form-control" (change)="getSectionMethod(getSection.value)" [(ngModel)]="selectSection">
+                    <option *ngFor="let getSection of getSectionOfClass;let i= index;"  [value]="getSection.section">{{getSection.section}}</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+          <table class="table table-striped table-bordered full-data-table" [mfData]="examList | dataFilter : filterQuery" #mf="mfDataTable"
+                 [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <thead>
+            <tr>
+               <th>
+                <mfDefaultSorter by="phone_no">Date</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="name">Name</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="erpID">Subject</mfDefaultSorter>
+              </th>
+               <th>
+                <mfDefaultSorter by="phone_no">Total Marks</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter>Action</mfDefaultSorter>
+              </th>
+            </tr>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of mf.data;let i=index" >
+              <td>{{item.date}}</td>
+              <td>{{item.name}}</td>
+              <td>{{item.subject_ref.name}}</td>
+              <td>{{item.total_marks}}</td>              
+              <td class="action-icon">
+                <button type="button" (click)="editExam(i)" class="m-r-15 crm-action-edit text-muted text-primary"><i class="icofont icofont-ui-edit"></i></button>
+                <a href="javascript:;" class="crm-action-delete text-muted text-danger"><i class="icofont icofont-delete-alt"></i></a>
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <th>Date</th>
+              <th>Name</th>
+              <th>Subject</th>
+              <th>Total Marks</th>
+              <th>Action</th>
+              
+            </tr>
+            <tr>
+              <td colspan="10">
+                <mfBootstrapPaginator class="pagination-main f-right"></mfBootstrapPaginator>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-card>
+
+ <app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
+          <h3>Add Exam</h3>
+          <div>
+            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'" [config]="config">
+        <form [formGroup]="examForm">
+       <div class="text-center">
+         
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" placeholder="Name" formControlName = "name">
+          <p *ngIf="!examForm.controls['name'].valid && examForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
+        </div>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <select type="text" class="form-control" placeholder="Enter the Subject" formControlName = "subject_ref">
+            <option *ngFor="let subject of subjectList" [value] ="subject.name">{{subject.name}}</option>
+          </select>
+          <p *ngIf="!examForm.controls['subject_ref'].valid && examForm.controls['subject_ref'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the Subject name</p>
+        </div>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="date" class="form-control" placeholder="Enter the date" formControlName = "date">
+          <p *ngIf="!examForm.controls['date'].valid && examForm.controls['date'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the date</p>
+        </div>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" placeholder="Max Marks" formControlName = "total_marks">
+          <p *ngIf="!examForm.controls['total_marks'].valid && examForm.controls['total_marks'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the total marks</p>
+        </div>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="time" class="form-control" placeholder="Exam Duration" formControlName = "duration">
+          <p *ngIf="!examForm.controls['duration'].valid && examForm.controls['duration'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the duration of exam</p>
+        </div>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" placeholder="session" formControlName = "session">
+          <p *ngIf="!examForm.controls['session'].valid && examForm.controls['session'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the session</p>
+        </div>
+
+
+<button *ngIf="examForm.valid && !editMode"  type="submit" (click) = "putExam(examForm.value)" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" >Save</button>
+<button *ngIf="examForm.valid && editMode"  type="submit" (click) = "putExamEdited(examForm.value)" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" >Save</button> </div>
+         </form>          
+        </perfect-scrollbar>
+            <br>
+          </div>
+          <button (click)="closeMyModal($event)" aria-label="Close" class="md-close-btn"><i class="icofont icofont-ui-close"></i></button>
+</app-modal-animation>

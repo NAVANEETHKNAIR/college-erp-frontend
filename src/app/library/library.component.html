@@ -1,0 +1,137 @@
+<div class="card">
+  <div class="card-header">
+    <h5>Manage Library</h5>
+    <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="addBook()"> <i class="icofont icofont-plus m-r-5"></i> Add Book
+    </button>
+<!--     <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="modalOverflow.show()"> <i class="icofont icofont-plus m-r-5"></i> Add Student
+    </button> -->
+  
+  </div>
+  <div class="card-body">
+    <div class="table-content crm-table">
+      <div class="project-table">
+        <div id="crm-contact" class="dt-responsive">
+          <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-4">
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4">
+              <div style="text-align: right;">
+                <label>Search:
+                  <input type="search" [(ngModel)]="filterQuery" class="form-control input-sm full-data-search" placeholder="Search name">
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="panel-heading">User information</div>-->
+          <div class="table-responsive">
+          <table class="table table-striped table-bordered full-data-table" [mfData]="allBook | dataFilter : filterQuery" #mf="mfDataTable"
+                 [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <thead>
+            <tr>
+              <th>
+                <mfDefaultSorter  by="book">Books</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="isbn">ISBN</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="assigned">Assigned</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter>Action</mfDefaultSorter>
+              </th>
+            </tr>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of mf.data;let i=index">
+              <td>{{item.title}}</td>
+              <td>{{item.isbn}}</td>
+              <td>{{item.assigned}}</td>          
+              <td class="action-icon">
+                <button type="button" (click)="editBook(i)" class="m-r-15 crm-action-edit text-muted text-primary"><i class="icofont icofont-ui-edit"></i></button>
+                <a href="javascript:;" class="crm-action-delete text-muted text-danger"><i class="icofont icofont-delete-alt"></i></a>
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <th>Books</th>
+              <th>ISBN</th>
+              <th>Assigned</th>
+              <th>Action</th>
+            </tr>
+            <tr>
+              <td colspan="10">
+                <mfBootstrapPaginator class="pagination-main f-right"></mfBootstrapPaginator>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+ <app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
+          <h3>Add book</h3>
+          <div>
+            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'" [config]="config">
+		   <form [formGroup]="bookForm">
+		   <div class="text-center">
+		     
+		    <div class="input-group">
+		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+		      <input type="text" class="form-control" placeholder="Title" formControlName = "title">
+		      <p *ngIf="!bookForm.controls['title'].valid && bookForm.controls['title'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the title</p>
+		    </div>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" placeholder="ISBN" formControlName = "isbn">
+          <p *ngIf="!bookForm.controls['isbn'].valid && bookForm.controls['isbn'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the isbn</p>
+        </div>
+         
+             <h5 align="right"> Assign
+            <ui-switch class="js-single" color="#1abc9c" switchColor="#fff" size="medium" (change) = "setValidation($event)" [checked]="assigned" class="form-control"  formControlName = "assigned"></ui-switch>
+            </h5>
+  
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" #checkerp placeholder="ERP ID" formControlName = "assigned_to" [readOnly]="!assigned" (focusout)="checkStudent(checkerp.value)">
+          <p *ngIf="assigned" style="color:gray;display:block;width:100%;text-align:left" >Please enter the erp id of student if it is to be assigned</p>
+          <p *ngIf="!bookForm.controls['assigned_to'].valid && bookForm.controls['assigned_to'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the field</p>
+          <p *ngIf="invalidStudent" style="color:red;display:block;width:100%;text-align:left" >Please enter the valid erp_id</p>
+        </div>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="date" class="form-control" placeholder="Assigning Date" formControlName = "assigned_from" [readOnly]="!assigned">
+          <p *ngIf="!bookForm.controls['assigned_from'].valid && bookForm.controls['assigned_from'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the field</p>
+        </div>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="date" class="form-control" placeholder="Submitting Date" formControlName = "assigned_duration" [readOnly]="!assigned">
+          <p *ngIf="!bookForm.controls['assigned_duration'].valid && bookForm.controls['assigned_duration'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
+        </div>
+		    <div class="input-group">
+		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+		      <input type="text" class="form-control" placeholder="Session" formControlName = "session">
+		      <p *ngIf="!bookForm.controls['session'].valid && bookForm.controls['session'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the session</p>
+		    </div>
+         
+		    <button *ngIf="bookForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putBook(bookForm.value)">Save</button>
+        <button *ngIf="bookForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedBook(bookForm.value)">Save</button>
+
+
+       </div>
+		     </form>          
+		    </perfect-scrollbar>
+            <br>
+          </div>
+          <button (click)="closeMyModal($event)" aria-label="Close" class="md-close-btn"><i class="icofont icofont-ui-close"></i></button>
+</app-modal-animation>
+
+

@@ -1,0 +1,12 @@
+#data-default-tag{
+  display:none;
+}
+$debug:true;
+#checkP{
+	$debug: true;
+}
+div.input{
+	@if($debug){
+	   border: 1px solid red;
+	}
+}

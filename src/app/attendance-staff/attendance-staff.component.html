@@ -1,0 +1,150 @@
+<div class="card">
+  <div class="card-header">
+    <h5>Manage Staff Attendance</h5>
+    
+<!--     <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="modalOverflow.show()"> <i class="icofont icofont-plus m-r-5"></i> Add Student
+    </button> -->
+  
+  </div>
+  <div class="card-body">
+    <div class="table-content crm-table">
+      <div class="project-table">
+        <div id="crm-contact" class="dt-responsive">
+          <div class="row">
+           
+            <div class="col-xs-12 col-sm-12 col-md-4">
+        
+              <label for="date" class="label-control">Input Date
+              <input type="text" id="date" [(ngModel)] = "date" class="form-control col-xs-12" [readOnly] = true>
+              <ngb-datepicker (select)="selectDate($event)"  class="col-xs-12"></ngb-datepicker>
+              </label>
+            
+          </div>
+            <div class="col-xs-12 col-sm-4 col-md-4">
+              <div>
+                <label for= "getStaff" class="label-control">Select Staff
+                  <select name="getStaff" #getStaff class="form-control" [(ngModel)]="selectStaff" (change)="getStaffMethod(getStaff.value)">
+                    <option *ngFor="let getStaff of staffType;let i= index;" [value]="getStaff">{{getStaff}}</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+            <div>
+
+              <button type="button" *ngIf= "fetch" class="btn btn-small btn-success" (click) = "fetchStaff()" [disabled] = "!date">Fetch</button>
+              <p style="color:red;"  *ngIf="fetch && !date">Please Select the date first</p>
+            </div>
+          </div>
+          <div *ngIf = "this.staffList.length!==0">
+            <tr>
+            
+            <td class="col-xs-12 col-sm-6 col-md-6" align="right">
+            <button type="button" class="btn btn-success btn-sm btn-outline" (click)="saveStatus()" [disabled] = "!date || finalize">Save</button>
+
+          </td>
+          <td>
+            <button type="button" class="btn btn-primary btn-sm" *ngIf="!finalize" (click)="finalizeStatus()">Finalize</button>
+            <button type="button" class="btn btn-primary btn-sm" (click)="reviseStatus()" *ngIf="finalize">Revise</button>
+          </td>
+           </tr>
+           <br>
+        </div>
+        </div>
+          <!-- <div class="panel-heading">User information</div>-->
+          <div class="table-responsive">
+          <table class="table table-striped table-bordered full-data-table" [mfData]="staffList | dataFilter : filterQuery" #mf="mfDataTable"
+                 [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <thead>
+            <tr>
+              <th>
+                <mfDefaultSorter  by="image">Profile</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="name">Name</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="erpID">erpID</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter by="phone_no">Phone No.</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter by="status">Status </mfDefaultSorter>
+              </th>
+            </tr>
+            <tr>
+            </tr>
+            </thead>
+             <tbody *ngIf="!savedAttendance">
+            <tr *ngFor="let item of mf.data;let i=index" >
+              <td><img src="{{item.image}}" class="d-inline-block img-circle " alt="tbl"></td>
+              <td>{{item.name}}</td>
+              <td>{{item.erp_id}}</td>
+              <td>{{item.phone}}</td>
+              <td>                
+                <div class="border-checkbox-section">
+            <div class="border-checkbox-group border-checkbox-group-success">
+              <input class="border-checkbox" type="checkbox" id="checkbox{{i}}" [(ngModel)]="checkStatus[i]" (change) = "checkCheckbox(checkStatus[i],i)" [disabled]="finalize">
+              <label class="border-checkbox-label" for="checkbox{{i}}">{{ attendanceStatus[i] }}</label>
+            </div>
+          </div>
+              </td>
+            </tr>
+            </tbody>
+               <tbody *ngIf="savedAttendance">
+              <tr *ngFor="let item of mf.data;let i=index" >
+              <td><img src="{{item.staff.image}}" class="d-inline-block img-circle " alt="tbl"></td>
+              <td >{{item.staff.name}}</td>
+              <td >{{item.staff.erp_id}}</td>
+              <td >{{item.staff.phone}}</td>
+              <!-- <td *ngIf="staffTypeValue == 'LIBRARIAN'"><img src="{{item.librarian.image}}" class="d-inline-block img-circle " alt="tbl"></td>
+              <td *ngIf="staffTypeValue == 'LIBRARIAN'">{{item.librarian.name}}</td>
+              <td *ngIf="staffTypeValue == 'LIBRARIAN'">{{item.librarian.erp_id}}</td>
+              <td *ngIf="staffTypeValue == 'LIBRARIAN'">{{item.librarian.phone}}</td>
+              <td *ngIf="staffTypeValue == 'ACCOUNTANT'"><img src="{{item.accountant.image}}" class="d-inline-block img-circle " alt="tbl"></td>
+              <td *ngIf="staffTypeValue == 'ACCOUNTANT'">{{item.accountant.name}}</td>
+              <td *ngIf="staffTypeValue == 'ACCOUNTANT'">{{item.accountant.erp_id}}</td>
+              <td *ngIf="staffTypeValue == 'ACCOUNTANT'">{{item.teacher.phone}}</td>
+                <td *ngIf="staffTypeValue == 'ACCOUNTANT'"><img src="{{item.teacher.image}}" class="d-inline-block img-circle " alt="tbl"></td>
+              <td *ngIf="staffTypeValue == 'ACCOUNTANT'">{{item.teacher.name}}</td>
+              <td *ngIf="staffTypeValue == 'ACCOUNTANT'">{{item.teacher.erp_id}}</td>
+              <td *ngIf="staffTypeValue == 'ACCOUNTANT'">{{item.teacher.phone}}</td> -->
+              <td>
+              
+               
+                <div class="border-checkbox-section">
+            <div class="border-checkbox-group border-checkbox-group-success">
+              <input class="border-checkbox" type="checkbox" id="checkbox{{i}}" [(ngModel)]="checkStatus[i]" (change) = "checkCheckbox(checkStatus[i],i)" [disabled] = "finalize">
+              <label class="border-checkbox-label" for="checkbox{{i}}">{{ attendanceStatus[i] }}</label>
+            </div>
+          </div>
+
+              </td>
+            </tr>
+            </tbody>
+
+            <tfoot>
+            <tr>
+              <th>Profile</th>
+              <th>Name</th>
+              <th>erpID</th>
+              <th>Phone No.</th>
+              <th>Status</th>
+            </tr>
+            <tr>
+              <td colspan="10">
+                <mfBootstrapPaginator class="pagination-main f-right"></mfBootstrapPaginator>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+ 

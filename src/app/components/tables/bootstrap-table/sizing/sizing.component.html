@@ -1,0 +1,108 @@
+<div class="row">
+  <div class="col-sm-12">
+    <!-- Extra small table start-->
+    <app-card>
+    <form>
+      <div class="form-group row">
+        <div class="col-sm-3">
+          
+            <div class="form-group">
+              <div class="input-group">
+                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="modelPopup"  ngbDatepicker #d="ngbDatepicker">
+                <div class="input-group-append bg-default" (click)="d.toggle()">
+                  <label class="input-group-text"><span class="icofont icofont-ui-calendar"></span></label>
+                </div>
+              </div>
+             
+            </div>
+          <pre>{{ parserFormatter.format(modelPopup) }}</pre>
+        </div>
+        <label class="col-sm-1 col-form-label">Class</label>
+        <div class="col-sm-2">
+          <select name="getCity" #getClass class="form-control" [(ngModel)]="selectClass" (change)="getClassMethod(getClass.value)">
+            <option *ngFor="let getClass of filterClass;let i= index;" [value]="getClass">{{getClass}}</option>
+          </select>
+        </div>
+        <label class="col-sm-1 col-form-label">Section</label>
+        <div class="col-sm-2">
+          <div *ngIf ="selectClass!==''">            
+            <select name="getSection" #getSection class="form-control" (change)="getSectionMethod(getSection.value)" [(ngModel)]="selectSection">
+              <option *ngFor="let getSection of getSectionOfClass;let i= index;"  [value]="getSection.section">{{getSection.section}}</option>
+            </select>
+          </div>
+        </div>
+          <div class="col-sm-2">
+           <button type="button" (click)="valueSelect()">Fetch Students</button>
+        </div>
+
+        <label class="col-sm-1 col-form-label">Date</label>       
+      </div>
+    </form> 
+    </app-card>
+    <!-- Extra small table start-->
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-sm-12">
+    <!-- Extra small table start-->
+    <app-card [title]="'Extra small table'" [classHeader]="true" [blockClass]="'table-border-style'">
+      <div class="table-responsive">
+        <table class="table table-xs">
+          <thead>
+          <tr>
+            <th>#</th>
+            <th>Roll Number</th>
+            <th>Name</th>
+            <th>Status</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>1</td>
+            <td>Otto</td>
+            <td>
+          <div class="border-checkbox-section">
+            <div class="border-checkbox-group border-checkbox-group-success">
+              <input class="border-checkbox" type="checkbox" id="checkbox1">
+              <label class="border-checkbox-label" for="checkbox1">Present</label>
+            </div>
+          </div>
+
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>2</td>
+            <td>Thornton</td>
+            <td>            
+            <div class="border-checkbox-section">
+              <div class="border-checkbox-group border-checkbox-group-success">
+                <input class="border-checkbox" type="checkbox" id="checkbox2">
+                <label class="border-checkbox-label" for="checkbox2">Present</label>
+              </div>
+            </div>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>3</td>
+            <td>the Bird</td>
+            <td>            
+            <div class="border-checkbox-section">
+              <div class="border-checkbox-group border-checkbox-group-success">
+                <input class="border-checkbox" type="checkbox" id="checkbox3">
+                <label class="border-checkbox-label" for="checkbox3">Present</label>
+              </div>
+            </div>              
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+    <!-- Extra small table start-->
+  </div>
+</div>

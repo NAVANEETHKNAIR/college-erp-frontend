@@ -1,0 +1,115 @@
+<div class="card">
+  <div class="card-header">
+    <h5>Subject</h5>
+    <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="addTransport()"> <i class="icofont icofont-plus m-r-5"></i> Add Transport
+    </button>
+<!--     <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="modalOverflow.show()"> <i class="icofont icofont-plus m-r-5"></i> Add Student
+    </button> -->
+  
+  </div>
+  <div class="card-body">
+    <div class="table-content crm-table">
+      <div class="project-table">
+        <div id="crm-contact" class="dt-responsive">
+          <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-4">
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4">
+              <div style="text-align: right;">
+                <label>Search:
+                  <input type="search" [(ngModel)]="filterQuery" class="form-control input-sm full-data-search" placeholder="Search name">
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="panel-heading">User information</div>-->
+          <div class="table-responsive">
+          <table class="table table-striped table-bordered full-data-table" [mfData]="transportList | dataFilter : filterQuery" #mf="mfDataTable"
+                 [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <thead>
+            <tr>
+              <th>
+                <mfDefaultSorter  by="transport">Transports</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter>Action</mfDefaultSorter>
+              </th>
+            </tr>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of mf.data;let i=index">
+              <td>{{item}}</td>
+              <td class="action-icon">
+                <button type="button" (click)="editTransport(i)" class="m-r-15 crm-action-edit text-muted text-primary"><i class="icofont icofont-ui-edit"></i></button>
+                <a href="javascript:;" class="crm-action-delete text-muted text-danger"><i class="icofont icofont-delete-alt"></i></a>
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <th>Transports</th>
+              <th>Action</th>
+            </tr>
+            <tr>
+              <td colspan="10">
+                <mfBootstrapPaginator class="pagination-main f-right"></mfBootstrapPaginator>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+ <app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
+          <h3>Add Transport</h3>
+          <div>
+            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'" [config]="config">
+		   <form [formGroup]="transportForm">
+		   <div class="text-center">
+		     
+		    <div class="input-group">
+		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+		      <input type="text" class="form-control" placeholder="Name" formControlName = "name">
+		      <p *ngIf="!transportForm.controls['name'].valid && transportForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
+		    </div>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" placeholder="Vehicle Number" formControlName = "vehicle_num">
+          <p *ngIf="!transportForm.controls['vehicle_num'].valid && transportForm.controls['vehicle_num'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
+        </div>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" placeholder="ERP_ID" formControlName = "erp_id">
+          <p *ngIf="!transportForm.controls['erp_id'].valid && transportForm.controls['erp_id'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
+        </div>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" placeholder="Fare" formControlName = "fare">
+          <p *ngIf="!transportForm.controls['fare'].valid && transportForm.controls['fare'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
+        </div>
+		    <div class="input-group">
+		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+		      <input type="text" class="form-control" placeholder="Session" formControlName = "session">
+		      <p *ngIf="!transportForm.controls['session'].valid && transportForm.controls['session'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the session</p>
+		    </div>
+         
+		    <button *ngIf="transportForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putTransport(transportForm.value)">Save</button>
+        <button *ngIf="transportForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedTransport(transportForm.value)">Save</button>
+
+
+       </div>
+		     </form>          
+		    </perfect-scrollbar>
+            <br>
+          </div>
+          <button (click)="closeMyModal($event)" aria-label="Close" class="md-close-btn"><i class="icofont icofont-ui-close"></i></button>
+</app-modal-animation>
+
+
