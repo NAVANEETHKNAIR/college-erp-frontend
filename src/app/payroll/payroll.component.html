@@ -1,12 +1,34 @@
+<app-payslip [payslip] = "payrollForm.value" [payslipfor] = "staffList[index]" (editPayslip)="payrollFormEdit($event)" *ngIf="generatedPayslip"></app-payslip>
 <div class="card">
   <div class="card-header">
-    <h5>Payroll</h5>
-    <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="addTransport()"> <i class="icofont icofont-plus m-r-5"></i> Add Transport
-    </button>
-<!--     <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="modalOverflow.show()"> <i class="icofont icofont-plus m-r-5"></i> Add Student
+    <h5>Payslip</h5>
+    <br>
+    <!-- <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="addpayroll()"> <i class="icofont icofont-plus m-r-5"></i> Add Payroll
     </button> -->
-  
+<!--     <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="modalOverflow.show()"> <i class="icofont icofont-plus m-r-5"></i> Add payroll
+    </button> -->
+  <div class="row">
+    <br>
+    <div class="col col-lg-4 col-md-4 col-sm-6 col-xs-12">
+      <label for="staff" style="display:block;">Select Month</label>
+      <select [(ngModel)] = "month" class="form-control">
+       <option *ngFor="let i of monthArray" [value] = "i">{{i}}</option>
+     </select>
+    </div>
+    <div class="col col-lg-4 col-md-4 col-sm-6 col-xs-12">
+
+
+     <label for="staff" style="display:block;" >Select Staff</label>
+     <select [disabled] = "!month" #staff class="form-control" id="staff" (change)="getStaff(staff.value.toLowerCase())">
+       <option value="TEACHER">TEACHER</option>
+       <option value="ACCOUNTANT">ACCOUNTANT</option>
+       <option value="LIBRARIAN">LIBRARIAN</option>
+       <option value="OTHERS">OTHERS</option>
+     </select>
+    </div>
   </div>
+  </div>
+
   <div class="card-body">
     <div class="table-content crm-table">
       <div class="project-table">
@@ -24,12 +46,15 @@
           </div>
           <!-- <div class="panel-heading">User information</div>-->
           <div class="table-responsive">
-          <table class="table table-striped table-bordered full-data-table" [mfData]="transportList | dataFilter : filterQuery" #mf="mfDataTable"
+          <table class="table table-striped table-bordered full-data-table" [mfData]="staffList | dataFilter : filterQuery" #mf="mfDataTable"
                  [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
             <thead>
             <tr>
               <th>
-                <mfDefaultSorter  by="transport">Transports</mfDefaultSorter>
+                <mfDefaultSorter  by="staff">{{getStaff.value || "Staff"}}</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="erpId">erp ID</mfDefaultSorter>
               </th>
               <th>
                 <mfDefaultSorter>Action</mfDefaultSorter>
@@ -40,17 +65,21 @@
             </thead>
             <tbody>
             <tr *ngFor="let item of mf.data;let i=index">
-              <td>{{item}}</td>
+              <td>{{item.name}}</td>
+              <td>{{item.erp_id}}</td>
               <td class="action-icon">
-                <button type="button" (click)="editTransport(i)" class="m-r-15 crm-action-edit text-muted text-primary"><i class="icofont icofont-ui-edit"></i></button>
+                <button type="button" (click)="addPayroll(i)" class="m-r-15 crm-action-edit text-muted text-primary"><i class="icofont icofont-ui-edit"></i></button>
                 <a href="javascript:;" class="crm-action-delete text-muted text-danger"><i class="icofont icofont-delete-alt"></i></a>
               </td>
             </tr>
             </tbody>
             <tfoot>
             <tr>
-              <th>Transports</th>
-              <th>Action</th>
+              <th>{{getStaff.value || "Staff"}} </th>
+              <th>erp ID</th>
+              <th>
+                <mfDefaultSorter>Action</mfDefaultSorter>
+              </th>
             </tr>
             <tr>
               <td colspan="10">
@@ -68,47 +97,118 @@
 
 
  <app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
-          <h3>Add Transport</h3>
+          <h3>Payslip</h3>
           <div>
             <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
-		   <form [formGroup]="transportForm">
+		   <form [formGroup]="payrollForm">
 		   <div class="text-center">
-		    <label for="basic-addon1" style="display:block;text-align:left">Vehicle Name</label> 
+		    <label for="basic-addon1" style="display:block;text-align:left">Basic Salary</label> 
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control"  formControlName = "name">
-		      <p *ngIf="!transportForm.controls['name'].valid && transportForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
+		      <input type="text" class="form-control"  formControlName = "basic_sal">
+		      <p *ngIf="!payrollForm.controls['basic_sal'].valid && payrollForm.controls['basic_sal'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the basic salary</p>
 		    </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Vehicle Number</label>
-        <div class="input-group">
-          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-          <input type="text" class="form-control" formControlName = "vehicle_num">
-          <p *ngIf="!transportForm.controls['vehicle_num'].valid && transportForm.controls['vehicle_num'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the vehicle number</p>
+       
+        <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+        <h5 style="text-align:left;">Allowances</h5>
+        <br>
         </div>
-        <label for="basic-addon1" style="display:block;text-align:left">ERP ID</label>
-        <div class="input-group">
-          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-          <input type="text" class="form-control" formControlName = "erp_id">
-          <p *ngIf="!transportForm.controls['erp_id'].valid && transportForm.controls['erp_id'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the erp id</p>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+          <button type="button" (click)="addAllowance()"><i class="icofont icofont-ui-add"></i></button>
         </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Fare</label>
-        <div class="input-group">
-          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-          <input type="text" class="form-control"  formControlName = "fare">
-          <p *ngIf="!transportForm.controls['fare'].valid && transportForm.controls['fare'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the fare</p>
         </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Session</label>
-		    <div class="input-group">
-		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" formControlName = "session">
-		      <p *ngIf="!transportForm.controls['session'].valid && transportForm.controls['session'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the session</p>
-		    </div>
+        
+
+        <div formArrayName = "allowances">
+        <div class="input-group" *ngFor="let allowance of payrollForm.controls.allowances.controls;let j=index">
+          <div [formGroupName]= "j">
+          <div class="row">
+          <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+          <label for="basic-addon1" style="display:block;text-align:left">Description</label>
+          <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" formControlName = "description">
+          <p *ngIf="!payrollForm.controls.allowances.controls[j]['controls']['description'].valid && payrollForm.controls.allowances.controls[j].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the description</p>
+         </div>
+
+          <label for="basic-addon1" style="display:block;text-align:left">Amount</label>
+          <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" formControlName = "amount">
+         <p *ngIf="!payrollForm.controls.allowances.controls[j]['controls']['amount'].valid && payrollForm.controls.allowances.controls[j].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the amount</p>
+         </div>
+         </div>
+         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+          <button (click) ="deleteAllowance(j)"><i class="icofont icofont-ui-delete"></i></button> 
+          </div>
+         </div>
+         </div>
+        </div>
+        </div>
+
+        
+        <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+        <h5 style="text-align:left">Deductions</h5>
+        <br>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+          <button type="button" (click)="addDeduction()"><i class="icofont icofont-ui-add"></i></button>
+        </div>
+        </div>        
+        <div formArrayName = "deductions">
+
+        <div class="input-group" *ngFor="let deduction of payrollForm.controls.deductions.controls;let k=index">
+          <div [formGroupName]= "k">
+          <div class="row">
+          <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+          <label for="basic-addon1" style="display:block;text-align:left">Description</label>
+          <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" formControlName = "description">
+          <p *ngIf="!payrollForm.controls.deductions.controls[k]['controls']['description'].valid && payrollForm.controls.deductions.controls[k].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the description</p>
+         </div>
+
+          <label for="basic-addon1" style="display:block;text-align:left">Amount</label>
+          <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" formControlName = "amount">
+         <p *ngIf="!payrollForm.controls.deductions.controls[k]['controls']['amount'].valid && payrollForm.controls.deductions.controls[k].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the amount</p>
+         </div>
+         </div>
+         <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+          <button (click) ="deleteDeduction(k)"><i class="icofont icofont-ui-delete"></i></button> 
+          </div>
+        </div>
+         </div>
+        </div>
+        </div>
+
+      <label for="basic-addon1" style="display:block;text-align:left">Status</label>
+         <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <select type="text" class="form-control" placeholder="Status"  formControlName = "status">
+            <option value="Pending">Pending</option>
+            <option value="Paid">Paid</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
+          <p *ngIf="!payrollForm.controls['status'].valid && payrollForm.controls['status'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the status</p>
+        </div>
+        
+
+        <button *ngIf="payrollForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "generatePayslip()">Generate Payslip</button>
+        
+        <!-- <button *ngIf="payrollForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedpayroll(payrollForm.value)">Save</button> -->
+      
+
          
-		    <button *ngIf="transportForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putTransport(transportForm.value)">Save</button>
-        <button *ngIf="transportForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedTransport(transportForm.value)">Save</button>
+		    <!-- <button *ngIf="payrollForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putpayroll(payrollForm.value)">Save</button>
+        <button *ngIf="payrollForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedpayroll(payrollForm.value)">Save</button> -->
 
 
        </div>
+
 		     </form>          
 		    </perfect-scrollbar>
             <br>

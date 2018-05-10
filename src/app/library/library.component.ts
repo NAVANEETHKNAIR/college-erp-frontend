@@ -106,20 +106,21 @@ getAllBooks(){
   
   putBook(value){
   	 console.log(value);
-     if(value.assigned_to == ''){
-       value.assigned_to = undefined;
-     }
+     // if(value.assigned_to == ''){
+     //   value.assigned_to = undefined;
+     // }
 
-     if(value.assigned_from == ''){
-       value.assigned_from = undefined;
-     }
+     // if(value.assigned_from == ''){
+     //   value.assigned_from = undefined;
+     // }
 
-     if(value.assigned_duration == ''){
-       value.assigned_duration = undefined;
-     }
+     // if(value.assigned_duration == ''){
+     //   value.assigned_duration = undefined;
+     // }
   	// let class_ref:any = _.where(this.getClassAll,{name:value.class,section:value.section})[0];
-    this.http.post((this.url+'/book/book'),{
-    	
+    if(this.assigned){
+      this.http.post((this.url+'/book/book'),{
+      
       "title": value.title,
       "isbn": value.isbn,
       "assigned_to": this.assigned_id._id,
@@ -132,26 +133,45 @@ getAllBooks(){
     }).subscribe((book:any)=>{
         this.getAllBooks();
            // this.getStaffMethod(value.type);
-              	   
-        });    
+                   
+        });
+    }
+
+    else{
+      this.http.post((this.url+'/book/book'),{
+      
+      "title": value.title,
+      "isbn": value.isbn,
+      "assigned": this.assigned,
+      "session": value.session
+
+
+    }).subscribe((book:any)=>{
+        this.getAllBooks();
+           // this.getStaffMethod(value.type);
+                   
+        });
+
+    }
+        
   }
 
   putEditedBook(value){
     console.log(value);
         console.log(value);
-     if(value.assigned_to == ''){
-       value.assigned_to = undefined;
-     }
+     // if(value.assigned_to == ''){
+     //   value.assigned_to = undefined;
+     // }
 
-     if(value.assigned_from == ''){
-       value.assigned_from = undefined;
-     }
+     // if(value.assigned_from == ''){
+     //   value.assigned_from = undefined;
+     // }
 
-     if(value.assigned_duration == ''){
-       value.assigned_duration = undefined;
-     }
-
-    this.http.post((this.url+ '/book/book_edit'),{
+     // if(value.assigned_duration == ''){
+     //   value.assigned_duration = undefined;
+     // }
+    if(this.assigned){
+      this.http.post((this.url+ '/book/book_edit'),{
       "_id": this.id,
       "title": value.title,
       "isbn": value.isbn,
@@ -166,6 +186,23 @@ getAllBooks(){
       this.getAllBooks();
 
     })
+    }
+
+    else{
+      this.http.post((this.url+ '/book/book_edit'),{
+      "_id": this.id,
+      "title": value.title,
+      "isbn": value.isbn,
+      "assigned": value.assigned,
+      "session": value.session
+
+    }).subscribe((editedbook)=>{
+      console.log(editedbook.json());
+      this.getAllBooks();
+
+    })
+    }
+    
   }
 
 
@@ -191,6 +228,7 @@ getAllBooks(){
     console.log(value);
     let date = new Date();
     let session = date.getFullYear();
+    if(value){
     this.http.post((this.url + '/student/student_get_for_erp_id'),{erp_id:value,session:session})
         .subscribe((student)=>{
             console.log(student.json());
@@ -204,6 +242,7 @@ getAllBooks(){
             this.invalidStudent = false; 
           }
         })
+    }
   }
 
   editBook(index){

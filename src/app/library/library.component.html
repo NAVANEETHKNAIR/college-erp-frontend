@@ -83,12 +83,13 @@
             <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
 		   <form [formGroup]="bookForm">
 		   <div class="text-center">
-		     
+		    <label for="basic-addon1" style="display:block;text-align:left">Title</label> 
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <input type="text" class="form-control" placeholder="Title" formControlName = "title">
 		      <p *ngIf="!bookForm.controls['title'].valid && bookForm.controls['title'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the title</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">ISBN</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" placeholder="ISBN" formControlName = "isbn">
@@ -98,24 +99,27 @@
              <h5 align="right"> Assign
             <ui-switch class="js-single" color="#1abc9c" switchColor="#fff" size="medium" (change) = "setValidation($event)" [checked]="assigned" class="form-control"  formControlName = "assigned"></ui-switch>
             </h5>
-  
-        <div class="input-group">
+         <label for="basic-addon1" style="display:block;text-align:left" *ngIf="assigned">Assigned Student</label> 
+        <div class="input-group" *ngIf="assigned">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" #checkerp placeholder="ERP ID" formControlName = "assigned_to" [readOnly]="!assigned" (focusout)="checkStudent(checkerp.value)">
           <p *ngIf="assigned" style="color:gray;display:block;width:100%;text-align:left" >Please enter the erp id of student if it is to be assigned</p>
           <p *ngIf="!bookForm.controls['assigned_to'].valid && bookForm.controls['assigned_to'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the field</p>
           <p *ngIf="invalidStudent" style="color:red;display:block;width:100%;text-align:left" >Please enter the valid erp_id</p>
         </div>
-        <div class="input-group">
+        <label for="basic-addon1" style="display:block;text-align:left" *ngIf="assigned">Assigned Date</label>
+        <div class="input-group" *ngIf="assigned">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="date" class="form-control" placeholder="Assigning Date" formControlName = "assigned_from" [readOnly]="!assigned">
           <p *ngIf="!bookForm.controls['assigned_from'].valid && bookForm.controls['assigned_from'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the field</p>
         </div>
-        <div class="input-group">
+        <label for="basic-addon1" style="display:block;text-align:left" *ngIf="assigned">Return Date</label>
+        <div class="input-group" *ngIf="assigned">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="date" class="form-control" placeholder="Submitting Date" formControlName = "assigned_duration" [readOnly]="!assigned">
           <p *ngIf="!bookForm.controls['assigned_duration'].valid && bookForm.controls['assigned_duration'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
         </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Session</label>
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <input type="text" class="form-control" placeholder="Session" formControlName = "session">

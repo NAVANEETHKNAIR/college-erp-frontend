@@ -13,6 +13,8 @@ import { LibraryComponent } from './library/library.component';
 import { AttendanceStudentComponent } from './attendance-student/attendance-student.component';
 import { AttendanceStaffComponent } from './attendance-staff/attendance-staff.component';
 import { ExamComponent } from './exam/exam.component';
+import { PayrollComponent } from './payroll/payroll.component';
+import { PayslipComponent } from './payslip/payslip.component';
 const routes: Routes = [
   {
     path: '',
@@ -147,6 +149,15 @@ const routes: Routes = [
   {
     path: 'exam',
     component: ExamComponent
+  },
+  {
+    path: 'payroll',
+    component: PayrollComponent,
+   
+  },
+  {
+     path:'payslip',
+     component: PayslipComponent
   },
   {
     path: '**',
