@@ -3,6 +3,8 @@ import { Http } from '@angular/http';
 import * as _  from 'underscore'; 
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { SystemService } from '../system/service.system';
+
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-student',
@@ -27,7 +29,6 @@ public studentForm:FormGroup;
 public getSectionOfClassForm:any;
 public getClassValue:any;
 public name:any = '';
-public erp_id:any = '';
 public student_contact:any = '';
 public parent_contact:any = '';
 public gender:any = '';
@@ -47,11 +48,16 @@ public caste :any = '';
 public editMode:boolean;
 public session:any = '';
 public url:any = 'http://localhost:3000';
-  constructor(public http: Http) {
-  this.initializeForm();
-
-
-}
+  //import { SystemService } from '../system/service.system';
+  constructor(public http: Http,public fetchsession:SystemService) {
+   this.fetchsession.getSession().subscribe((session)=>{
+    this.session = session.session;
+    console.log("session from session service",this.session);
+    this.initializeForm();
+    
+  });
+   this.initializeForm();
+  }
 
   ngOnInit() {
     this.http.post(this.url + '/newClass/get_class_all',{})
@@ -77,7 +83,7 @@ public url:any = 'http://localhost:3000';
         .subscribe((data)=>{
         	console.log(data.json());
         	this.studentList = data.json();
-            this.rowsOnPage = this.studentList.length();
+            this.rowsOnPage = this.studentList.length;
         })
   }
 
@@ -110,7 +116,6 @@ public url:any = 'http://localhost:3000';
   initializeForm(){
    this.studentForm = new FormGroup({
   		"name": new FormControl(this.name,Validators.required),
-  		"erp_id": new FormControl(this.erp_id,Validators.required),
   		"student_contact": new FormControl(this.student_contact,Validators.required),
   		"parent_contact": new FormControl(this.parent_contact,Validators.required),
   		"gender": new FormControl(this.gender,Validators.required),
@@ -146,7 +151,6 @@ public url:any = 'http://localhost:3000';
     	"username":value.email,
     	"password":"12345",
     	"name":value.name,
-    	"erp_id": value.erp_id,
     	"student_contact": value.student_contact,
     	"parent_contact": value.parent_contact,
     	"gender": value.gender,
@@ -162,7 +166,7 @@ public url:any = 'http://localhost:3000';
       "account_number":value.account_number,
       "ifsc":value.ifsc,
       "caste": value.caste,
-      "session": value.session
+      "session": this.session
 
 
     }).subscribe((student:any)=>{
@@ -171,7 +175,7 @@ public url:any = 'http://localhost:3000';
         .subscribe((data)=>{
         	console.log(data.json());
         	this.studentList = data.json();
-            this.rowsOnPage = this.studentList.length();
+            this.rowsOnPage = this.studentList.length;
         })
 
     
@@ -184,7 +188,6 @@ public url:any = 'http://localhost:3000';
   addStudent(){
 	    this.editMode = false; 
 	    this.name = '';
-  		this.erp_id =  '';
   		this.student_contact= '';
   		this.parent_contact = '';
   		this.gender =  '';
@@ -201,7 +204,7 @@ public url:any = 'http://localhost:3000';
   		this.account_number = '';
   		this.ifsc ='';
   		this.caste ='';
-  		this.session = '';
+  		
   		console.log("section before editing",this.section);
         this.initializeForm();
         console.log(this.studentForm);
@@ -214,7 +217,6 @@ public url:any = 'http://localhost:3000';
   editStudent(student){
   	  this.editMode = true;
       this.name = (this.studentList[student]).name;    
-  		this.erp_id =  (this.studentList[student]).erp_id;
   		this.student_contact=  (this.studentList[student]).student_contact;
   		this.parent_contact =  (this.studentList[student]).parent_contact;
   		this.gender =  (this.studentList[student]).gender;
@@ -231,7 +233,7 @@ public url:any = 'http://localhost:3000';
   		this.account_number = (this.studentList[student]).account_number;
   		this.ifsc = (this.studentList[student]).ifsc;
   		this.caste = (this.studentList[student]).caste;
-  		this.session = (this.studentList[student]).session;
+
   		console.log("section before editing",this.section);
   		this.getClassMethodForm(this.class);
         this.initializeForm();

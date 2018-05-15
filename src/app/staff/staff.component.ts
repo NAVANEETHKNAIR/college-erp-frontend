@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import * as _  from 'underscore'; 
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { SystemService } from '../system/service.system';
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-staff',
@@ -19,9 +20,8 @@ public sortOrder = 'desc';
 public staffList:any;
 public selectStaff:any;
 public staffForm:FormGroup;
-public staffType:any[] = ['TEACHER','ACCOUNTANT','LIBRARIAN','OTHER STAFF'];
+public staffType:any[] = ['TEACHER','ACCOUNTANT','LIBRARIAN','OTHER'];
 public name:any = '';
-public erp_id:any = '';
 public gender:any = '';
 public address:any = '';
 public phone:any = '';
@@ -40,11 +40,16 @@ public session:any = '';
 public url:any = 'http://localhost:3000';
 public urladd:any;
 public editMode:boolean;
-  constructor(public http: Http) {
-  this.initializeForm();
-
-
-}
+  //import { SystemService } from '../system/service.system';
+  constructor(public http: Http,public fetchsession:SystemService) {
+   this.fetchsession.getSession().subscribe((session)=>{
+    this.session = session.session;
+    console.log("session from session service",this.session);
+    this.initializeForm();
+    
+  });
+   this.initializeForm();
+  }
 
   ngOnInit() {
 
@@ -52,34 +57,18 @@ public editMode:boolean;
 
   getStaffMethod(value){
     console.log("getStaffMethod value:",value);
-   if(value == 'TEACHER'){
-      this.urladd = '/teacher/teacher_get_all';
-      this.type = 'TEACHER';
-    }
-
-    else if(value == 'ACCOUNTANT'){
-      this.urladd = '/accountant/accountant_get_all';
-      this.type = 'ACCOUNTANT';
-    }
-
-    else if(value == 'LIBRARIAN'){
-      this.urladd = '/librarian/librarian_get_all';
-      this.type = 'LIBRARIAN';
-    }
-
-    else{
-      this.urladd = '/otherstaff/otherstaff_get_all';
-      this.type = 'OTHERSTAFF';
-    }
-
-    this.http.post((this.url + this.urladd),{})
+    this.type = value.toUpperCase();
+    this.initializeForm();
+    console.log("type:",this.type)
+    this.http.post((this.url + '/' + value + '/' + value + '_get_all'),{})
     .subscribe((staff)=>{
       console.log(staff.json());
+
       this.staffList = staff.json();
       //this.rowsOnPage = this.staffList.length();
     })
     
-
+    
    
   }
 
@@ -96,7 +85,6 @@ public editMode:boolean;
   initializeForm(){
    this.staffForm = new FormGroup({
   		"name": new FormControl(this.name,Validators.required),
-  		"erp_id": new FormControl(this.erp_id,Validators.required),
   		"phone": new FormControl(this.phone,Validators.required),
   		"gender": new FormControl(this.gender,Validators.required),
   		"address": new FormControl(this.address,Validators.required),
@@ -125,31 +113,14 @@ public editMode:boolean;
   	 if(!value.transport){
   	 	value.transport = undefined;
   	 }
-     
-     if(value.type == 'TEACHER'){
-      this.urladd = '/teacher/teacher';
-    }
 
-    else if(value.type == 'ACCOUNTANT'){
-      this.urladd = '/accountant/acountant';
-    }
-
-    else if(value.type == 'LIBRARIAN'){
-      this.urladd = '/librarian/librarian';
-    }
-
-    else{
-      this.urladd = '/otherstaff/otherstaff_get_all';
-    }
-
-
+     console.log("value:",value.type)
 
   	// let class_ref:any = _.where(this.getClassAll,{name:value.class,section:value.section})[0];
-    this.http.post((this.url+this.urladd),{
+    this.http.post((this.url + '/' + value.type.toLowerCase() + '/' + value.type.toLowerCase()),{
     	"username":value.email,
     	"password":"12345",
     	"name":value.name,
-    	"erp_id": value.erp_id,
     	"phone": value.phone,
     	"gender": value.gender,
     	"address": value.address,
@@ -164,10 +135,11 @@ public editMode:boolean;
       "account_number":value.account_number,
       "ifsc":value.ifsc,
       "caste": value.caste,
-      "session": value.session
+      "session": this.session
 
 
     }).subscribe((staff:any)=>{
+           this.selectStaff = value.type.toUpperCase();
            this.getStaffMethod(value.type);
               	   
         });    
@@ -176,7 +148,6 @@ public editMode:boolean;
   addStaff(){
   	  this.editMode = false;     
   	  this.name = '';
-  		this.erp_id =  '';
   		this.gender =  '';
   		this.address = '';
       this.phone = '';
@@ -191,7 +162,6 @@ public editMode:boolean;
   		this.account_number = '';
   		this.ifsc ='';
   		this.caste ='';
-  		this.session = '';
   		// console.log("section before editing",this.section);
         this.initializeForm();
         console.log(this.staffForm);
@@ -205,7 +175,6 @@ public editMode:boolean;
   editStaff(staff){
      this.editMode = true;
   	  this.name = (this.staffList[staff]).name;
-  		this.erp_id =  (this.staffList[staff]).erp_id;
   		this.gender =  (this.staffList[staff]).gender;
   		this.address = (this.staffList[staff]).address;
       this.phone = (this.staffList[staff]).phone;
@@ -219,7 +188,7 @@ public editMode:boolean;
   		this.account_number = (this.staffList[staff]).account_number;
   		this.ifsc = (this.staffList[staff]).ifsc;
   		this.caste = (this.staffList[staff]).caste;
-  		this.session = (this.staffList[staff]).session;
+
   		// console.log("section before editing",this.section);
   		// this.getClassMethodForm(this.class);
         this.initializeForm();

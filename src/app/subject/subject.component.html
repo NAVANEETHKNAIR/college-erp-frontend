@@ -2,10 +2,7 @@
   <div class="card-header">
     <h5>Subject</h5>
     <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="addSubject()"> <i class="icofont icofont-plus m-r-5"></i> Add Subject
-    </button>
-<!--     <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="modalOverflow.show()"> <i class="icofont icofont-plus m-r-5"></i> Add Student
-    </button> -->
-  
+    </button>  
   </div>
   <div class="card-body">
     <div class="table-content crm-table">
@@ -66,18 +63,7 @@
   </div>
 </div>
 
-         
-<!--  <app-modal-basic #modalOverflow [hideHeader]="true" [hideFooter]="true">
-<div class="app-modal-body">
-  <button type="button" class="close basic-close-light-box" (click)="modalOverflow.hide()">
-    <span aria-hidden="true">&times;</span>
-  </button>
- 
-     <br>
-     </div>
- </app-modal-basic> -->
-
- <app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
+<app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
           <h3>Add Subject</h3>
           <div>
             <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
@@ -89,12 +75,7 @@
 		      <input type="text" class="form-control" formControlName = "name">
 		      <p *ngIf="!subjectForm.controls['name'].valid && subjectForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please add the subject</p>
 		    </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Session</label>
-		    <div class="input-group">
-		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" formControlName = "session">
-		      <p *ngIf="!subjectForm.controls['session'].valid && subjectForm.controls['session'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the session</p>
-		    </div>
+
          
 		    <button *ngIf="subjectForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putSubject(subjectForm.value)">Save</button>
         <button *ngIf="subjectForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedSubject(subjectForm.value)">Save</button>

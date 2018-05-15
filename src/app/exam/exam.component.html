@@ -28,6 +28,7 @@
               <div>
                 <label for= "getClass" class="label-control">Select Class
                   <select name="getClass" #getClass class="form-control" [(ngModel)]="selectClass" (change)="getClassMethod(getClass.value)">
+                    <option style="display:none;"></option>
                     <option *ngFor="let getClass of filterClass;let i= index;" [value]="getClass">{{getClass}}</option>
                   </select>
                 </label>
@@ -37,6 +38,7 @@
               <div *ngIf ="selectClass!==''">
                 <label for= "getSection" class="label-control">Select Section
                   <select name="getSection" #getSection class="form-control" (change)="getSectionMethod(getSection.value)" [(ngModel)]="selectSection">
+                    <option style="display:none;"></option>
                     <option *ngFor="let getSection of getSectionOfClass;let i= index;"  [value]="getSection.section">{{getSection.section}}</option>
                   </select>
                 </label>
@@ -108,43 +110,41 @@
             <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
         <form [formGroup]="examForm">
        <div class="text-center">
-         
+        <label for="basic-addon1" style="display:block;text-align:left">Exam name</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" placeholder="Name" formControlName = "name">
           <p *ngIf="!examForm.controls['name'].valid && examForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
         </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Subject</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <select type="text" class="form-control" placeholder="Enter the Subject" formControlName = "subject_ref">
+            <option style="display:none;"></option>
             <option *ngFor="let subject of subjectList" [value] ="subject.name">{{subject.name}}</option>
           </select>
           <p *ngIf="!examForm.controls['subject_ref'].valid && examForm.controls['subject_ref'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the Subject name</p>
         </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Date</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="date" class="form-control" placeholder="Enter the date" formControlName = "date">
           <p *ngIf="!examForm.controls['date'].valid && examForm.controls['date'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the date</p>
         </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Total Marks</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" placeholder="Max Marks" formControlName = "total_marks">
           <p *ngIf="!examForm.controls['total_marks'].valid && examForm.controls['total_marks'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the total marks</p>
         </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Duration</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="time" class="form-control" placeholder="Exam Duration" formControlName = "duration">
           <p *ngIf="!examForm.controls['duration'].valid && examForm.controls['duration'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the duration of exam</p>
         </div>
-        <div class="input-group">
-          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-          <input type="text" class="form-control" placeholder="session" formControlName = "session">
-          <p *ngIf="!examForm.controls['session'].valid && examForm.controls['session'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the session</p>
-        </div>
-
-
-<button *ngIf="examForm.valid && !editMode"  type="submit" (click) = "putExam(examForm.value)" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" >Save</button>
-<button *ngIf="examForm.valid && editMode"  type="submit" (click) = "putExamEdited(examForm.value)" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" >Save</button> </div>
+        <button *ngIf="examForm.valid && !editMode"  type="submit" (click) = "putExam(examForm.value)" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" >Save</button>
+        <button *ngIf="examForm.valid && editMode"  type="submit" (click) = "putExamEdited(examForm.value)" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" >Save</button> </div>
          </form>          
         </perfect-scrollbar>
             <br>

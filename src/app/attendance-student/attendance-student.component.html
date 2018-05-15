@@ -18,6 +18,7 @@
               <div>
                 <label for= "getCity" class="label-control">Select Class
                   <select name="getCity" #getClass class="form-control" [(ngModel)]="selectClass" (change)="getClassMethod(getClass.value)">
+                    <option style="display:none;"></option>
                     <option *ngFor="let getClass of filterClass;let i= index;" [value]="getClass">{{getClass}}</option>
                   </select>
                 </label>

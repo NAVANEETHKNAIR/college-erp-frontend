@@ -111,20 +111,15 @@
         <div class="input-group" *ngIf="assigned">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="date" class="form-control" placeholder="Assigning Date" formControlName = "assigned_from" [readOnly]="!assigned">
-          <p *ngIf="!bookForm.controls['assigned_from'].valid && bookForm.controls['assigned_from'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the field</p>
+          <p *ngIf="!bookForm.controls['assigned_from'].valid && bookForm.controls['assigned_from'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the assigned date</p>
         </div>
         <label for="basic-addon1" style="display:block;text-align:left" *ngIf="assigned">Return Date</label>
         <div class="input-group" *ngIf="assigned">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="date" class="form-control" placeholder="Submitting Date" formControlName = "assigned_duration" [readOnly]="!assigned">
-          <p *ngIf="!bookForm.controls['assigned_duration'].valid && bookForm.controls['assigned_duration'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
+          <p *ngIf="!bookForm.controls['assigned_duration'].valid && bookForm.controls['assigned_duration'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the date of return</p>
         </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Session</label>
-		    <div class="input-group">
-		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Session" formControlName = "session">
-		      <p *ngIf="!bookForm.controls['session'].valid && bookForm.controls['session'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the session</p>
-		    </div>
+
          
 		    <button *ngIf="bookForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putBook(bookForm.value)">Save</button>
         <button *ngIf="bookForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedBook(bookForm.value)">Save</button>

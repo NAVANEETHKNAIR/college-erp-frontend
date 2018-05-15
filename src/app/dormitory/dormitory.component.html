@@ -98,42 +98,34 @@
             <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
 		   <form [formGroup]="dormitoryForm">
 		   <div class="text-center">
-		     
+		    <label for="basic-addon1" style="display:block;text-align:left">Name</label> 
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <input type="text" class="form-control" placeholder="Name" formControlName = "name">
 		      <p *ngIf="!dormitoryForm.controls['name'].valid && dormitoryForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Room Number</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" placeholder="Room Number" formControlName = "room_num">
           <p *ngIf="!dormitoryForm.controls['room_num'].valid && dormitoryForm.controls['room_num'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the room number</p>
         </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Category</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <select type="text" class="form-control" #roomType (change)="changeRoomType(roomType.value)" placeholder="Room Type" formControlName = "room_type">
-          <option value='' selected id="data-default-tag">Room Type</option>
+          <option style="display:none;"></option>
           <option value='AC'>Air Conditioned</option> 
           <option value='Non AC'>Non Air Conditioned</option>
           </select> 
           <p *ngIf="!dormitoryForm.controls['room_type'].valid && dormitoryForm.controls['room_type'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the room type</p>
         </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Price</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" placeholder="Fare" formControlName = "fare">
-          <p *ngIf="!dormitoryForm.controls['fare'].valid && dormitoryForm.controls['fare'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the Fare</p>
-        </div>
-        <div class="input-group">
-          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-          <input type="text" class="form-control" placeholder="ERP_ID" formControlName = "erp_id">
-          <p *ngIf="!dormitoryForm.controls['erp_id'].valid && dormitoryForm.controls['erp_id'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the ERP_ID</p>
-        </div>
-		    <div class="input-group">
-		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Session" formControlName = "session">
-		      <p *ngIf="!dormitoryForm.controls['session'].valid && dormitoryForm.controls['session'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the session</p>
-		    </div>
-         
+          <p *ngIf="!dormitoryForm.controls['fare'].valid && dormitoryForm.controls['fare'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the price</p>
+        </div>         
 		    <button *ngIf="dormitoryForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putdormitory(dormitoryForm.value)">Save</button>
         <button *ngIf="dormitoryForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedDormitory(dormitoryForm.value)">Save</button>
 

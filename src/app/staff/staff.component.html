@@ -16,6 +16,7 @@
               <div>
                 <label for= "getStaff" class="label-control">Select Staff
                   <select name="getStaff" #getStaff class="form-control" [(ngModel)]="selectStaff" (change)="getStaffMethod(getStaff.value)">
+                    <option style="display:none;"></option>
                     <option *ngFor="let getStaff of staffType;let i= index;" [value]="getStaff">{{getStaff}}</option>
                   </select>
                 </label>
@@ -119,90 +120,98 @@
             <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
 		    <form [formGroup]="staffForm" (ngSubmit) ="putStaff(staffForm.value)">
 		   <div class="text-center">
-		     
+		     <label for="basic-addon1" style="display:block;text-align:left">Full Name</label>
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Full Name" formControlName = "name">
+		      <input type="text" class="form-control"  formControlName = "name">
 		      <p *ngIf="!staffForm.controls['name'].valid && staffForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Contact</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="ERP_ID" formControlName = "erp_id">
-		        <p *ngIf="!staffForm.controls['erp_id'].valid && staffForm.controls['erp_id'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the erp id</p>
-		    </div>
-		     <div class="input-group">
-		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Staff Contact" formControlName = "phone">
+		      <input type="text" class="form-control"  formControlName = "phone">
 		     <p *ngIf="!staffForm.controls['phone'].valid && staffForm.controls['phone'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the staff contact</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Gender</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <select type="text" class="form-control" placeholder="Gender"  formControlName = "gender">
+		      <select type="text" class="form-control"   formControlName = "gender">
+            <option style="display:none;"></option>
 		      	<option ngValue="Male">Male</option>
 		      	<option ngValue="Female">Female</option>
 		      	<option ngValue="Other">Other</option>
 		      </select>
               <p *ngIf="!staffForm.controls['gender'].valid && staffForm.controls['gender'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the gender</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Address</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Address" formControlName = "address">
+		      <input type="text" class="form-control"  formControlName = "address">
 		      <p *ngIf="!staffForm.controls['address'].valid && staffForm.controls['address'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the address</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Birthday</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="date" class="form-control" placeholder="DOB" formControlName = "birthday">
+		      <input type="date" class="form-control"  formControlName = "birthday">
 		      <p *ngIf="!staffForm.controls['birthday'].valid && staffForm.controls['birthday'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the birthday</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Email</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" [readOnly] = "editMode" placeholder="Email" formControlName = "email">
+		      <input type="text" class="form-control" [readOnly] = "editMode"  formControlName = "email">
 		      <p *ngIf="!staffForm.controls['email'].valid && staffForm.controls['email'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the valid email</p>
 		    </div>
-		     <div class="input-group">
+        <label for="basic-addon1" style="display:block;text-align:left" *ngIf = "!editMode">Staff Type</label>
+		     <div class="input-group" *ngIf = "!editMode">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <select type="text"  class="form-control" disabled = "{{editMode}}" placeholder="Type" formControlName = "type">
-		      	<option value = "" selected id="data-default-tag">Staff Type</option>
-		      	<option *ngFor = "let getStaffform of staffType" [ngValue]="getStaffform">{{getStaffform}}</option>
+		      <select type="text"  class="form-control" formControlName = "type" [(ngModel)] = "type">
+            <option style="display:none;"></option>
+		      	<option *ngFor = "let getStaffform of staffType" [value]="getStaffform.toLowerCase()">{{getStaffform}}</option>
 		      </select>
-		      <p *ngIf="!staffForm.controls['type'].valid && staffForm.controls['type'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the class</p>
+		      <p *ngIf="!staffForm.controls['type'].valid && staffForm.controls['type'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the staff type</p>
 		    </div>
+         <label for="basic-addon1" style="display:block;text-align:left">Date of joining</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="date" class="form-control" placeholder="Date of Joining" formControlName = "date_of_join">
+		      <input type="date" class="form-control"  formControlName = "date_of_join">
 		      <p *ngIf="!staffForm.controls['date_of_join'].valid && staffForm.controls['date_of_join'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the date of joining</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Aadhar Number</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Aadhar Number" formControlName = "aadhar_num">
+		      <input type="text" class="form-control"  formControlName = "aadhar_num">
 		      <p *ngIf="!staffForm.controls['aadhar_num'].valid && staffForm.controls['aadhar_num'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the aadhaar</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Account name</label>
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Account Name" formControlName = "account_name">
+		      <input type="text" class="form-control"  formControlName = "account_name">
 		       <p *ngIf="!staffForm.controls['account_name'].valid && staffForm.controls['account_name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the account name</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Account number</label>
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Account Number" formControlName = "account_number">
+		      <input type="text" class="form-control"  formControlName = "account_number">
 		      <p *ngIf="!staffForm.controls['account_number'].valid && staffForm.controls['account_number'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the account number</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">IFSC code</label>
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="IFSC code" formControlName = "ifsc">
+		      <input type="text" class="form-control"  formControlName = "ifsc">
 		      <p *ngIf="!staffForm.controls['ifsc'].valid && staffForm.controls['ifsc'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the ifsc code</p>
 		    </div>
-		    <div class="input-group">
-		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Caste" formControlName = "caste">
-		      <p *ngIf="!staffForm.controls['caste'].valid && staffForm.controls['caste'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the caste</p>
-		    </div>
-		    <div class="input-group">
-		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" placeholder="Session" formControlName = "session">
-		      <p *ngIf="!staffForm.controls['session'].valid && staffForm.controls['session'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the session</p>
-		    </div>
-            
+        <label for="basic-addon1" style="display:block;text-align:left">Category</label>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <select type="text" class="form-control" formControlName = "caste">
+          <option style="display:none;"></option>
+          <option value='General'>General</option>
+          <option value='OBC'>OBC</option> 
+          <option value='SC'>SC</option>
+          <option value='ST'>ST</option>
+          </select>
+          <p *ngIf="!staffForm.controls['caste'].valid && staffForm.controls['caste'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the category</p>
+        </div>                       
 		    <button *ngIf="staffForm.valid"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block">Save</button>	</div>
 		     </form>          
 		    </perfect-scrollbar>

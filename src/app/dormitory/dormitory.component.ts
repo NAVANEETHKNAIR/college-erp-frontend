@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import * as _  from 'underscore'; 
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { SystemService } from '../system/service.system';
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-dormitory',
@@ -20,7 +21,6 @@ public dormitoryList:any;
 public dormitoryForm: FormGroup;
 public name:any = '';
 public fare:number;
-public erp_id:any;
 public room_num:any;
 public room_type:any;
 public session:any = '';
@@ -28,11 +28,16 @@ public url:any = 'http://localhost:3000';
 public alldormitory:any;
 public editMode:boolean;
 public id:any;
-  constructor(public http: Http) {
-  this.initializeForm();
-
-
-}
+  //import { SystemService } from '../system/service.system';
+  constructor(public http: Http,public fetchsession:SystemService) {
+   this.fetchsession.getSession().subscribe((session)=>{
+    this.session = session.session;
+    console.log("session from session service",this.session);
+    this.initializeForm();
+    
+  });
+   this.initializeForm();
+  }
 
 ngOnInit() {
      this.getalldormitory();
@@ -58,8 +63,7 @@ getalldormitory(){
 
   initializeForm(){
    this.dormitoryForm = new FormGroup({
-  		"name": new FormControl(this.name,Validators.required),
-      "erp_id": new FormControl(this.erp_id,Validators.required), 
+  		"name": new FormControl(this.name,Validators.required), 
       "fare": new FormControl(this.fare,Validators.required),
       "room_num": new FormControl(this.room_num,Validators.required),
       "room_type": new FormControl(this.room_type,Validators.required),
@@ -73,11 +77,10 @@ getalldormitory(){
   	// let class_ref:any = _.where(this.getClassAll,{name:value.class,section:value.section})[0];
     this.http.post((this.url+'/dormitory/dormitory'),{
     	"name":value.name,
-      "erp_id": value.erp_id,
       "fare": value.fare,
       "room_num": value.room_num,
       "room_type": value.room_type,
-      "session": value.session
+      "session": this.session
 
 
     }).subscribe((dormitory:any)=>{
@@ -93,11 +96,10 @@ getalldormitory(){
     this.http.post((this.url+ '/dormitory/dormitory_edit'),{
       "_id":this.id,
       "name":value.name,
-      "erp_id": value.erp_id,
       "fare": value.fare,
       "room_num": value.room_num,
       "room_type": value.room_type,
-      "session": value.session
+      "session": this.session
 
     }).subscribe((editeddormitory)=>{
       console.log(editeddormitory.json());
@@ -118,8 +120,7 @@ getalldormitory(){
       this.room_num= '';
       this.room_type = '';
       this.fare = 0;
-      this.erp_id = '';
-  		this.session = '';
+  		
       this.initializeForm();
       console.log(this.dormitoryForm);
       this.openMyModal('effect-13');
@@ -133,10 +134,8 @@ getalldormitory(){
      this.id = (this.alldormitory[index])._id;
   	 this.name = (this.alldormitory[index]).name;
      this.room_num= (this.alldormitory[index]).room_num;
-     this.erp_id= (this.alldormitory[index]).erp_id;
      this.room_type = (this.alldormitory[index]).room_type;
      this.fare = (this.alldormitory[index]).fare;
-  	 this.session = (this.alldormitory[index]).session;
      this.initializeForm();
      console.log(this.dormitoryForm);
      this.openMyModal('effect-13');

@@ -85,25 +85,12 @@
           <input type="text" class="form-control" formControlName = "vehicle_num">
           <p *ngIf="!transportForm.controls['vehicle_num'].valid && transportForm.controls['vehicle_num'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the vehicle number</p>
         </div>
-        <label for="basic-addon1" style="display:block;text-align:left">ERP ID</label>
-        <div class="input-group">
-          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-          <input type="text" class="form-control" formControlName = "erp_id">
-          <p *ngIf="!transportForm.controls['erp_id'].valid && transportForm.controls['erp_id'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the erp id</p>
-        </div>
         <label for="basic-addon1" style="display:block;text-align:left">Fare</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control"  formControlName = "fare">
           <p *ngIf="!transportForm.controls['fare'].valid && transportForm.controls['fare'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the fare</p>
-        </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Session</label>
-		    <div class="input-group">
-		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" formControlName = "session">
-		      <p *ngIf="!transportForm.controls['session'].valid && transportForm.controls['session'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the session</p>
-		    </div>
-         
+        </div>        
 		    <button *ngIf="transportForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putTransport(transportForm.value)">Save</button>
         <button *ngIf="transportForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedTransport(transportForm.value)">Save</button>
 

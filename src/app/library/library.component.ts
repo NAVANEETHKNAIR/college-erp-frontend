@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import * as _  from 'underscore'; 
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { SystemService } from '../system/service.system';
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-library',
@@ -33,11 +34,16 @@ public editMode:boolean;
 public id:any;
 public invalidStudent:boolean = false;
 public assigned_id:any;
-  constructor(public http: Http) {
-  this.initializeForm();
-
-
-}
+  //import { SystemService } from '../system/service.system';
+  constructor(public http: Http,public fetchsession:SystemService) {
+   this.fetchsession.getSession().subscribe((session)=>{
+    this.session = session.session;
+    console.log("session from session service",this.session);
+    this.initializeForm();
+    
+  });
+   this.initializeForm();
+  }
 
 ngOnInit() {
      this.getAllBooks();
@@ -127,7 +133,7 @@ getAllBooks(){
       "assigned": this.assigned,
       "assigned_from": value.assigned_from,
       "assigned_duration": value.assigned_duration,
-      "session": value.session
+      "session": this.session
 
 
     }).subscribe((book:any)=>{
@@ -143,7 +149,7 @@ getAllBooks(){
       "title": value.title,
       "isbn": value.isbn,
       "assigned": this.assigned,
-      "session": value.session
+      "session": this.session
 
 
     }).subscribe((book:any)=>{
@@ -179,7 +185,7 @@ getAllBooks(){
       "assigned": value.assigned,
       "assigned_from": value.assigned_from,
       "assigned_duration": value.assigned_duration,
-      "session": value.session
+      "session": this.session
 
     }).subscribe((editedbook)=>{
       console.log(editedbook.json());
@@ -194,7 +200,7 @@ getAllBooks(){
       "title": value.title,
       "isbn": value.isbn,
       "assigned": value.assigned,
-      "session": value.session
+      "session": this.session
 
     }).subscribe((editedbook)=>{
       console.log(editedbook.json());
@@ -215,7 +221,6 @@ getAllBooks(){
       this.assigned_duration = '';
       this.assigned_from = '';
       this.assigned_to = '';
-  		this.session = '';
       this.initializeForm();
       console.log(this.bookForm);
       this.openMyModal('effect-13');
@@ -229,7 +234,7 @@ getAllBooks(){
     let date = new Date();
     let session = date.getFullYear();
     if(value){
-    this.http.post((this.url + '/student/student_get_for_erp_id'),{erp_id:value,session:session})
+    this.http.post((this.url + '/student/student_get_for_erp_id'),{erp_id:value,session:this.session})
         .subscribe((student)=>{
             console.log(student.json());
             console.log(typeof(student.json()));
@@ -255,7 +260,7 @@ getAllBooks(){
 
      if(this.allBook[index]['assigned_to']){this.assigned_to = (this.allBook[index])['assigned_to']['erp_id'];}
      this.assigned_duration = (this.allBook[index])['assigned_duration'];
-  	 this.session = (this.allBook[index])['session'];
+  	 
 
         this.initializeForm();
         console.log(this.bookForm);

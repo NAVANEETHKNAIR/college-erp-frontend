@@ -20,6 +20,7 @@
               <div>
                 <label for= "getClass" class="label-control">Select Class
                   <select name="getClass" #getClass class="form-control" [(ngModel)]="selectClass" (change)="getClassMethod(getClass.value)">
+                    <option style="display:none;"></option>
                     <option *ngFor="let getClass of filterClass;let i= index;" [value]="getClass">{{getClass}}</option>
                   </select>
                 </label>
@@ -29,6 +30,7 @@
               <div *ngIf ="selectClass!==''">
                 <label for= "getSection" class="label-control">Select Section
                   <select name="getSection" #getSection class="form-control" (change)="getSectionMethod(getSection.value)" [(ngModel)]="selectSection">
+                    <option style="display:none;"></option>
                     <option *ngFor="let getSection of getSectionOfClass;let i= index;"  [value]="getSection.section">{{getSection.section}}</option>
                   </select>
                 </label>
@@ -81,6 +83,7 @@
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <select type="text"  class="form-control" placeholder="Day" formControlName = "day">
+          <option style="display:none;"></option>
           <option *ngFor= "let day of dayList" [value] = "day">{{day}}</option>  
           </select>
 
@@ -90,6 +93,7 @@
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon2"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <select type="text" class="form-control" placeholder="Subject" formControlName = "subject_ref">
+              <option style="display:none;"></option>
               <option *ngFor="let subject of getSubjectAll" [value] = "subject.name">{{subject.name}}</option>
           </select>
           <p *ngIf="!routineForm.controls['subject_ref'].valid && routineForm.controls['subject_ref'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the subject</p>
@@ -98,6 +102,7 @@
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon3"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <select type="text" class="form-control" placeholder="Teacher" formControlName = "teacher_ref" #teacherEdit>
+             <option style="display:none;"></option>
              <option *ngFor="let teacher of getTeacherAll" [value]="teacher.erp_id">{{teacher.name}} {{teacher.erp_id}}</option>
           </select>
           <p *ngIf="!routineForm.controls['teacher_ref'].valid && routineForm.controls['teacher_ref'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the subject teacher</p>
@@ -114,13 +119,6 @@
           <input type="time" class="form-control" placeholder="End Time" formControlName = "end_time">
           <p *ngIf="!routineForm.controls['end_time'].valid && routineForm.controls['end_time'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the end time</p>
         </div>
-        <label for="basic-addon2" style="display:block;text-align:left">Session</label>
-		    <div class="input-group">
-		      <span class="input-group-prepend"  id="basic-addon6"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" formControlName = "session">
-		      <p *ngIf="!routineForm.controls['session'].valid && routineForm.controls['session'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the session</p>
-		    </div>
-         
 		    <button *ngIf="routineForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putRoutine(routineForm.value)">Save</button>
         <button *ngIf="routineForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedRoutine(routineForm.value)">Save</button>
 

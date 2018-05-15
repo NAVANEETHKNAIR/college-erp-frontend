@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import * as _  from 'underscore'; 
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { SystemService } from '../system/service.system';
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-class',
@@ -35,14 +36,21 @@ public getSectionOfClass;
 public classDetail:any;
 public id:any;
 public sectionList:any;
-  constructor(public http: Http) {
+  constructor(public http: Http,public fetchsession:SystemService) {
+   this.fetchsession.getSession().subscribe((session)=>{
+    this.session = session.session;
+    console.log("session from session service",this.session);
+    this.initializeForm();
+    
+  });
+  
   this.initializeForm();
-
 
 }
 
   ngOnInit() {
      this.getAllClass();
+
   }
 
  
@@ -90,7 +98,7 @@ public sectionList:any;
   
     	"name": value.name,
     	"section": value.section,
-      "session": value.session
+      "session": this.session
 
 
     }).subscribe((classname:any)=>{          	   
@@ -115,7 +123,6 @@ public sectionList:any;
   	  this.name = '';
       this.id = '';
       this.section = '';
-  		this.session = '';
       this.sectionList = [];
         this.initializeForm();
         console.log(this.classForm);
@@ -132,7 +139,7 @@ public sectionList:any;
             "_id": this.id,
             "name": editedClass.name,
             "section": editedClass.section,
-            "session": editedClass.session
+            "session": this.session
         }).subscribe((neweditedclass)=>{
             console.log("neweditedClassfromserver",neweditedclass.json());
                 
@@ -161,7 +168,7 @@ public sectionList:any;
      this.id = (this.getSectionOfClass[index])._id;
      this.name = (this.getSectionOfClass[index]).name;
      this.section = (this.getSectionOfClass[index]).section;
-     this.session = (this.getSectionOfClass[index]).session;
+     this.session = this.session;
       //this.id = _.pluck(_.where(this.classList,{name:this.name}),'_id')[0];
       console.log(this.id);
       //this.section = (this.classList[index]).section;

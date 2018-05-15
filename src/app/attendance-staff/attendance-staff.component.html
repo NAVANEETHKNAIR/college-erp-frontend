@@ -24,6 +24,7 @@
               <div>
                 <label for= "getStaff" class="label-control">Select Staff
                   <select name="getStaff" #getStaff class="form-control" [(ngModel)]="selectStaff" (change)="getStaffMethod(getStaff.value)">
+                    <option style="display:none;"></option>
                     <option *ngFor="let getStaff of staffType;let i= index;" [value]="getStaff">{{getStaff}}</option>
                   </select>
                 </label>

@@ -23,7 +23,9 @@ import { AttendanceStaffComponent } from './attendance-staff/attendance-staff.co
 import { ExamComponent } from './exam/exam.component';
 import { PayrollComponent } from './payroll/payroll.component';
 import { PayslipComponent } from './payslip/payslip.component';
- 
+import { MessageComponent } from './message/message.component';
+import { SystemComponent } from './system/system.component';
+import { SystemService } from './system/service.system'
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,7 +45,9 @@ import { PayslipComponent } from './payslip/payslip.component';
     AttendanceStaffComponent,
     ExamComponent,
     PayrollComponent,
-    PayslipComponent
+    PayslipComponent,
+    MessageComponent,
+    SystemComponent
     
   ],
   imports: [
@@ -53,7 +57,7 @@ import { PayslipComponent } from './payslip/payslip.component';
     SharedModule,
     HttpModule
   ],
-  providers: [],
+  providers: [SystemService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -12,6 +12,7 @@
     <div class="col col-lg-4 col-md-4 col-sm-6 col-xs-12">
       <label for="staff" style="display:block;">Select Month</label>
       <select [(ngModel)] = "month" class="form-control">
+      <option style="display:none;"></option>
        <option *ngFor="let i of monthArray" [value] = "i">{{i}}</option>
      </select>
     </div>
@@ -20,6 +21,7 @@
 
      <label for="staff" style="display:block;" >Select Staff</label>
      <select [disabled] = "!month" #staff class="form-control" id="staff" (change)="getStaff(staff.value.toLowerCase())">
+      <option style="display:none;"></option>
        <option value="TEACHER">TEACHER</option>
        <option value="ACCOUNTANT">ACCOUNTANT</option>
        <option value="LIBRARIAN">LIBRARIAN</option>
@@ -189,6 +191,7 @@
          <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <select type="text" class="form-control" placeholder="Status"  formControlName = "status">
+            <option style="display:none;"></option>
             <option value="Pending">Pending</option>
             <option value="Paid">Paid</option>
             <option value="Cancelled">Cancelled</option>

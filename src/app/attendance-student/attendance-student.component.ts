@@ -13,7 +13,7 @@ import { NgbDateParserFormatter, NgbDateStruct, NgbDatepickerConfig  } from '@ng
 
 
 export class AttendanceStudentComponent implements OnInit {
-@ViewChild('t') t:ElementRef;
+//@ViewChild('t') t:ElementRef;
 
 
 

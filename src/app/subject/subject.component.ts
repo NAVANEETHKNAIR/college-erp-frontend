@@ -65,7 +65,7 @@ getallSubject(){
   	// let class_ref:any = _.where(this.getClassAll,{name:value.class,section:value.section})[0];
     this.http.post((this.url+'/subject/subject'),{
     	"name":value.name,
-      "session": value.session
+      "session": this.session
 
 
     }).subscribe((subject:any)=>{
@@ -81,7 +81,7 @@ getallSubject(){
     this.http.post((this.url+ '/subject/subject_edit'),{
       "_id":this.id,
       "name":value.name,
-      "session": value.session
+      "session": this.session
 
     }).subscribe((editedSubject)=>{
       console.log(editedSubject.json());
@@ -95,7 +95,6 @@ getallSubject(){
   addSubject(){
   	  this.editMode = false;     
   	  this.name = '';
-  		this.session = '';
       this.initializeForm();
       console.log(this.subjectForm);
       this.openMyModal('effect-13');
@@ -108,7 +107,6 @@ getallSubject(){
      this.editMode = true;
      this.id = (this.allSubject[index])._id;
   	 this.name = (this.allSubject[index]).name;
-  	 this.session = (this.allSubject[index]).session;
         this.initializeForm();
         console.log(this.subjectForm);
         this.openMyModal('effect-13');

@@ -4,6 +4,7 @@ import * as _  from 'underscore';
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { NgbDateParserFormatter, NgbDateStruct, NgbDatepickerConfig  } from '@ng-bootstrap/ng-bootstrap';
+import { SystemService } from '../system/service.system';
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-exam',
@@ -47,17 +48,23 @@ public subjectList:any =  [];
 public id:any;
 public fetch:boolean = false;
 
-
-  constructor(public http: Http, public parseFormatter:NgbDateParserFormatter,public datePickerService:NgbDatepickerConfig ) {
+  constructor(public http: Http,public fetchsession:SystemService, public parseFormatter:NgbDateParserFormatter,public datePickerService:NgbDatepickerConfig) {
+   this.fetchsession.getSession().subscribe((session)=>{
+    this.session = session.session;
+    console.log("session from session service",this.session);
     this.initializeForm();
-  var now = moment();
+    
+  });
+   var now = moment();
  
     console.log(this.datePickerService);
     this.date = this.parseFormatter.format({day:now.date(),month:now.month()+1,year:now.year()});
     this.datePickerService.maxDate = {day:now.date(),month:now.month()+1,year:now.year()}
        
     
-}
+   this.initializeForm();
+  }
+
 
   ngOnInit() {
 
@@ -91,7 +98,7 @@ public fetch:boolean = false;
   	console.log(this.selectClass);
   	console.log('select section:',this.selectSection);
     this.class_ref = _.where(this.getClassAll,{name: this.selectClass, section: value})[0]['_id'];
-    this.http.post(this.url + '/exam/exam_get_class',{class_ref:this.class_ref,session:"2018"})
+    this.http.post(this.url + '/exam/exam_get_class',{class_ref:this.class_ref,session:this.session})
         .subscribe((exam)=>{
           console.log(exam.json());
           this.examList = exam.json();
@@ -144,7 +151,7 @@ public fetch:boolean = false;
     this.subject_ref = '';
     this.total_marks = '';
     this.duration = '';
-    this.session = '';
+    
     this.initializeForm();
     this.openMyModal('effect-13');
   }
@@ -157,7 +164,7 @@ public fetch:boolean = false;
    this.subject_ref = this.examList[index]['subject_ref']['name'];
    this.total_marks = this.examList[index]['total_marks'];
    this.duration = this.examList[index]['duration'];
-   this.session = this.examList[index]['session'];
+   
    this.initializeForm();
    this.openMyModal('effect-13');
   }
@@ -172,9 +179,9 @@ public fetch:boolean = false;
         subject_ref: _.where(this.subjectList,{name: value.subject_ref})[0]['_id'],
         total_marks: value.total_marks,
         duration: value.duration,
-        session: value.session
+        session: this.session
       }).subscribe((savedExam)=>{
-         this.http.post(this.url + '/exam/exam_get_class',{class_ref:this.class_ref,session:"2018"})
+         this.http.post(this.url + '/exam/exam_get_class',{class_ref:this.class_ref,session:this.session})
                .subscribe((exam)=>{
                  this.examList = exam.json();
                })
@@ -192,9 +199,9 @@ public fetch:boolean = false;
         subject_ref: _.where(this.subjectList,{name: value.subject_ref})[0]['_id'],
         total_marks: value.total_marks,
         duration: value.duration,
-        session: value.session
+        session: this.session
       }).subscribe((savedExam)=>{
-         this.http.post(this.url + '/exam/exam_get_class',{class_ref:this.class_ref,session:"2018"})
+         this.http.post(this.url + '/exam/exam_get_class',{class_ref:this.class_ref,session:this.session})
                .subscribe((exam)=>{
                  this.examList = exam.json();
                })

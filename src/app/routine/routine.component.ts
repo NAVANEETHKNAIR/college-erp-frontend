@@ -3,6 +3,8 @@ import { Http } from '@angular/http';
 import * as _  from 'underscore'; 
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { SystemService } from '../system/service.system';
+
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-routine',
@@ -49,11 +51,16 @@ public timeTable:any;
 public subjectDay:any=[];
 public subjectDaySorted = [];
 public editedArray:any;
-  constructor(public http: Http) {
-  this.initializeForm();
-
-
-}
+  //import { SystemService } from '../system/service.system';
+  constructor(public http: Http,public fetchsession:SystemService) {
+   this.fetchsession.getSession().subscribe((session)=>{
+    this.session = session.session;
+    console.log("session from session service",this.session);
+    this.initializeForm();
+    
+  });
+   this.initializeForm();
+  }
 
 ngOnInit() {
     this.http.post(this.url + '/newClass/get_class_all',{})
@@ -126,7 +133,6 @@ editSchedule(value){
    this.teacher_ref = (_.where(this.getTeacherAll,{_id:this.editedArray.teacher_ref})[0])['erp_id'];
    console.log(this.teacher_ref);
    this.subject_ref = this.editedArray.subject_ref.name;
-   this.session = this.editedArray.session;
    this.initializeForm();
    this.openMyModal('effect-13');
 
@@ -201,8 +207,8 @@ makeScheduler(){
       "end_time": value.end_time,
       "subject_ref": _.where(this.getSubjectAll,{name:value.subject_ref})[0]['_id'],
       "class_ref": this.class_ref,
-      "teacher_ref": (_.where(this.getTeacherAll,{erp_id:value.teacher_ref,session:value.session})[0])['_id'],
-      "session":value.session,
+      "teacher_ref": (_.where(this.getTeacherAll,{erp_id:value.teacher_ref,session:this.session})[0])['_id'],
+      "session":this.session,
 
 
     }).subscribe((routine:any)=>{
@@ -223,8 +229,8 @@ makeScheduler(){
       "end_time": value.end_time,
       "subject_ref": _.where(this.getSubjectAll,{name:value.subject_ref})[0]['_id'],
       "class_ref": this.class_ref,
-      "teacher_ref": (_.where(this.getTeacherAll,{erp_id:value.teacher_ref,session:value.session})[0])['_id'],
-      "session":value.session,
+      "teacher_ref": (_.where(this.getTeacherAll,{erp_id:value.teacher_ref,session:this.session})[0])['_id'],
+      "session":this.session,
 
     }).subscribe((editedroutine)=>{
       console.log(editedroutine.json());
@@ -237,6 +243,7 @@ makeScheduler(){
 
 
 
+
   addRoutine(){
   	  this.editMode = false;     
   	  this.day = '';
@@ -245,7 +252,6 @@ makeScheduler(){
       this.end_time = '';
       this.teacher_ref = '';
   		this.subject_ref = '';
-      this.session = '';
       this.initializeForm();
       console.log(this.routineForm);
       this.openMyModal('effect-13');
@@ -262,7 +268,6 @@ makeScheduler(){
      this.start_time = (this.allroutine[index]).start_time;
      this.end_time = (this.allroutine[index]).end_time;
      //this.teacher_ = +(this.allroutine[index]).fare;
-  	 this.session = (this.allroutine[index]).session;
         this.initializeForm();
         console.log(this.routineForm);
         this.openMyModal('effect-13');

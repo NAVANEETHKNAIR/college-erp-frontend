@@ -16,6 +16,7 @@
               <div>
                 <label for= "getCity" class="label-control">Select Class
                   <select name="getCity" #getClass class="form-control" [(ngModel)]="selectClass" (change)="getClassMethod(getClass.value)">
+                    <option style="display:none;"></option>
                     <option *ngFor="let getClass of filterClass;let i= index;" [value]="getClass">{{getClass}}</option>
                   </select>
                 </label>
@@ -25,6 +26,7 @@
               <div *ngIf ="selectClass!==''">
                 <label for= "getSection" class="label-control">Select Section
                   <select name="getSection" #getSection class="form-control" (change)="getSectionMethod(getSection.value)" [(ngModel)]="selectSection">
+                    <option style="display:none;"></option>
                     <option *ngFor="let getSection of getSectionOfClass;let i= index;"  [value]="getSection.section">{{getSection.section}}</option>
                   </select>
                 </label>
@@ -125,12 +127,6 @@
 		      <input type="text" class="form-control" formControlName = "name">
 		      <p *ngIf="!studentForm.controls['name'].valid && studentForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
 		    </div>
-        <label for="basic-addon1" style="display:block;text-align:left">ERP ID</label>
-		     <div class="input-group">
-		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control"  formControlName = "erp_id">
-		        <p *ngIf="!studentForm.controls['erp_id'].valid && studentForm.controls['erp_id'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the erp id</p>
-		    </div>
          <label for="basic-addon1" style="display:block;text-align:left">Student Contact</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
@@ -147,6 +143,7 @@
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <select type="text" class="form-control" placeholder="Gender"  formControlName = "gender">
+            <option style="display:none;"></option>
 		      	<option ngValue="Male">Male</option>
 		      	<option ngValue="Female">Female</option>
 		      	<option ngValue="Other">Other</option>
@@ -175,7 +172,7 @@
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <select type="text" #getClassVal class="form-control" formControlName = "class" (change)="getClassMethodForm(getClassVal.value)">
-		      	<option value = "" selected id="data-default-tag">Class</option>
+		      	<option style="display:none;"></option>
 		      	<option *ngFor = "let getClassform of filterClass" [value]="getClassform">{{getClassform}}</option>
 		      </select>
 		      <p *ngIf="!studentForm.controls['class'].valid && studentForm.controls['class'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the class</p>
@@ -184,7 +181,7 @@
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <select type="text" class="form-control" formControlName = "section">
-                <option value = "" selected id="data-default-tag">Section</option>
+                <option style="display:none;"></option>
 		      	<option *ngFor= "let getSectionForm of getSectionOfClassForm" [value]="getSectionForm.section">{{getSectionForm.section}}</option></select>
 		      	<p *ngIf="!studentForm.controls['section'].valid && studentForm.controls['section'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the section</p>
 		    </div>
@@ -222,20 +219,14 @@
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <select type="text" class="form-control" formControlName = "caste">
+          <option style="display:none;"></option>
           <option value='General'>General</option>
           <option value='OBC'>OBC</option> 
           <option value='SC'>SC</option>
           <option value='ST'>ST</option>
           </select>
 		      <p *ngIf="!studentForm.controls['caste'].valid && studentForm.controls['caste'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the category</p>
-		    </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Session</label> 
-		    <div class="input-group">
-		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control"  formControlName = "session">
-		      <p *ngIf="!studentForm.controls['session'].valid && studentForm.controls['session'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the session</p>
-		    </div>
-            
+		    </div>            
 		    <button *ngIf="studentForm.valid"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block">Save</button>	</div>
 		     </form>          
 		    </perfect-scrollbar>

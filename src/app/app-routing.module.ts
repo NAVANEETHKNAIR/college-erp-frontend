@@ -15,6 +15,8 @@ import { AttendanceStaffComponent } from './attendance-staff/attendance-staff.co
 import { ExamComponent } from './exam/exam.component';
 import { PayrollComponent } from './payroll/payroll.component';
 import { PayslipComponent } from './payslip/payslip.component';
+import { MessageComponent } from './message/message.component';
+import { SystemComponent } from './system/system.component';
 const routes: Routes = [
   {
     path: '',
@@ -153,11 +155,18 @@ const routes: Routes = [
   {
     path: 'payroll',
     component: PayrollComponent,
-   
-  },
-  {
+    children:[{
      path:'payslip',
      component: PayslipComponent
+     }]
+  },
+  {
+    path:'message',
+    component: MessageComponent
+  },
+  {
+    path:'system',
+    component: SystemComponent
   },
   {
     path: '**',

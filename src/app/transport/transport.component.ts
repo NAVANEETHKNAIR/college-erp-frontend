@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import * as _  from 'underscore'; 
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { SystemService } from '../system/service.system';
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-transport',
@@ -20,18 +21,22 @@ public transportList:any;
 public transportForm: FormGroup;
 public name:any = '';
 public vehicle_num:any = '';
-public erp_id:any;
 public fare:number = 0;
 public session:any = '';
 public url:any = 'http://localhost:3000';
 public allTransport:any;
 public editMode:boolean;
 public id:any;
-  constructor(public http: Http) {
-  this.initializeForm();
-
-
-}
+  //import { SystemService } from '../system/service.system';
+  constructor(public http: Http,public fetchsession:SystemService) {
+   this.fetchsession.getSession().subscribe((session)=>{
+    this.session = session.session;
+    console.log("session from session service",this.session);
+    this.initializeForm();
+    
+  });
+   this.initializeForm();
+  }
 
 ngOnInit() {
      this.getallTransport();
@@ -59,7 +64,6 @@ getallTransport(){
    this.transportForm = new FormGroup({
   		"name": new FormControl(this.name,Validators.required),
       "vehicle_num": new FormControl(this.vehicle_num,Validators.required),
-      "erp_id": new FormControl(this.erp_id,Validators.required),
       "fare": new FormControl(this.fare,Validators.required),
   		"session": new FormControl(this.session,Validators.required)
    });
@@ -72,9 +76,8 @@ getallTransport(){
     this.http.post((this.url+'/transport/transport'),{
     	"name": value.name,
       "vehicle_num": value.vehicle_num,
-      "erp_id": value.erp_id,
       "fare": +value.fare,
-      "session": value.session
+      "session": this.session
 
 
     }).subscribe((transport:any)=>{
@@ -91,9 +94,8 @@ getallTransport(){
       "_id": this.id,
       "name": value.name,
       "vehicle_num": value.vehicle_num,
-      "erp_id": value.erp_id,
       "fare": +value.fare,
-      "session": value.session
+      "session": this.session
 
     }).subscribe((editedtransport)=>{
       console.log(editedtransport.json());
@@ -110,8 +112,6 @@ getallTransport(){
       this.id = '';
       this.fare = 0;
       this.vehicle_num = '';
-      this.erp_id = '';
-  		this.session = '';
       this.initializeForm();
       console.log(this.transportForm);
       this.openMyModal('effect-13');
@@ -125,9 +125,7 @@ getallTransport(){
      this.id = (this.allTransport[index])._id;
   	 this.name = (this.allTransport[index]).name;
      this.vehicle_num = (this.allTransport[index]).vehicle_num;
-     this.erp_id = (this.allTransport[index]).erp_id;
      this.fare = +(this.allTransport[index]).fare;
-  	 this.session = (this.allTransport[index]).session;
         this.initializeForm();
         console.log(this.transportForm);
         this.openMyModal('effect-13');

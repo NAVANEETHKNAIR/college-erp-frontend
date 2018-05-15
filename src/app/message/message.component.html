@@ -1,0 +1,159 @@
+
+<!-- <app-card>
+   <div [froalaEditor] = "{heightMin:275}"> Hello, froala</div>
+</app-card> -->
+<app-card>
+   <!-- <input type="text" tag_max_char class="form-control"> -->
+   <label for="basic-addon1" style="display:block;">To</label>
+   <div class="tags_max">
+   <tag-input [(ngModel)]="items" (keyup.enter)="method()" ></tag-input>
+   </div>
+
+   <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="select()"> <i class="icofont icofont-plus m-r-5"></i> Select Recipient
+    </button>
+  <!--  <form [formGroup] = "messageForm">
+   	 <label for="basic-addon1" style="display:block;">To</label>
+      
+    <div class="input-group">
+      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+      <div formArrayName = "to">
+      <input type="text" class="form-control">
+
+    </div>
+    </div>
+   </form>	 -->
+
+   <div class="card-body">
+	<div class="row">
+      <div class="col-sm-12">
+        <quill-editor
+          [(ngModel)]="editorContent"
+          [options]="editorConfig"
+          (change)="onContentChanged($event)">
+        </quill-editor>
+      </div>
+    </div>
+     </div>
+  
+
+ <div>    
+ <button (click)="putMessage()" class="btn btn-primary" style="position:absolute;right:20px;">Send</button>
+ </div> 
+ <br>
+ <br>  
+
+</app-card>
+
+ <app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
+ 	<h3>Recipient</h3>
+ 	<div class="text-center">
+ 	<perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
+ 	<label for="basic-addon1" style="display:block;" class="text-left">Recipient Type</label>
+ 	<div class="input-group">
+      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+      <select #getRecipient class="form-control" (change)= "getRecipientMethod(getRecipient.value)" [(ngModel)] = "recipientType">
+        <option style="display:none;"></option>
+      	<option value='teacher'>TEACHER</option>
+      	<option value='accountant'>ACCOUNTANT</option>
+      	<option value='librarian'>LIBRARIAN</option>
+      	<option value='student'>STUDENT</option>
+      	<option value='other'>OTHER</option>
+
+      </select>
+    </div>
+     <div *ngIf="recipientType === 'student'">
+     <label for="basic-addon1" style="display:block;" class="text-left">Enter Class</label>
+ 	<div class="input-group">
+      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+      <select #getClassValue class="form-control" (change) = "getClassMethod(getClassValue.value)" [(ngModel)] = "getClass">
+      	<option style="display:none;"></option>
+      	<option *ngFor="let class of filterClass" [value]='class'>{{class}}</option>
+      </select>
+    </div>
+    </div>
+
+    <div *ngIf ="selectClass && recipientType==='student'">
+	<label for="basic-addon1" style="display:block;" class="text-left">Enter Section</label>
+ 	<div class="input-group">
+      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+	      <select #getSectionValue class="form-control" (change)="getSectionMethod(getSectionValue.value)" [(ngModel)] = 'getSection'>
+	      	<option style="display:none;"></option>
+	        <option *ngFor="let section of getSectionOfClass;let i= index;"  [value]='section.section'>{{section.section}}</option>
+	      </select>
+	    
+    </div>
+    </div>
+
+    <div class="table-responsive">
+          <table class="table table-striped table-bordered full-data-table" [mfData]="recipientList | dataFilter : filterQuery" #mf="mfDataTable"
+                 [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <thead>
+            <tr>
+              <th>
+                <mfDefaultSorter  by="name">Name</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="erpID">erpID</mfDefaultSorter>
+              </th>
+               <th>
+                <mfDefaultSorter by="phone_no">Phone No.</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter by="checkbox">Action</mfDefaultSorter>
+              </th>
+            </tr>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of mf.data;let i=index">
+    
+              <td>{{item.name}}</td>
+              <td>{{item.erp_id}}</td>
+              <td *ngIf='recipientType==="student"' >{{item.parent_contact}}</td>
+              <td *ngIf="recipientType !=='student'">{{item.phone}}</td>
+              <td *ngIf='recipientType==="student"'>               
+               <div class="border-checkbox-section">              
+              	<div class="border-checkbox-group border-checkbox-group-success">
+                 <input class="border-checkbox" type="checkbox" id="checkbox{{i}}"  (change) = "checkCheckbox(checkStatus[i],i,item.parent_contact)" [(ngModel)]="checkStatus[i]">
+              <label class="border-checkbox-label" for="checkbox{{i}}">{{''}}</label>
+               </div>
+               </div>
+            
+             </td>
+             <td *ngIf='recipientType!=="student"'>               
+               <div class="border-checkbox-section">              
+              	<div class="border-checkbox-group border-checkbox-group-success">
+                 <input class="border-checkbox" type="checkbox" id="checkbox{{i}}"  (change) = "checkCheckbox(checkStatus[i],i,item.phone)" [(ngModel)]="checkStatus[i]">
+              <label class="border-checkbox-label" for="checkbox{{i}}">{{''}}</label>
+               </div>
+               </div>
+            
+             </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+             
+              <th>Name</th>
+              <th>erpID</th>
+              <th>Phone No.</th>
+              <th>Action</th>
+            </tr>
+            <tr>
+              <td colspan="10">
+                <mfBootstrapPaginator class="pagination-main f-right"></mfBootstrapPaginator>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+          </div>
+         <button class="btn btn-primary btn-success" (click)="selectRecipientMethod()">OK</button>
+
+
+
+
+    </perfect-scrollbar>
+   </div>
+  	<button (click)="closeMyModal($event)" aria-label="Close" class="md-close-btn"><i class="icofont icofont-ui-close"></i></button>
+  </app-modal-animation>

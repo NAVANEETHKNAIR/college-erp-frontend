@@ -24,7 +24,7 @@ export class SpinnerComponent implements OnInit, OnDestroy {
   public isSpinnerVisible = true;
   public Spinkit = Spinkit;
   @Input() public backgroundColor = 'rgba(0, 115, 170, 0.69)';
-  @Input() public spinner = Spinkit.skLine;
+  @Input() public spinner = Spinkit.skChasingDots;
   private sub: any;
   constructor(private router: Router, @Inject(DOCUMENT) private document: Document) {
     this.router.events.subscribe(event => {
