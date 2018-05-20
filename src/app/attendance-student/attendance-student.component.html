@@ -28,6 +28,7 @@
               <div *ngIf ="selectClass!==''">
                 <label for= "getSection" class="label-control">Select Section
                   <select name="getSection" #getSection class="form-control" (change)="getSectionMethod(getSection.value)" [(ngModel)]="selectSection">
+                    <option style="display:none;"></option>
                     <option *ngFor="let getSection of getSectionOfClass;let i= index;"  [value]="getSection.section">{{getSection.section}}</option>
                   </select>
                 </label>

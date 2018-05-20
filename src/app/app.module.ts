@@ -1,15 +1,15 @@
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { AppRoutingModule } from './app-routing.module';
-
 import { AppComponent } from './app.component';
 import { AdminComponent } from './layouts/admin/admin.component';
 import { TitleComponent } from './layouts/admin/title/title.component';
 import { BreadcrumbsComponent } from './layouts/admin/breadcrumbs/breadcrumbs.component';
 import { AuthComponent } from './layouts/auth/auth.component';
-import {SharedModule} from './shared/shared.module';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { SharedModule } from './shared/shared.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StudentComponent } from './student/student.component';
 import { StaffComponent } from './staff/staff.component';
 import { ClassComponent } from './class/class.component';
@@ -25,7 +25,9 @@ import { PayrollComponent } from './payroll/payroll.component';
 import { PayslipComponent } from './payslip/payslip.component';
 import { MessageComponent } from './message/message.component';
 import { SystemComponent } from './system/system.component';
-import { SystemService } from './system/service.system'
+import { SystemService } from './system/service.system';
+import { CalendarComponent } from './calendar/calendar.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,7 +49,8 @@ import { SystemService } from './system/service.system'
     PayrollComponent,
     PayslipComponent,
     MessageComponent,
-    SystemComponent
+    SystemComponent,
+    CalendarComponent
     
   ],
   imports: [

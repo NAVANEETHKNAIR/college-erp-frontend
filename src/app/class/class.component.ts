@@ -36,6 +36,8 @@ public getSectionOfClass;
 public classDetail:any;
 public id:any;
 public sectionList:any;
+
+//import { SystemService } from '../system/service.system';
   constructor(public http: Http,public fetchsession:SystemService) {
    this.fetchsession.getSession().subscribe((session)=>{
     this.session = session.session;

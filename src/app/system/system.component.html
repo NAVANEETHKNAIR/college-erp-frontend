@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" style="position: relative;">
   <div class="card-header">
     <h5>System Settings</h5>
 
@@ -42,16 +42,65 @@
          <button *ngIf="systemForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putSystemEdited(systemForm.value)">Save</button>
       </div>
 	</form>          
-	</div>
+
+
   <div class="row">
-    <div class="col-lg-6 col-sm-6 col-xs-6">
-     <div class="panel panel-success">
+
+  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right twilio">
+
+      <app-card  [blockClass]="'panels-wells'" >
+      <div class="text-center">
+      <div class="panel panel-success">
+            <div class="panel-heading bg-success">
+              Twilio
+            </div>
+            <div class="panel-body" style="height:390px">
+           <form [formGroup] = "twilioForm">
+            <br>
+          <label for="basic-addon1" style="display:block;text-align:left">Twilio SID</label>
+         <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control"  formControlName = "account_sid">
+            <p *ngIf="!twilioForm.controls['account_sid'].valid && twilioForm.controls['account_sid'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the appropriate account SID</p>
+        </div>
+                <label for="basic-addon1" style="display:block;text-align:left">Auth Token</label>
+         <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control"  formControlName = "auth_token">
+            <p *ngIf="!twilioForm.controls['auth_token'].valid && twilioForm.controls['auth_token'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the auth_token</p>
+        </div>
+                <label for="basic-addon1" style="display:block;text-align:left">Mobile Number</label>
+         <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control"  formControlName = "contact">
+            <p *ngIf="!twilioForm.controls['contact'].valid && twilioForm.controls['contact'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the contact number to send OTP</p>
+        </div>
+          <button *ngIf="twilioForm.valid && !editModeTwilio"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putTwilio(twilioForm.value)">Create</button>
+         <button *ngIf="twilioForm.valid && editModeTwilio"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putTwilioEdited(twilioForm.value)">Save</button>
+      </form>
+            </div>
+          </div>
+        </div>
+         </app-card>
+    </div>
+ 
+  
+
+   
+
+
+   
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right">
+
+      <app-card  [blockClass]="'panels-wells'">
+      <div class="text-center">
+      <div class="panel panel-success">
             <div class="panel-heading bg-success">
               Nodemailer
             </div>
             <div class="panel-body">
-              <div class="text-center">
-               <form [formGroup] = "nodemailerForm">
+   <form [formGroup] = "nodemailerForm">
+                <br>
           <label for="basic-addon1" style="display:block;text-align:left">Email</label>
          <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
@@ -80,54 +129,12 @@
          <button *ngIf="nodemailerForm.valid && editModeNodemailer"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putNodemailerEdited(nodemailerForm.value)">Save</button>
       </form>
             </div>
-          <div class="panel-footer text-success">
-              
-            </div>
-          </div>
-
-     </div>
-    </div>
-    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-      <div class="text-center">
-      <div class="panel panel-success">
-            <div class="panel-heading bg-success">
-              Twilio
-            </div>
-            <div class="panel-body">
-           <form [formGroup] = "twilioForm">
-            <br>
-          <label for="basic-addon1" style="display:block;text-align:left">Twilio API</label>
-         <div class="input-group">
-          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-          <input type="text" class="form-control"  formControlName = "account_sid">
-            <p *ngIf="!twilioForm.controls['account_sid'].valid && twilioForm.controls['account_sid'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the appropriate account SID</p>
-        </div>
-                <label for="basic-addon1" style="display:block;text-align:left">Auth Token</label>
-         <div class="input-group">
-          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-          <input type="text" class="form-control"  formControlName = "auth_token">
-            <p *ngIf="!twilioForm.controls['auth_token'].valid && twilioForm.controls['auth_token'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the auth_token</p>
-        </div>
-                <label for="basic-addon1" style="display:block;text-align:left">Mobile Number</label>
-         <div class="input-group">
-          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-          <input type="text" class="form-control"  formControlName = "contact">
-            <p *ngIf="!twilioForm.controls['contact'].valid && twilioForm.controls['contact'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the contact number to send OTP</p>
-        </div>
-          <button *ngIf="twilioForm.valid && !editModeTwilio"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putTwilio(twilioForm.value)">Create</button>
-         <button *ngIf="twilioForm.valid && editModeTwilio"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putTwilioEdited(twilioForm.value)">Save</button>
-      </form>
-            </div>
-            <div class="panel-footer text-success">
-              
-            </div>
           </div>
         </div>
-    </div>
+         </app-card>
 
-  </div>
-
-
-
+</div>
+</div>
+</div>
 
 

@@ -12,7 +12,7 @@ import {CardToggleDirective} from './card/card-toggle.directive';
 import { CardComponent } from './card/card.component';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {ParentRemoveDirective} from './elements/parent-remove.directive';
-import {SqueezeBoxModule} from 'squeezebox';
+import {SqueezeBoxModule} from 'squeezebox/dist';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ModalAnimationComponent} from './modal-animation/modal-animation.component';
 import {ModalBasicComponent} from './modal-basic/modal-basic.component';
@@ -26,7 +26,7 @@ import {SelectModule} from 'ng-select';
 import {SelectOptionService} from './elements/select-option.service';
 import {FormWizardModule} from 'angular2-wizard';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
-import {QuillEditorModule} from 'ngx-quill-editor';
+import { QuillModule } from 'ngx-quill'
 import {DataFilterPipe} from './elements/data-filter.pipe';
 import {DataTableModule} from 'angular2-datatable';
 import {FroalaEditorModule, FroalaViewModule} from 'angular-froala-wysiwyg';
@@ -34,7 +34,7 @@ import {FileUploadModule} from 'ng2-file-upload';
 import {ScrollToModule} from '@nicky-lenaers/ngx-scroll-to';
 import {AgmCoreModule} from '@agm/core';
 import {Ng2GoogleChartsModule} from 'ng2-google-charts';
-import {NgxEchartsModule} from 'ngx-echarts';
+//import {NgxEchartsModule} from 'ngx-echarts';
 import {UiSwitchModule} from 'ng2-ui-switch/dist';
 import {ChartModule} from 'angular2-chartjs';
 import {KnobModule} from 'ng2-knob';
@@ -45,6 +45,7 @@ import {SpinnerComponent} from './spinner/spinner.component';
 import {PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {NotificationsService} from 'angular2-notifications';
 import {ChartistModule} from 'ng-chartist';
+import { CalendarModule } from 'angular-calendar';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -68,20 +69,21 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       FormWizardModule,
       NgxDatatableModule,
       DataTableModule,
-      QuillEditorModule,
+      QuillModule,
       FroalaEditorModule.forRoot(),
       FroalaViewModule.forRoot(),
       FileUploadModule,
       ScrollToModule.forRoot(),
       AgmCoreModule.forRoot({apiKey: 'AIzaSyCE0nvTeHBsiQIrbpMVTe489_O5mwyqofk'}),
       Ng2GoogleChartsModule,
-      NgxEchartsModule,
+      //NgxEchartsModule,
       ChartModule,
       KnobModule,
       NvD3Module,
       ClickOutsideModule,
       PerfectScrollbarModule,
-      ChartistModule
+      ChartistModule,
+      CalendarModule.forRoot()
   ],
   declarations: [
       AccordionAnchorDirective,
@@ -125,20 +127,21 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       NgxDatatableModule,
       DataTableModule,
       DataFilterPipe,
-      QuillEditorModule,
+      QuillModule,
       FroalaEditorModule,
       FroalaViewModule,
       FileUploadModule,
       ScrollToModule,
       AgmCoreModule,
       Ng2GoogleChartsModule,
-      NgxEchartsModule,
+      //NgxEchartsModule,
       ChartModule,
       KnobModule,
       NvD3Module,
       ClickOutsideModule,
       PerfectScrollbarModule,
-      ChartistModule
+      ChartistModule,
+      CalendarModule
   ],
   providers: [
       MenuItems,

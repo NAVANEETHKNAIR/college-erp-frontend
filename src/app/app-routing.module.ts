@@ -17,6 +17,7 @@ import { PayrollComponent } from './payroll/payroll.component';
 import { PayslipComponent } from './payslip/payslip.component';
 import { MessageComponent } from './message/message.component';
 import { SystemComponent } from './system/system.component';
+import { CalendarComponent } from './calendar/calendar.component';
 const routes: Routes = [
   {
     path: '',
@@ -169,9 +170,15 @@ const routes: Routes = [
     component: SystemComponent
   },
   {
+    path: 'calendar',
+    component: CalendarComponent
+  },
+  
+  {
     path: '**',
     redirectTo: 'dashboard'
-  }
+  },
+
 ];
 
 @NgModule({

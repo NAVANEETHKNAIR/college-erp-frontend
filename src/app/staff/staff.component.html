@@ -164,7 +164,7 @@
         <label for="basic-addon1" style="display:block;text-align:left" *ngIf = "!editMode">Staff Type</label>
 		     <div class="input-group" *ngIf = "!editMode">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <select type="text"  class="form-control" formControlName = "type" [(ngModel)] = "type">
+		      <select type="text"  class="form-control" formControlName = "type" >
             <option style="display:none;"></option>
 		      	<option *ngFor = "let getStaffform of staffType" [value]="getStaffform.toLowerCase()">{{getStaffform}}</option>
 		      </select>

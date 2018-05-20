@@ -1,3 +1,16 @@
-#data-default-tag{
-  display:none;
+.squeezebox .sb-item {
+  overflow: hidden;
+  .sb-item-body {
+    height: 0;
+    overflow: hidden;
+    transition: 0.5s height;
+  }
+}
+
+@media (min-width: 1281 px){
+.twilio ::after{
+
+	content: "&emsp;&emsp;&emsp content";
+}
+
 }
