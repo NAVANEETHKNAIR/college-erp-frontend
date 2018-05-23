@@ -1,9 +1,77 @@
-         <div [ngSwitch]="view">
-                                <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events" [activeDayIsOpen]="activeDayIsOpen"
-                                    (dayClicked)="dayClicked($event.day)">
-                                </mwl-calendar-month-view>
-                                <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events">
-                                </mwl-calendar-week-view>
-                                <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events">
-                                </mwl-calendar-day-view>
-                            </div>
+<div class="row">
+<div class="col-lg-4 col-sm-4 col-md-4 col-xs-3">	
+<div
+	class="btn btn-lg"
+	mwlCalendarPreviousView
+	[view]="view"
+	[(viewDate)]="viewDate"
+	(viewDateChange)="activeDayIsOpen = false">
+	<i class="icofont icofont-circled-left"></i>
+</div>
+</div>
+<div class="col-lg-4 col-sm-4 col-md-4 col-xs-3">
+	<h3 >{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+</div>
+<div class="col-lg-4 col-sm-4 col-md-4 col-xs-3" >
+<div class="btn btn-lg"
+        mwlCalendarNextView
+        [view]="view"
+        [(viewDate)]="viewDate"
+        (viewDateChange)="activeDayIsOpen = false"><span style="float:right;display:inline-block;right:10px;">
+        <i class="icofont icofont-circled-right"></i></span>
+</div> 
+</div>
+</div>
+
+
+
+ <div [ngSwitch]="view">
+    <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events" [activeDayIsOpen]="activeDayIsOpen"
+        (dayClicked)="dayClicked($event.day)" (eventClicked) = "handleEvent('clicked',$event.event)" [refresh]="refresh">
+    </mwl-calendar-month-view>
+    <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events"  [refresh]="refresh">
+    </mwl-calendar-week-view>
+    <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events"  [refresh]="refresh">
+    </mwl-calendar-day-view>
+ </div>
+
+ <app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
+          <h3 *ngIf="!editMode">Add Event</h3>
+          <h3 *ngIf="editMode">Edit Event</h3>
+          <div>
+            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
+		    <form [formGroup]="calendarForm">
+		   <div class="text-center">
+		     <label for="basic-addon1" style="display:block;text-align:left">Title</label>
+		    <div class="input-group">
+		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+		      <input type="text" class="form-control"  formControlName = "title">
+		      <p *ngIf="!calendarForm.controls['title'].valid && calendarForm.controls['title'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the title</p>
+		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">End Date</label>
+		     <div class="input-group">
+		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+		      <input type="date" class="form-control"  formControlName = "end">
+		        <p *ngIf="!calendarForm.controls['end'].valid && calendarForm.controls['end'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the end date</p>
+		    </div>
+		<label for="basic-addon1" style="display:block;text-align:left">Event Type</label>
+		     <div class="input-group">
+		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+		      <select class="form-control" formControlName="type">
+		      	<option style="display:none;"></option>
+		      	<option value="HOLIDAY">HOLIDAY</option>
+		      	<option value="MEETING">MEETING</option>
+		      	<option value="EXAM">EXAM</option>
+		      </select>
+		        <p *ngIf="!calendarForm.controls['end'].valid && calendarForm.controls['end'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the event type</p>
+		    </div>           
+		    <button *ngIf="calendarForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "createEvent(calendarForm.value)">Save</button>
+         <button *ngIf="calendarForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "editEvent(calendarForm.value)">Save</button>
+      </div>
+		     </form>          
+		    </perfect-scrollbar>
+            <br>
+          </div>
+          <button (click)="closeMyModal($event)" aria-label="Close" class="md-close-btn"><i class="icofont icofont-ui-close"></i></button>
+</app-modal-animation>
+
