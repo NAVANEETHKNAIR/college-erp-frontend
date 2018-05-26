@@ -4,6 +4,9 @@ import * as _  from 'underscore';
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { NgbDateParserFormatter, NgbDateStruct, NgbDatepickerConfig  } from '@ng-bootstrap/ng-bootstrap';
+import { CookieService } from 'ng2-cookies';
+import { SystemService } from '../system/service.system';
+//private cookieService: CookieService
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-attendance-student',
@@ -48,24 +51,28 @@ public datenow:any;
 public fetch:boolean;
 public sendAttendanceStatus:any = [];
 public savedAttendance = false; 
-
-
-  constructor(public http: Http, public parseFormatter:NgbDateParserFormatter,public datePickerService:NgbDatepickerConfig ) {
-  //this.initializeForm();
+public cookie:any;
+  constructor(public http: Http, public parseFormatter:NgbDateParserFormatter,public fetchsession:SystemService,public datePickerService:NgbDatepickerConfig,private cookieService: CookieService) {
+  this.cookie = this.cookieService.getAll()['cookieSet'];
   var now = moment();
-  //console.log(now);
+  
     console.log(this.datePickerService);
     this.date = this.parseFormatter.format({day:now.date(),month:now.month()+1,year:now.year()});
     this.datePickerService.maxDate = {day:now.date(),month:now.month()+1,year:now.year()}
-       
+    this.fetchsession.getSession().subscribe((session)=>{
+    this.session = session.session;
+    console.log("session from session service",this.session);
+    console.log("cookie-set:",this.cookieService.getAll()['cookieSet']);
     
+
+})
 }
 
   ngOnInit() {
 
     
      
-    this.http.post(this.url + '/newClass/get_class_all',{})
+    this.http.post(this.url + '/newClass/get_class_all',{ access_token:this.cookie,session:this.session})
       .subscribe((data) => {
         console.log(data.json());
         this.getClassAll = data.json();
@@ -97,7 +104,8 @@ public savedAttendance = false;
     this.http.post((this.url+ '/attendance/attendance_student_get_for_class_ref'),{
       class_ref:this.class_ref,
       date: this.date,
-      session: "2018"
+      session: this.session,
+      access_token: this.cookie
     }).subscribe((attendance:any)=>{
       console.log(attendance.json())
         console.log(attendance.json().length)
@@ -127,7 +135,7 @@ public savedAttendance = false;
       else{
          this.savedAttendance = false;
          this.finalize = false;
-         this.http.post(this.url + '/student/students_get_for_class_ref',{class_ref:this.class_ref})
+         this.http.post(this.url + '/student/students_get_for_class_ref',{class_ref:this.class_ref,session:this.session,access_token: this.cookie})
         .subscribe((data)=>{
           console.log(data.json());
 
@@ -207,7 +215,8 @@ saveStatus(){
       "date": this.date,
       "students" : this.sendAttendanceStatus,
       "finalize":false,
-      "session":"2018"
+      "session":this.session,
+      "access_token": this.cookie
   }).subscribe((attendance_student)=>{
     console.log(attendance_student.json());
 
@@ -224,7 +233,8 @@ else{
       "date": this.date,
       "students" : this.sendAttendanceStatus,
       "finalize":false,
-      "session":"2018"
+      "session":this.session,
+      "access_token" : this.cookie
   }).subscribe((attendance_student)=>{
     console.log(attendance_student.json());
 
@@ -248,7 +258,8 @@ finalizeStatus(){
       "date": this.date,
       "students" : this.sendAttendanceStatus,
       "finalize":true,
-      "session":"2018"
+      "session":this.session,
+      "access_token": this.cookie
   }).subscribe((attendance_student)=>{
     console.log(attendance_student.json());
 
@@ -265,7 +276,8 @@ else{
       "date": this.date,
       "students" : this.sendAttendanceStatus,
       "finalize":true,
-      "session":"2018"
+      "session":this.session,
+      "access_token": this.cookie
   }).subscribe((attendance_student)=>{
     console.log(attendance_student.json());
 

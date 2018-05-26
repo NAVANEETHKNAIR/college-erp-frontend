@@ -53,7 +53,7 @@
             <thead>
             <tr>
               <th>
-                <mfDefaultSorter  by="staff">{{getStaff.value || "Staff"}}</mfDefaultSorter>
+                <mfDefaultSorter  by="staff">{{staff.value || "Staff"}}</mfDefaultSorter>
               </th>
               <th>
                 <mfDefaultSorter  by="erpId">erp ID</mfDefaultSorter>
@@ -77,7 +77,7 @@
             </tbody>
             <tfoot>
             <tr>
-              <th>{{getStaff.value || "Staff"}} </th>
+              <th>{{staff.value || "Staff"}} </th>
               <th>erp ID</th>
               <th>
                 <mfDefaultSorter>Action</mfDefaultSorter>
@@ -123,7 +123,7 @@
         
 
         <div formArrayName = "allowances">
-        <div class="input-group" *ngFor="let allowance of payrollForm.controls.allowances.controls;let j=index">
+        <div class="input-group" *ngFor="let allowance of payrollForm.controls['allowances']['controls'];let j=index">
           <div [formGroupName]= "j">
           <div class="row">
           <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
@@ -131,14 +131,14 @@
           <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" formControlName = "description">
-          <p *ngIf="!payrollForm.controls.allowances.controls[j]['controls']['description'].valid && payrollForm.controls.allowances.controls[j].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the description</p>
+          <p *ngIf="!payrollForm.controls.allowances.controls[j]['controls']['description'].valid && payrollForm.controls['allowances']['controls'][j].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the description</p>
          </div>
 
           <label for="basic-addon1" style="display:block;text-align:left">Amount</label>
           <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" formControlName = "amount">
-         <p *ngIf="!payrollForm.controls.allowances.controls[j]['controls']['amount'].valid && payrollForm.controls.allowances.controls[j].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the amount</p>
+         <p *ngIf="!payrollForm.controls['allowances']['controls'][j]['controls']['amount'].valid && payrollForm.controls.allowances.controls[j].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the amount</p>
          </div>
          </div>
          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
@@ -161,7 +161,7 @@
         </div>        
         <div formArrayName = "deductions">
 
-        <div class="input-group" *ngFor="let deduction of payrollForm.controls.deductions.controls;let k=index">
+        <div class="input-group" *ngFor="let deduction of payrollForm.controls['deductions']['controls'];let k=index">
           <div [formGroupName]= "k">
           <div class="row">
           <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
@@ -169,14 +169,14 @@
           <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" formControlName = "description">
-          <p *ngIf="!payrollForm.controls.deductions.controls[k]['controls']['description'].valid && payrollForm.controls.deductions.controls[k].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the description</p>
+          <p *ngIf="!payrollForm.controls['deductions']['controls'][k]['controls']['description'].valid && payrollForm.controls.deductions.controls[k].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the description</p>
          </div>
 
           <label for="basic-addon1" style="display:block;text-align:left">Amount</label>
           <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" formControlName = "amount">
-         <p *ngIf="!payrollForm.controls.deductions.controls[k]['controls']['amount'].valid && payrollForm.controls.deductions.controls[k].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the amount</p>
+         <p *ngIf="!payrollForm.controls['deductions']['controls'][k]['controls']['amount'].valid && payrollForm.controls['deductions']['controls'][k].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the amount</p>
          </div>
          </div>
          <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">

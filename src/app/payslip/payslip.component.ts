@@ -3,7 +3,9 @@ import { Http } from '@angular/http';
 import * as _  from 'underscore'; 
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
-import * as number2text from 'number2text'
+import * as number2text from 'number2text';
+import { CookieService } from 'ng2-cookies';
+//private cookieService: CookieService
 
 //import { ModalComponent } from '../components/advanced-component
 @Component({
@@ -24,7 +26,7 @@ public loopLenArray:any;
  @Input('payslipfor') payslipfor:any;
  @Output('editPayslip') valueChange = new EventEmitter();
 
- constructor(private http: Http){
+ constructor(private http: Http,private cookieService: CookieService){
    
  }
 

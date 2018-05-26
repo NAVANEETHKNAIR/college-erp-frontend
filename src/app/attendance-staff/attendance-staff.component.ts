@@ -4,6 +4,10 @@ import * as _  from 'underscore';
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { NgbDateParserFormatter, NgbDateStruct, NgbDatepickerConfig  } from '@ng-bootstrap/ng-bootstrap';
+import { CookieService } from 'ng2-cookies';
+import { SystemService } from '../system/service.system';
+ 
+//private cookieService: CookieService
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-staff',
@@ -20,7 +24,7 @@ public sortOrder = 'desc';
 public staffList:any = [];
 public selectStaff:any;
 public staffForm:FormGroup;
-public staffType:any[] = ['TEACHER','ACCOUNTANT','LIBRARIAN','OTHER STAFF'];
+public staffType:any[] = ['TEACHER','ACCOUNTANT','LIBRARIAN','OTHER'];
 public session:any = '';
 public url:any = 'http://localhost:3000';
 public urladd:any;
@@ -33,16 +37,34 @@ public checkStatus:any = [];
 public staffTypeValue:any = '';
 public sendAttendanceStatus:any = [];
 public fetch:boolean = false;
-  constructor(public http: Http, public parseFormatter:NgbDateParserFormatter,public datePickerService:NgbDatepickerConfig) {
+public cookie:any;
+  constructor(public http: Http, public parseFormatter:NgbDateParserFormatter,public fetchsession:SystemService,public datePickerService:NgbDatepickerConfig,private cookieService: CookieService) {
   //this.initializeForm();
   var now = moment();
   //console.log(now);
     console.log(this.datePickerService);
     this.date = this.parseFormatter.format({day:now.date(),month:now.month()+1,year:now.year()});
     this.datePickerService.maxDate = {day:now.date(),month:now.month()+1,year:now.year()}
-       
+    this.fetchsession.getSession().subscribe((session)=>{
+    this.session = session.session;
+    console.log("session from session service",this.session);
+    console.log(this.cookieService.getAll()['cookieSet']);
+    this.cookie = this.cookieService.getAll()['cookieSet'];
 
+})
 }
+
+ // constructor(public http: Http,private cookieService: CookieService) {
+ //   this.fetchsession.getSession().subscribe((session)=>{
+ //    this.session = session.session;
+ //    console.log("session from session service",this.session);
+ //    console.log(this.cookieService.getAll()['cookieSet']);
+
+ //    this.initializeForm();
+    
+ //  });
+ //   this.initializeForm();
+ 
 
   ngOnInit() {
 
@@ -101,7 +123,8 @@ public fetch:boolean = false;
     this.http.post((this.url+ this.urladd),{
       //class_ref:this.class_ref,
       date: this.date,
-      session: "2018"
+      session: this.session,
+      access_token: this.cookie
     }).subscribe((attendance:any)=>{
       console.log(attendance.json())
         console.log(attendance.json().length)
@@ -138,7 +161,7 @@ public fetch:boolean = false;
           }
 
           else if(this.staffTypeValue == 'ACCOUNTANT'){
-            this.urladd = '/accountant/acountant_get_all';
+            this.urladd = '/accountant/accountant_get_all';
             //this.type = 'ACCOUNTANT';
           }
 
@@ -148,7 +171,7 @@ public fetch:boolean = false;
           }
 
           else{
-            this.urladd = '/otherstaff/otherstaff_get_all';
+            this.urladd = '/other/other_get_all';
             //this.type = 'OTHERSTAFF';
           }
 
@@ -159,7 +182,7 @@ public fetch:boolean = false;
     // //   //this.rowsOnPage = this.staffList.length();
     // })
          this.finalize = false;
-         this.http.post(this.url + this.urladd ,{})
+         this.http.post(this.url + this.urladd ,{session:this.session,access_token: this.cookie})
         .subscribe((data)=>{
           console.log(data.json());
 
@@ -211,7 +234,8 @@ saveStatus(){
       "date": this.date,
       "staffs" : this.sendAttendanceStatus,
       "finalize":false,
-      "session":"2018"
+      "session":this.session,
+      "access_token": this.cookie
   }).subscribe((attendance_staff)=>{
     console.log(attendance_staff.json());
 
@@ -227,7 +251,8 @@ else{
       "date": this.date,
       "staffs" : this.sendAttendanceStatus,
       "finalize":false,
-      "session":"2018"
+      "session":this.session,
+      "access_token": this.cookie
   }).subscribe((attendance_staff)=>{
     console.log(attendance_staff.json());
 
@@ -250,7 +275,8 @@ finalizeStatus(){
       "date": this.date,
       "staffs" : this.sendAttendanceStatus,
       "finalize":true,
-      "session":"2018"
+      "session":this.session,
+      "access_token": this.cookie
   }).subscribe((attendance_staff)=>{
     console.log(attendance_staff.json());
 
@@ -267,7 +293,8 @@ else{
       "date": this.date,
       "staffs" : this.sendAttendanceStatus,
       "finalize":true,
-      "session":"2018"
+      "session":this.session,
+      "access_token": this.cookie
   }).subscribe((attendance_staff)=>{
     console.log(attendance_staff.json());
 

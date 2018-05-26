@@ -4,6 +4,8 @@ import * as _  from 'underscore';
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { SystemService } from '../system/service.system';
+import { CookieService } from 'ng2-cookies';
+//private cookieService: CookieService
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-library',
@@ -34,8 +36,10 @@ public editMode:boolean;
 public id:any;
 public invalidStudent:boolean = false;
 public assigned_id:any;
+public cookie:any;
   //import { SystemService } from '../system/service.system';
-  constructor(public http: Http,public fetchsession:SystemService) {
+  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
+   this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
     this.session = session.session;
     console.log("session from session service",this.session);
@@ -51,7 +55,7 @@ ngOnInit() {
   }
   
 getAllBooks(){
-      this.http.post((this.url+ '/book/book_get_all'),{})
+      this.http.post((this.url+ '/book/book_get_all'),{ "access_token": this.cookie})
         .subscribe((book)=>{
           console.log(book.json());
           this.allBook = book.json();
@@ -133,7 +137,8 @@ getAllBooks(){
       "assigned": this.assigned,
       "assigned_from": value.assigned_from,
       "assigned_duration": value.assigned_duration,
-      "session": this.session
+      "session": this.session,
+      "access_token": this.cookie
 
 
     }).subscribe((book:any)=>{
@@ -149,7 +154,8 @@ getAllBooks(){
       "title": value.title,
       "isbn": value.isbn,
       "assigned": this.assigned,
-      "session": this.session
+      "session": this.session,
+      "access_token": this.cookie
 
 
     }).subscribe((book:any)=>{
@@ -185,7 +191,8 @@ getAllBooks(){
       "assigned": value.assigned,
       "assigned_from": value.assigned_from,
       "assigned_duration": value.assigned_duration,
-      "session": this.session
+      "session": this.session,
+      "access_token": this.cookie
 
     }).subscribe((editedbook)=>{
       console.log(editedbook.json());
@@ -200,7 +207,8 @@ getAllBooks(){
       "title": value.title,
       "isbn": value.isbn,
       "assigned": value.assigned,
-      "session": this.session
+      "session": this.session,
+      "access_token": this.cookie
 
     }).subscribe((editedbook)=>{
       console.log(editedbook.json());
@@ -234,7 +242,7 @@ getAllBooks(){
     let date = new Date();
     let session = date.getFullYear();
     if(value){
-    this.http.post((this.url + '/student/student_get_for_erp_id'),{erp_id:value,session:this.session})
+    this.http.post((this.url + '/student/student_get_for_erp_id'),{erp_id:value,session:this.session, access_token: this.cookie})
         .subscribe((student)=>{
             console.log(student.json());
             console.log(typeof(student.json()));

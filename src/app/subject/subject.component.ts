@@ -3,6 +3,8 @@ import { Http } from '@angular/http';
 import * as _  from 'underscore'; 
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { CookieService } from 'ng2-cookies';
+//private cookieService: CookieService
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-subject',
@@ -24,7 +26,9 @@ public url:any = 'http://localhost:3000';
 public allSubject:any;
 public editMode:boolean;
 public id:any;
-  constructor(public http: Http) {
+public cookie:any;
+  constructor(public http: Http,private cookieService: CookieService) {
+  this.cookie = this.cookieService.getAll()['cookieSet'];
   this.initializeForm();
 
 
@@ -35,7 +39,7 @@ ngOnInit() {
   }
   
 getallSubject(){
- this.http.post((this.url+'/subject/subject_get_all'),{})
+ this.http.post((this.url+'/subject/subject_get_all'),{ access_token: this.cookie})
  .subscribe((subject)=>{
    console.log(subject.json());
    this.allSubject = subject.json();
@@ -65,7 +69,8 @@ getallSubject(){
   	// let class_ref:any = _.where(this.getClassAll,{name:value.class,section:value.section})[0];
     this.http.post((this.url+'/subject/subject'),{
     	"name":value.name,
-      "session": this.session
+      "session": this.session,
+      "access_token": this.cookie
 
 
     }).subscribe((subject:any)=>{
@@ -81,7 +86,8 @@ getallSubject(){
     this.http.post((this.url+ '/subject/subject_edit'),{
       "_id":this.id,
       "name":value.name,
-      "session": this.session
+      "session": this.session,
+      "access_token": this.cookie
 
     }).subscribe((editedSubject)=>{
       console.log(editedSubject.json());

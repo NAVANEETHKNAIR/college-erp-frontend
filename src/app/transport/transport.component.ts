@@ -4,6 +4,8 @@ import * as _  from 'underscore';
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { SystemService } from '../system/service.system';
+import { CookieService } from 'ng2-cookies';
+//private cookieService: CookieService
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-transport',
@@ -27,8 +29,10 @@ public url:any = 'http://localhost:3000';
 public allTransport:any;
 public editMode:boolean;
 public id:any;
+public cookie:any;
   //import { SystemService } from '../system/service.system';
-  constructor(public http: Http,public fetchsession:SystemService) {
+  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
+   this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
     this.session = session.session;
     console.log("session from session service",this.session);
@@ -43,7 +47,7 @@ ngOnInit() {
   }
   
 getallTransport(){
- this.http.post((this.url+'/transport/transport_get_all'),{})
+ this.http.post((this.url+'/transport/transport_get_all'),{ "access_token": this.cookie})
  .subscribe((transport)=>{
    console.log(transport.json());
    this.allTransport = transport.json();
@@ -77,7 +81,8 @@ getallTransport(){
     	"name": value.name,
       "vehicle_num": value.vehicle_num,
       "fare": +value.fare,
-      "session": this.session
+      "session": this.session,
+      "access_token": this.cookie
 
 
     }).subscribe((transport:any)=>{
@@ -95,7 +100,8 @@ getallTransport(){
       "name": value.name,
       "vehicle_num": value.vehicle_num,
       "fare": +value.fare,
-      "session": this.session
+      "session": this.session,
+      "access_token": this.cookie
 
     }).subscribe((editedtransport)=>{
       console.log(editedtransport.json());

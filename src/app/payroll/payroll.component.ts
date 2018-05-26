@@ -3,6 +3,8 @@ import { Http } from '@angular/http';
 import * as _  from 'underscore'; 
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { CookieService } from 'ng2-cookies';
+//private cookieService: CookieService
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-payroll',
@@ -37,7 +39,9 @@ public monthArray:any = [1,2,3,4,5,6,7,8,9,10,11,12];
 public status:any;
 public generatedPayslip:boolean = false;
 public index:number;
-  constructor(public http: Http) {
+public cookie:any;
+  constructor(public http: Http,private cookieService: CookieService) {
+  this.cookie = this.cookieService.getAll()['cookieSet'];
   this.initializeForm();
   console.log(this.payrollForm);
 
@@ -49,7 +53,7 @@ ngOnInit() {
          
 }
   
-  getStaff(staff){
+getStaff(staff){
 
     this.generatedPayslip = false;
     this.staffList = [];
@@ -57,7 +61,7 @@ ngOnInit() {
     this.status = '';
     this.initializeForm();
     console.log(staff);
-     this.http.post((this.url + '/'+ staff + '/' + staff + '_get_all'),{})
+     this.http.post((this.url + '/'+ staff + '/' + staff + '_get_all'),{ access_token: this.cookie})
         .subscribe((staff)=>{
           console.log(staff.json());
           if(staff.json().length !== 0){
@@ -144,7 +148,8 @@ ngOnInit() {
      allowances:value.allowances,
      deductions:value.deductions,
      session:value.session,
-     status: value.status 
+     status: value.status,
+     access_token: this.cookie
    }).subscribe((payroll)=>{
      console.log(payroll.json())
 
@@ -199,7 +204,8 @@ ngOnInit() {
     this.http.post(this.url + '/payroll/payroll_get_user_id',{
        user_id: this.user_id,
        month: this.month,
-       session: this.session
+       session: this.session,
+       access_token: this.cookie
     }).subscribe((payroll:any)=>{
         console.log(payroll.json());
        if(payroll.json().length!==0){

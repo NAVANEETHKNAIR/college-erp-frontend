@@ -3,6 +3,8 @@ import { Http } from '@angular/http';
 import * as _  from 'underscore'; 
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { CookieService } from 'ng2-cookies';
+//private cookieService: CookieService
 // import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 //import { ModalComponent } from '../components/advanced-component
 @Component({
@@ -36,7 +38,9 @@ export class MessageComponent implements OnInit {
 public sortOrder = 'desc';
 public data: any;
 public filterQuery = '';
- constructor(private http:Http){
+public cookie:any;
+ constructor(private http:Http,private cookieService: CookieService){
+   this.cookie = this.cookieService.getAll()['cookieSet'];
    this.initializeForm();   
  }
 
@@ -77,7 +81,8 @@ public filterQuery = '';
     	messagebody: this.messageForm.value.body,
     	to:  this.messageForm.value.to,
     	date : this.messageForm.value.date,
-    	time: this.messageForm.value.time
+    	time: this.messageForm.value.time,
+      access_token: this.cookie
 
     }).subscribe((message)=>{
     	console.log("Message sent successfully:",message);
@@ -112,7 +117,7 @@ public filterQuery = '';
   	this.getSection = '';
   	this.recipientList = [];
       if(value=== 'student'){
-      	 this.http.post(this.url + '/newClass/get_class_all',{})
+      	 this.http.post(this.url + '/newClass/get_class_all',{ "access_token": this.cookie})
         .subscribe((data) => {
         console.log(data.json());
         this.getClassAll = data.json();
@@ -126,7 +131,7 @@ public filterQuery = '';
       }
 
       else{
-      	this.http.post(this.url + '/' + value + '/' + value + '_get_all',{})
+      	this.http.post(this.url + '/' + value + '/' + value + '_get_all',{ "access_token": this.cookie})
       	 .subscribe((staff)=>{
       	 	 console.log(staff.json())
              this.recipientList = staff.json();
@@ -161,7 +166,7 @@ public filterQuery = '';
   getSectionMethod(value){
      this.getSection = value;
      this.class_ref= _.where(this.getClassAll,{name:this.getClass,section:this.getSection})[0]['_id'];
-     this.http.post(this.url + '/student/students_get_for_class_ref',{class_ref:this.class_ref})
+     this.http.post(this.url + '/student/students_get_for_class_ref',{class_ref:this.class_ref, access_token: this.cookie})
         .subscribe((data)=>{
         	console.log(data.json());
         	this.checkStatus = [];

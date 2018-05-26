@@ -5,6 +5,8 @@ import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { NgbDateParserFormatter, NgbDateStruct, NgbDatepickerConfig  } from '@ng-bootstrap/ng-bootstrap';
 import { SystemService } from '../system/service.system';
+import { CookieService } from 'ng2-cookies';
+//private cookieService: CookieService
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-exam',
@@ -47,9 +49,16 @@ public class_ref: any;
 public subjectList:any =  [];
 public id:any;
 public fetch:boolean = false;
-
-  constructor(public http: Http,public fetchsession:SystemService, public parseFormatter:NgbDateParserFormatter,public datePickerService:NgbDatepickerConfig) {
+public cookie:any;
+  //import { SystemService } from '../system/service.system';
+  constructor(public http: Http,
+    public fetchsession:SystemService, 
+    public parseFormatter:NgbDateParserFormatter,
+    public datePickerService:NgbDatepickerConfig,
+    private cookieService: CookieService){
+   this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
+    
     this.session = session.session;
     console.log("session from session service",this.session);
     this.initializeForm();
@@ -70,7 +79,7 @@ public fetch:boolean = false;
 
     
      
-    this.http.post(this.url + '/newClass/get_class_all',{})
+    this.http.post(this.url + '/newClass/get_class_all',{ "access_token": this.cookie})
       .subscribe((data) => {
         console.log(data.json());
         this.getClassAll = data.json();
@@ -83,7 +92,7 @@ public fetch:boolean = false;
   }
 
   ngAfterViewInit(){
-    this.http.post(this.url +  '/subject/subject_get_all',{})
+    this.http.post(this.url +  '/subject/subject_get_all',{ "access_token": this.cookie})
        .subscribe((subject)=>{
           console.log(subject.json())
           this.subjectList = subject.json();
@@ -179,9 +188,10 @@ public fetch:boolean = false;
         subject_ref: _.where(this.subjectList,{name: value.subject_ref})[0]['_id'],
         total_marks: value.total_marks,
         duration: value.duration,
-        session: this.session
+        session: this.session,
+        access_token: this.cookie
       }).subscribe((savedExam)=>{
-         this.http.post(this.url + '/exam/exam_get_class',{class_ref:this.class_ref,session:this.session})
+         this.http.post(this.url + '/exam/exam_get_class',{class_ref:this.class_ref,session:this.session,access_token: this.cookie})
                .subscribe((exam)=>{
                  this.examList = exam.json();
                })
@@ -199,7 +209,8 @@ public fetch:boolean = false;
         subject_ref: _.where(this.subjectList,{name: value.subject_ref})[0]['_id'],
         total_marks: value.total_marks,
         duration: value.duration,
-        session: this.session
+        session: this.session,
+        access_token: this.cookie
       }).subscribe((savedExam)=>{
          this.http.post(this.url + '/exam/exam_get_class',{class_ref:this.class_ref,session:this.session})
                .subscribe((exam)=>{

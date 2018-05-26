@@ -12,9 +12,6 @@ const routes: Routes = [
       {
         path: 'froala-edit',
         loadChildren: './froala-edit/froala-edit.module#FroalaEditModule'
-      }, {
-        path: 'quill-edit',
-        loadChildren: './quill-edit/quill-edit.module#QuillEditModule'
       }
     ]
   }

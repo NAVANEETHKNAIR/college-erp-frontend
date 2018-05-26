@@ -27,6 +27,8 @@ import { MessageComponent } from './message/message.component';
 import { SystemComponent } from './system/system.component';
 import { SystemService } from './system/service.system';
 import { CalendarComponent } from './calendar/calendar.component';
+import { LoginComponent } from './login/login.component';
+//import { CookieService } from 'ng2-cookies';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,8 @@ import { CalendarComponent } from './calendar/calendar.component';
     PayslipComponent,
     MessageComponent,
     SystemComponent,
-    CalendarComponent
+    CalendarComponent,
+    LoginComponent
     
   ],
   imports: [

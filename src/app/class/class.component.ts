@@ -4,6 +4,7 @@ import * as _  from 'underscore';
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { SystemService } from '../system/service.system';
+import { CookieService } from 'ng2-cookies';
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-class',
@@ -36,13 +37,16 @@ public getSectionOfClass;
 public classDetail:any;
 public id:any;
 public sectionList:any;
+public cookie:any;
 
 //import { SystemService } from '../system/service.system';
-  constructor(public http: Http,public fetchsession:SystemService) {
+  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
+   this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
     this.session = session.session;
     console.log("session from session service",this.session);
     this.initializeForm();
+
     
   });
   
@@ -57,7 +61,7 @@ public sectionList:any;
 
  
   getAllClass(){
-    this.http.post((this.url+'/newClass/get_class_all'),{})
+    this.http.post((this.url+'/newClass/get_class_all'),{access_token: this.cookie})
      .subscribe((newClass)=>{
        this.classList = newClass.json();
        console.log("classList",this.classList);
@@ -100,7 +104,8 @@ public sectionList:any;
   
     	"name": value.name,
     	"section": value.section,
-      "session": this.session
+      "session": this.session,
+      "access_token": this.cookie
 
 
     }).subscribe((classname:any)=>{          	   
@@ -141,11 +146,12 @@ public sectionList:any;
             "_id": this.id,
             "name": editedClass.name,
             "section": editedClass.section,
-            "session": this.session
+            "session": this.session,
+            "access_token": this.cookie
         }).subscribe((neweditedclass)=>{
             console.log("neweditedClassfromserver",neweditedclass.json());
                 
-                this.http.post((this.url+'/newClass/get_class_all'),{})
+                this.http.post((this.url+'/newClass/get_class_all'),{access_token: this.cookie})
                    .subscribe((newClass)=>{
                      this.classList = newClass.json();
                      console.log("classList",this.classList);

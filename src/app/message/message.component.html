@@ -2,47 +2,7 @@
 <!-- <app-card>
    <div [froalaEditor] = "{heightMin:275}"> Hello, froala</div>
 </app-card> -->
-<app-card>
-   <!-- <input type="text" tag_max_char class="form-control"> -->
-   <label for="basic-addon1" style="display:block;">To</label>
-   <div class="tags_max">
-   <tag-input [(ngModel)]="items" (keyup.enter)="method()" ></tag-input>
-   </div>
 
-   <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="select()"> <i class="icofont icofont-plus m-r-5"></i> Select Recipient
-    </button>
-  <!--  <form [formGroup] = "messageForm">
-   	 <label for="basic-addon1" style="display:block;">To</label>
-      
-    <div class="input-group">
-      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-      <div formArrayName = "to">
-      <input type="text" class="form-control">
-
-    </div>
-    </div>
-   </form>	 -->
-
-   <div class="card-body">
-	<div class="row">
-      <div class="col-sm-12">
-       <!--  <quill-editor
-          [(ngModel)]="editorContent"
-          [options]="editorConfig"
-          (change)="onContentChanged($event)">
-        </quill-editor> -->
-      </div>
-    </div>
-     </div>
-  
-
- <div>    
- <button (click)="putMessage()" class="btn btn-primary" style="position:absolute;right:20px;">Send</button>
- </div> 
- <br>
- <br>  
-
-</app-card>
 
  <app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
  	<h3>Recipient</h3>

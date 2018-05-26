@@ -3,6 +3,8 @@ import { Http } from '@angular/http';
 import * as _  from 'underscore'; 
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { CookieService } from 'ng2-cookies';
+//private cookieService: CookieService
 
 //import { ModalComponent } from '../components/advanced-component
 @Component({
@@ -55,7 +57,9 @@ public _idtwilio:any;
 public _idnodemailer:any;
 public editModeNodemailer:boolean = false;
 public editModeTwilio: boolean = false;
-  constructor(public http: Http) {
+public cookie:any;
+  constructor(public http: Http,private cookieService: CookieService) {
+  this.cookie = this.cookieService.getAll()['cookieSet'];
   this.initializeForm();
   this.initializeFormTwilio();
   this.initializeFormNodemailer();
@@ -64,7 +68,7 @@ public editModeTwilio: boolean = false;
 }
 
 ngOnInit(){
-  this.http.post(this.url + '/system/system_get',{}).subscribe((system:any)=>{
+  this.http.post(this.url + '/system/system_get',{ "access_token": this.cookie}).subscribe((system:any)=>{
      if(system.json()){
         system = system.json();
         this._id = system._id;
@@ -120,7 +124,8 @@ ngOnInit(){
     	"address": value.address,
       "phone": value.phone,
       "email": value.email,
-      "current_session": value.current_session
+      "current_session": value.current_session,
+      "access_token": this.cookie
 
     }).subscribe((system:any)=>{          	   
                 console.log("data recieved",system);
@@ -145,7 +150,8 @@ ngOnInit(){
           "address": value.address,
           "phone": value.phone,
           "email": value.email,
-          "current_session": value.current_session
+          "current_session": value.current_session,
+          "access_token": this.cookie
       }).subscribe((neweditedsystem)=>{
           console.log(neweditedsystem.json());
               
@@ -161,7 +167,8 @@ ngOnInit(){
   
       "account_sid": value.account_sid,
       "auth_token": value.auth_token,
-      "contact": value.contact
+      "contact": value.contact,
+      "access_token": this.cookie
       
 
     }).subscribe((twilio:any)=>{               
@@ -186,7 +193,8 @@ ngOnInit(){
           "_id": this._idtwilio,
           "account_sid": value.account_sid,
           "auth_token": value.auth_token,
-          "contact": value.contact
+          "contact": value.contact,
+          "access_token": this.cookie
       }).subscribe((neweditedsystem)=>{
           console.log(neweditedsystem.json());
               
@@ -204,7 +212,8 @@ ngOnInit(){
       "mail": value.mail,
       "client_id": value.client_id,
       "client_secret": value.client_secret,
-      "refresh_token": value.refresh_token
+      "refresh_token": value.refresh_token,
+      "access_token": this.cookie
       
 
     }).subscribe((twilio:any)=>{               
@@ -229,7 +238,8 @@ ngOnInit(){
            "mail": value.mail,
           "client_id": value.client_id,
           "client_secret": value.client_secret,
-          "refresh_token": value.refresh_token
+          "refresh_token": value.refresh_token,
+          "access_token": this.cookie
       }).subscribe((neweditedsystem)=>{
           console.log(neweditedsystem.json());
 

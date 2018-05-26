@@ -4,6 +4,8 @@ import * as _  from 'underscore';
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { SystemService } from '../system/service.system';
+import { CookieService } from 'ng2-cookies';
+//private cookieService: CookieService
 
 //import { ModalComponent } from '../components/advanced-component
 @Component({
@@ -51,8 +53,10 @@ public timeTable:any;
 public subjectDay:any=[];
 public subjectDaySorted = [];
 public editedArray:any;
+public cookie:any;
   //import { SystemService } from '../system/service.system';
-  constructor(public http: Http,public fetchsession:SystemService) {
+  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
+   this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
     this.session = session.session;
     console.log("session from session service",this.session);
@@ -63,7 +67,7 @@ public editedArray:any;
   }
 
 ngOnInit() {
-    this.http.post(this.url + '/newClass/get_class_all',{})
+    this.http.post(this.url + '/newClass/get_class_all',{ "access_token": this.cookie})
       .subscribe((data) => {
         console.log(data.json());
         this.getClassAll = data.json();
@@ -81,7 +85,7 @@ ngOnInit() {
  ngAfterViewInit(){
  
   
-  this.http.post((this.url+ '/teacher/teacher_get_all'),{})
+  this.http.post((this.url+ '/teacher/teacher_get_all'),{ access_token: this.cookie,session: this.session})
      .subscribe((data)=>{
        console.log(data.json());
        this.getTeacherAll = data.json();
@@ -89,7 +93,7 @@ ngOnInit() {
 
      });
 
-  this.http.post((this.url+ '/subject/subject_get_all'),{})
+  this.http.post((this.url+ '/subject/subject_get_all'),{ access_token: this.cookie,session:this.session})
      .subscribe((data)=>{
        console.log(data.json());
        this.getSubjectAll = data.json();
@@ -112,7 +116,7 @@ getClassMethod(value){
 getSectionMethod(value){
    this.selectSection = value;
    this.class_ref = _.pluck(_.where(this.getClassAll,{name: this.selectClass,section: this.selectSection}),'_id')[0];
-   this.http.post((this.url+'/routine/routine_get_class'),{class_ref:this.class_ref})
+   this.http.post((this.url+'/routine/routine_get_class'),{class_ref:this.class_ref,session:this.session, access_token: this.cookie})
        .subscribe((routineOfClass)=>{
          console.log(routineOfClass.json());
          this.routineList = routineOfClass.json();
@@ -209,6 +213,7 @@ makeScheduler(){
       "class_ref": this.class_ref,
       "teacher_ref": (_.where(this.getTeacherAll,{erp_id:value.teacher_ref,session:this.session})[0])['_id'],
       "session":this.session,
+      "access_token": this.cookie
 
 
     }).subscribe((routine:any)=>{
@@ -231,6 +236,7 @@ makeScheduler(){
       "class_ref": this.class_ref,
       "teacher_ref": (_.where(this.getTeacherAll,{erp_id:value.teacher_ref,session:this.session})[0])['_id'],
       "session":this.session,
+      "access_token": this.cookie
 
     }).subscribe((editedroutine)=>{
       console.log(editedroutine.json());

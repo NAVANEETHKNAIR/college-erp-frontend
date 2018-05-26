@@ -4,6 +4,7 @@ import * as _  from 'underscore';
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { SystemService } from '../system/service.system';
+import { CookieService } from 'ng2-cookies';
 
 //import { ModalComponent } from '../components/advanced-component
 @Component({
@@ -48,11 +49,15 @@ public caste :any = '';
 public editMode:boolean;
 public session:any = '';
 public url:any = 'http://localhost:3000';
+public cookie:any;
   //import { SystemService } from '../system/service.system';
-  constructor(public http: Http,public fetchsession:SystemService) {
+  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
+   this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
     this.session = session.session;
     console.log("session from session service",this.session);
+    console.log(this.cookieService.getAll()['cookieSet']);
+
     this.initializeForm();
     
   });
@@ -60,7 +65,7 @@ public url:any = 'http://localhost:3000';
   }
 
   ngOnInit() {
-    this.http.post(this.url + '/newClass/get_class_all',{})
+    this.http.post(this.url + '/newClass/get_class_all',{ "access_token": this.cookie})
       .subscribe((data) => {
         console.log(data.json());
         this.getClassAll = data.json();
@@ -79,7 +84,7 @@ public url:any = 'http://localhost:3000';
   	console.log('select section:',this.selectSection);
     this.result = _.where(this.getClassAll,{name: this.selectClass, section: value})[0];
     console.log(this.result._id);
-    this.http.post(this.url + '/student/students_get_for_class_ref',{class_ref:this.result._id})
+    this.http.post(this.url + '/student/students_get_for_class_ref',{class_ref:this.result._id,access_token: this.cookie,session:this.session})
         .subscribe((data)=>{
         	console.log(data.json());
         	this.studentList = data.json();
@@ -132,7 +137,9 @@ public url:any = 'http://localhost:3000';
   		"account_number": new FormControl(this.account_number),
   		"ifsc": new FormControl(this.ifsc),
   		"caste": new FormControl(this.caste,Validators.required),
-  		"session": new FormControl(this.session,Validators.required)
+  		"session": new FormControl(this.session,Validators.required),
+
+
    });
   }
   
@@ -166,12 +173,13 @@ public url:any = 'http://localhost:3000';
       "account_number":value.account_number,
       "ifsc":value.ifsc,
       "caste": value.caste,
-      "session": this.session
+      "session": this.session,
+      "access_token": this.cookie
 
 
     }).subscribe((student:any)=>{
     	console.log(student);
-    	this.http.post(this.url + '/student/students_get_for_class_ref',{class_ref:(student.json()).class_ref})
+    	this.http.post(this.url + '/student/students_get_for_class_ref',{class_ref:(student.json()).class_ref,session:this.session, access_token: this.cookie})
         .subscribe((data)=>{
         	console.log(data.json());
         	this.studentList = data.json();

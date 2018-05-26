@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import 'd3';
@@ -26,7 +26,7 @@ import {SelectModule} from 'ng-select';
 import {SelectOptionService} from './elements/select-option.service';
 import {FormWizardModule} from 'angular2-wizard';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
-import { QuillModule } from 'ngx-quill'
+//import { QuillModule } from 'ngx-quill'
 import {DataFilterPipe} from './elements/data-filter.pipe';
 import {DataTableModule} from 'angular2-datatable';
 import {FroalaEditorModule, FroalaViewModule} from 'angular-froala-wysiwyg';
@@ -44,8 +44,9 @@ import {ClickOutsideModule} from 'ng-click-outside';
 import {SpinnerComponent} from './spinner/spinner.component';
 import {PERFECT_SCROLLBAR_CONFIG, PerfectScrollbarConfigInterface, PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {NotificationsService} from 'angular2-notifications';
-import {ChartistModule} from 'ng-chartist';
+//import { ChartistModule } from 'ng-chartist';
 import { CalendarModule } from 'angular-calendar';
+import { CookieService } from 'ng2-cookies';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
@@ -69,7 +70,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       FormWizardModule,
       NgxDatatableModule,
       DataTableModule,
-      QuillModule,
+      //QuillModule,
       FroalaEditorModule.forRoot(),
       FroalaViewModule.forRoot(),
       FileUploadModule,
@@ -82,7 +83,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       NvD3Module,
       ClickOutsideModule,
       PerfectScrollbarModule,
-      ChartistModule,
+      //ChartistModule,
       CalendarModule.forRoot()
   ],
   declarations: [
@@ -127,7 +128,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       NgxDatatableModule,
       DataTableModule,
       DataFilterPipe,
-      QuillModule,
+      //QuillModule,
       FroalaEditorModule,
       FroalaViewModule,
       FileUploadModule,
@@ -140,7 +141,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       NvD3Module,
       ClickOutsideModule,
       PerfectScrollbarModule,
-      ChartistModule,
+      //ChartistModule,
       CalendarModule
   ],
   providers: [
@@ -148,10 +149,13 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       TodoService,
       SelectOptionService,
       NotificationsService,
+      CookieService,
+      
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
       useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
     }
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class SharedModule { }

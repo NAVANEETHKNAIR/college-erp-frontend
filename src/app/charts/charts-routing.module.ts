@@ -12,19 +12,24 @@ const routes: Routes = [
       {
         path: 'google',
         loadChildren: './google/google.module#GoogleModule'
-      }, {
-        path: 'echart',
-        loadChildren: './echart/echart.module#EchartModule'
-      }, {
+      }, 
+      // {
+      //   path: 'echart',
+      //   loadChildren: './echart/echart.module#EchartModule'
+      // },
+      {
         path: 'chart-js',
         loadChildren: './chart-js/chart-js.module#ChartJsModule'
-      }, {
+      }, 
+      {
         path: 'knob',
         loadChildren: './knob/knob.module#KnobModule'
-      }, {
-        path: 'list-chart',
-        loadChildren: './list-chart/list-chart.module#ListChartModule'
-      }, {
+      },
+      // {
+      //   path: 'list-chart',
+      //   loadChildren: './list-chart/list-chart.module#ListChartModule'
+      // }, 
+      {
         path: 'morris-js',
         loadChildren: './morris-js/morris-js.module#MorrisJsModule'
       }, {
