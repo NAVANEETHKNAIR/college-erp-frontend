@@ -28,6 +28,15 @@ import { SystemComponent } from './system/system.component';
 import { SystemService } from './system/service.system';
 import { CalendarComponent } from './calendar/calendar.component';
 import { LoginComponent } from './login/login.component';
+import { LoginGuardService,
+         AdminAuthorizeGuardService,
+         StudentAuthorizeGuardService,
+         LibrarianAuthorizeGuardService,
+         TeacherAuthorizeGuardService,
+         AccountantGuardService,
+         OtherAuthorizeGuardService
+        } from './guards/admin-guard.service';
+import { ErrorComponent } from './error/error.component';
 //import { CookieService } from 'ng2-cookies';
 
 @NgModule({
@@ -53,7 +62,8 @@ import { LoginComponent } from './login/login.component';
     MessageComponent,
     SystemComponent,
     CalendarComponent,
-    LoginComponent
+    LoginComponent,
+    ErrorComponent
     
   ],
   imports: [
@@ -63,7 +73,16 @@ import { LoginComponent } from './login/login.component';
     SharedModule,
     HttpModule
   ],
-  providers: [SystemService],
+  providers: [ 
+               SystemService, 
+               LoginGuardService,
+               AdminAuthorizeGuardService,
+               StudentAuthorizeGuardService,
+               LibrarianAuthorizeGuardService,
+               TeacherAuthorizeGuardService,
+               AccountantGuardService,
+               OtherAuthorizeGuardService 
+              ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

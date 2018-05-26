@@ -19,6 +19,16 @@ import { MessageComponent } from './message/message.component';
 import { SystemComponent } from './system/system.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { LoginComponent } from './login/login.component';
+import { 
+         LoginGuardService,
+         AdminAuthorizeGuardService,
+         StudentAuthorizeGuardService,
+         LibrarianAuthorizeGuardService,
+         TeacherAuthorizeGuardService,
+         AccountantGuardService,
+         OtherAuthorizeGuardService
+       } from './guards/admin-guard.service';
+import { ErrorComponent } from './error/error.component'
 const routes: Routes = [
   {
     path: '',
@@ -53,7 +63,8 @@ const routes: Routes = [
       }, {
         path: 'data-table',
         loadChildren: './components/tables/data-table/data-table.module#DataTableModule',
-      }, {
+      }, 
+      {
         path: 'charts',
         loadChildren: './charts/charts.module#ChartsModule',
       }, {
@@ -110,53 +121,65 @@ const routes: Routes = [
   },
   {
     path: 'student',
-    component: StudentComponent
+    component: StudentComponent,
+    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'staff',
-    component: StaffComponent
+    component: StaffComponent,
+    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'class',
-    component: ClassComponent
+    component: ClassComponent,
+    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'subject',
-    component: SubjectComponent
+    component: SubjectComponent,
+    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'transport',
-    component: TransportComponent
+    component: TransportComponent,
+    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'dormitory',
-    component: DormitoryComponent
+    component: DormitoryComponent,
+    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'routine',
-    component: RoutineComponent
+    component: RoutineComponent,
+    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'library',
-    component: LibraryComponent
+    component: LibraryComponent,
+    canActivate: [LoginGuardService,AdminAuthorizeGuardService,LibrarianAuthorizeGuardService]
 
   },
   {
     path: 'attendance-student',
-    component: AttendanceStudentComponent
+    component: AttendanceStudentComponent,
+    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
 
   },
   {
     path: 'attendance-staff',
-    component: AttendanceStaffComponent
+    component: AttendanceStaffComponent,
+    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'exam',
-    component: ExamComponent
+    component: ExamComponent,
+    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'payroll',
     component: PayrollComponent,
+    canActivate: [LoginGuardService,AdminAuthorizeGuardService],
     children:[{
      path:'payslip',
      component: PayslipComponent
@@ -164,23 +187,31 @@ const routes: Routes = [
   },
   {
     path:'message',
-    component: MessageComponent
+    component: MessageComponent,
+    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path:'system',
-    component: SystemComponent
+    component: SystemComponent,
+    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'calendar',
-    component: CalendarComponent
+    component: CalendarComponent,
+    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
    path:'login',
-   component: LoginComponent
+   component: LoginComponent,
+
+  },
+  {
+    path:'404',
+    component: ErrorComponent
   },
   {
     path: '**',
-    redirectTo: 'dashboard'
+    redirectTo: '404'
   },
 
 ];

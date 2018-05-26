@@ -38,13 +38,21 @@ public staffTypeValue:any = '';
 public sendAttendanceStatus:any = [];
 public fetch:boolean = false;
 public cookie:any;
+public type:any;
+public datemodel:any;
   constructor(public http: Http, public parseFormatter:NgbDateParserFormatter,public fetchsession:SystemService,public datePickerService:NgbDatepickerConfig,private cookieService: CookieService) {
   //this.initializeForm();
   var now = moment();
+
+ 
   //console.log(now);
     console.log(this.datePickerService);
+    //this.datemodel = {year:now.year(),month:now.month()+1,day:now.date()}
+    
     this.date = this.parseFormatter.format({day:now.date(),month:now.month()+1,year:now.year()});
+    //this.date = this.parseFormatter.format({year:now.year(),month:now.month()+1,day:now.date()});
     this.datePickerService.maxDate = {day:now.date(),month:now.month()+1,year:now.year()}
+    //this.datePickerService.startDate = {month:1,year:now.year()} 
     this.fetchsession.getSession().subscribe((session)=>{
     this.session = session.session;
     console.log("session from session service",this.session);
@@ -54,25 +62,15 @@ public cookie:any;
 })
 }
 
- // constructor(public http: Http,private cookieService: CookieService) {
- //   this.fetchsession.getSession().subscribe((session)=>{
- //    this.session = session.session;
- //    console.log("session from session service",this.session);
- //    console.log(this.cookieService.getAll()['cookieSet']);
 
- //    this.initializeForm();
-    
- //  });
- //   this.initializeForm();
- 
-
-  ngOnInit() {
+ngOnInit() {
 
   }
 
   getStaffMethod(value){
   this.staffList = [];
   this.checkStatus = [];
+  this.sendAttendanceStatus = [];
   this.attendanceStatus = [];
   this.staffTypeValue = value;
   this.fetch = true;
@@ -96,43 +94,26 @@ public cookie:any;
 
 
   fetchStaff(){
-     this.staffList = [];
-    if(this.staffTypeValue == 'TEACHER'){
-      this.urladd = '/attendance/attendance_teacher_all';
-      //this.type = 'TEACHER';
-    }
 
-    else if(this.staffTypeValue == 'ACCOUNTANT'){
-      this.urladd = '/attendance/attendance_accountant_all';
-      //this.type = 'ACCOUNTANT';
-    }
-
-    else if(this.staffTypeValue == 'LIBRARIAN'){
-      this.urladd = '/attendance/attendance_librarian_all';
-      //this.type = 'LIBRARIAN';
-    }
-
-    else{
-      this.urladd = '/attendance/attendance_other_all';
-      //this.type = 'OTHERSTAFF';
-    }
     this.staffList = [];
     this.checkStatus = [];
     this.attendanceStatus = [];
+    this.sendAttendanceStatus = [];
+    let type = this.staffTypeValue.toLowerCase()
+    this.http.post((this.url+ '/attendance/attendance_'+ type + '_all'),{
 
-    this.http.post((this.url+ this.urladd),{
-      //class_ref:this.class_ref,
       date: this.date,
       session: this.session,
       access_token: this.cookie
+
     }).subscribe((attendance:any)=>{
       console.log(attendance.json())
-        console.log(attendance.json().length)
+        console.log("attendance:",attendance.json())
       if(attendance.json().length){
           attendance = attendance.json();
              
          this.finalize = attendance[0].finalize;
-         console.log(this.finalize);
+       
          this.savedAttendance = true;
          this.staffList = attendance[0].staffs;
          for(let i=0;i<this.staffList.length;i++){
@@ -152,42 +133,22 @@ public cookie:any;
       }
 
       else{
-         this.savedAttendance = false;
-         this.staffList = [];
-          console.log("getStaffMethod value:",this.staffTypeValue);
-         if(this.staffTypeValue == 'TEACHER'){
-            this.urladd = '/teacher/teacher_get_all';
-            //this.type = 'TEACHER';
-          }
+        this.savedAttendance = false;
+        this.staffList = [];
+     
+        this.checkStatus = [];
+        this.attendanceStatus = [];
+        this.sendAttendanceStatus = [];
 
-          else if(this.staffTypeValue == 'ACCOUNTANT'){
-            this.urladd = '/accountant/accountant_get_all';
-            //this.type = 'ACCOUNTANT';
-          }
-
-          else if(this.staffTypeValue == 'LIBRARIAN'){
-            this.urladd = '/librarian/librarian_get_all';
-            //this.type = 'LIBRARIAN';
-          }
-
-          else{
-            this.urladd = '/other/other_get_all';
-            //this.type = 'OTHERSTAFF';
-          }
-
-    // // this.http.post((this.url + this.urladd),{})
-    // // .subscribe((staff)=>{
-    // //   console.log(staff.json());
-    // //   this.staffList = staff.json();
-    // //   //this.rowsOnPage = this.staffList.length();
-    // })
+         let staff = this.staffTypeValue.toLowerCase();
          this.finalize = false;
-         this.http.post(this.url + this.urladd ,{session:this.session,access_token: this.cookie})
+         this.http.post(this.url + '/' + staff + '/' + staff + '_get_all' ,{ session:this.session, access_token: this.cookie })
         .subscribe((data)=>{
           console.log(data.json());
 
           this.staffList = data.json();
           if(typeof(this.staffList)!=='string'){
+
           for(let i=0;i<this.staffList.length;i++)
            
             {
@@ -196,16 +157,20 @@ public cookie:any;
             }
 
           }
-        })
+        }
+        )
       }
     })
   }
 
  selectDate(value){
+
    console.log(value);
-   //console.log(this.datenow);
+  
+
 
    this.date = this.parseFormatter.format(value);
+   console.log(this.date);
    console.log(typeof(this.date));
  }
 
@@ -267,10 +232,12 @@ reviseStatus(){
 finalizeStatus(){
   this.finalize = true;
   if(this.savedAttendance){
+    console.log("purana save hone se pehle staffList:",this.staffList);
+    console.log("purana save hone se pehle checkList:",this.attendanceStatus);
     for(let i=0;i<this.staffList.length;i++){
       this.sendAttendanceStatus[i] = {staff:this.staffList[i]['staff']['_id'],status:this.attendanceStatus[i]} 
     }
-    
+    console.log("sendAttendanceStatus purana:",this.sendAttendanceStatus);
    this.http.post((this.url + '/attendance/attendance_' + this.staffTypeValue.toLowerCase()),{
       "date": this.date,
       "staffs" : this.sendAttendanceStatus,
@@ -287,18 +254,21 @@ else{
   for(let i=0;i<this.staffList.length;i++){
       this.sendAttendanceStatus[i] = {staff:this.staffList[i]['_id'],status:this.attendanceStatus[i]} 
     }
-    
-   this.http.post((this.url + '/attendance/attendance_' + this.staffTypeValue.toLowerCase()),{
-     
-      "date": this.date,
-      "staffs" : this.sendAttendanceStatus,
-      "finalize":true,
-      "session":this.session,
-      "access_token": this.cookie
-  }).subscribe((attendance_staff)=>{
-    console.log(attendance_staff.json());
+    console.log("naya save hone se pehle staffList:",this.staffList);
+    console.log(" naya save hone se pehle checkList:",this.attendanceStatus);
 
-  })
+    
+  //  this.http.post((this.url + '/attendance/attendance_' + this.staffTypeValue.toLowerCase()),{
+     
+  //     "date": this.date,
+  //     "staffs" : this.sendAttendanceStatus,
+  //     "finalize":true,
+  //     "session":this.session,
+  //     "access_token": this.cookie
+  // }).subscribe((attendance_staff)=>{
+  //   console.log(attendance_staff.json());
+
+  //})
 }
 }
 }

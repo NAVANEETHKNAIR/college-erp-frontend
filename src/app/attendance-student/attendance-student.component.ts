@@ -100,6 +100,7 @@ public cookie:any;
   fetchStudent(){
     this.studentList = [];
     this.checkStatus = [];
+    this.sendAttendanceStatus = [];
     this.attendanceStatus = [];
     this.http.post((this.url+ '/attendance/attendance_student_get_for_class_ref'),{
       class_ref:this.class_ref,
@@ -157,6 +158,9 @@ public cookie:any;
   getClassMethod(value){
     this.selectSection = '';
     this.studentList = [];
+    this.checkStatus = [];
+    this.sendAttendanceStatus = [];
+    this.attendanceStatus = [];
     console.log(value);
     this.selectClass = value;
     this.getSectionOfClass = _.where(this.getClassAll,{name:this.selectClass});
@@ -185,6 +189,10 @@ public cookie:any;
 
  selectDate(value){
    console.log(value);
+   this.studentList = [];
+   this.sendAttendanceStatus = [];
+   this.checkStatus = [];
+   this.attendanceStatus = [];
    //console.log(this.datenow);
 
    this.date = this.parseFormatter.format(value);

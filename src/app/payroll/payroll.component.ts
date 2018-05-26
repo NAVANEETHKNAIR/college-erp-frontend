@@ -4,6 +4,7 @@ import * as _  from 'underscore';
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { CookieService } from 'ng2-cookies';
+import { SystemService } from '../system/service.system';
 //private cookieService: CookieService
 //import { ModalComponent } from '../components/advanced-component
 @Component({
@@ -40,13 +41,15 @@ public status:any;
 public generatedPayslip:boolean = false;
 public index:number;
 public cookie:any;
-  constructor(public http: Http,private cookieService: CookieService) {
+  constructor(public http: Http, private cookieService: CookieService, public fetchsession: SystemService) {
   this.cookie = this.cookieService.getAll()['cookieSet'];
   this.initializeForm();
   console.log(this.payrollForm);
-
-
-
+  this.fetchsession.getSession().subscribe((session)=>{
+    this.session = session.session;
+    console.log("session from session service",this.session);
+    this.initializeForm();
+  })
 }
 
 ngOnInit() {
@@ -61,7 +64,7 @@ getStaff(staff){
     this.status = '';
     this.initializeForm();
     console.log(staff);
-     this.http.post((this.url + '/'+ staff + '/' + staff + '_get_all'),{ access_token: this.cookie})
+     this.http.post((this.url + '/'+ staff + '/' + staff + '_get_all'),{ access_token: this.cookie,session:this.session})
         .subscribe((staff)=>{
           console.log(staff.json());
           if(staff.json().length !== 0){
@@ -86,21 +89,11 @@ getStaff(staff){
 
   initializeForm(){
    this.payrollForm = new FormGroup({
-      //"erp_id": new FormControl(this.erp_id,Validators.required),
   		"basic_sal": new FormControl(this.basic_sal,Validators.required),
-      // "allowances":new FormArray([new FormGroup({
-      //   "description": new FormControl('',Validators.required),
-      //   "amount": new FormControl('',Validators.required)
-      //         })]),
-      // "deductions":new FormArray([new FormGroup({
-      //   "description": new FormControl('',Validators.required),
-      //   "amount": new FormControl('',Validators.required)
-      //         })]),
       "allowances": new FormArray([]),
       "deductions": new FormArray([]),
-
-       "month": new FormControl(this.month,Validators.required),
-  		 "session": new FormControl(this.session,Validators.required),
+      "month": new FormControl(this.month,Validators.required),
+  		"session": new FormControl(this.session,Validators.required),
       "status" : new FormControl(this.status,Validators.required)
 
    });
@@ -147,7 +140,7 @@ getStaff(staff){
      month:this.month,
      allowances:value.allowances,
      deductions:value.deductions,
-     session:value.session,
+     session:this.session,
      status: value.status,
      access_token: this.cookie
    }).subscribe((payroll)=>{
