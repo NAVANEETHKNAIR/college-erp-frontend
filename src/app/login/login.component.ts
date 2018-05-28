@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit} from '@angular/core';
-import { Router } from '@angular/router'
+import { Router, ActivatedRoute } from '@angular/router'
 import { Http } from '@angular/http';
 import * as _  from 'underscore'; 
 import * as moment from 'moment';
@@ -22,7 +22,7 @@ public username:any;
 public password:any;
 public url:any = 'http://localhost:3000';
 public trueUser:boolean = true;
-constructor(private http:Http,private cookieService: CookieService, public router: Router){
+constructor(private http:Http,private cookieService: CookieService, public router: Router,public seeRoute: ActivatedRoute){
  
  this.initializeForm();
 }
@@ -53,8 +53,12 @@ putLogin(value){
        this.trueUser = true;
        this.cookieService.set('cookieSet',token.access_token);
        this.cookieService.set('userSet',token.user);
+
        console.log(this.cookieService.getAll());
-       this.router.navigate(['dashboard']);
+       console.log('Hit this line');
+        this.router.navigate(['dashboard']);
+       console.log('hitted');
+       
 
      }
   })

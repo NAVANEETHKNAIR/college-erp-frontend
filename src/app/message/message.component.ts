@@ -4,14 +4,47 @@ import * as _  from 'underscore';
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { CookieService } from 'ng2-cookies';
+import { SystemService } from '../system/service.system';
+
 //private cookieService: CookieService
 // import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-message',
   templateUrl: './message.component.html',
-  styleUrls: ['./message.component.scss']
-  // encapsulation: ViewEncapsulation.None
+  styleUrls: ['./message.component.scss'],
+  //encapsulation: ViewEncapsulation.None
+  // styles: [`
+  //   quill-editor {
+  //     display: block;
+  //   }
+  //   .ng-invalid {
+  //     border: 1px dashed red;
+  //   }
+  //   /* Set default font-family */
+  //   [quill-editor-element] {
+  //     font-family: "Roboto";
+  //   }
+  //   /* Set dropdown font-families */
+  //   [quill-editor-toolbar] .ql-font span[data-label="Aref Ruqaa"]::before {
+  //     font-family: "Aref Ruqaa";
+  //   }
+  //   [quill-editor-toolbar] .ql-font span[data-label="Mirza"]::before {
+  //     font-family: "Mirza";
+  //   }
+  //   [quill-editor-toolbar] .ql-font span[data-label="Roboto"]::before {
+  //     font-family: "Roboto";
+  //   }
+  //   /* Set content font-families */
+  //   .ql-font-mirza {
+  //     font-family: "Mirza";
+  //   }
+  //   .ql-font-aref {
+  //     font-family: "Aref Ruqaa";
+  //   }
+  //   /* We do not set Aref Ruqaa since it is the default font */
+  // `],
+  encapsulation: ViewEncapsulation.None
 })
 export class MessageComponent implements OnInit {
  
@@ -39,10 +72,19 @@ public sortOrder = 'desc';
 public data: any;
 public filterQuery = '';
 public cookie:any;
- constructor(private http:Http,private cookieService: CookieService){
+public session:any;
+public peopleList:any[] = [];
+
+  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
    this.cookie = this.cookieService.getAll()['cookieSet'];
-   this.initializeForm();   
- }
+   this.fetchsession.getSession().subscribe((session)=>{
+    this.session = session.session;
+    console.log("session from session service",this.session);
+    this.initializeForm();
+    
+  });
+   this.initializeForm();
+  }
 
  ngOnInit(){
    
@@ -62,13 +104,27 @@ public cookie:any;
   	console.log(this.items);
   }
 
+  removeTag(contact){
+    console.log(contact);
+    let pos = this.items.map(function(item){
+      return item.value
+        }).indexOf(contact.value);
+      if(pos>-1){
+       this.items.splice(pos,1);
+      }
+  }
+
 
   putMessage(value){
   	//this.date =
+
   	let date:any;
   	 date = (new Date()).toLocaleString();
   	date = date.split(",");
-  	this.date = date[0];
+   let dateArr = date[0].split('/');
+   (+dateArr[0] < 9)? (dateArr[0]= '0' + dateArr[0]):(dateArr[0]=dateArr[0])
+    (+dateArr[1] < 9)? (dateArr[1]= '0' + dateArr[1]):(dateArr[1]=dateArr[1])
+   this.date = (dateArr[2] + '-' + dateArr[0] + '-' + dateArr[1]);
   	this.time = date[1];
     this.initializeForm();
   	for(let item of this.items){
@@ -82,6 +138,7 @@ public cookie:any;
     	to:  this.messageForm.value.to,
     	date : this.messageForm.value.date,
     	time: this.messageForm.value.time,
+      session: this.session,
       access_token: this.cookie
 
     }).subscribe((message)=>{
@@ -108,7 +165,19 @@ public cookie:any;
   }
 
   select(){
+   this.recipientList = [];
+   this.recipientType = "";
+   this.checkStatus = [];
    this.openMyModal('effect-13');
+  }
+
+  editor(value){
+    console.log(value); 
+  }
+
+  addTag(value){
+     console.log(value);
+     this.items.push(value);
   }
 
   getRecipientMethod(value){
@@ -116,8 +185,9 @@ public cookie:any;
   	this.getClass = '';
   	this.getSection = '';
   	this.recipientList = [];
+    this.checkStatus = [];
       if(value=== 'student'){
-      	 this.http.post(this.url + '/newClass/get_class_all',{ "access_token": this.cookie})
+      	 this.http.post(this.url + '/newClass/get_class_all',{ "access_token": this.cookie,"session": this.session})
         .subscribe((data) => {
         console.log(data.json());
         this.getClassAll = data.json();
@@ -131,7 +201,7 @@ public cookie:any;
       }
 
       else{
-      	this.http.post(this.url + '/' + value + '/' + value + '_get_all',{ "access_token": this.cookie})
+      	this.http.post(this.url + '/' + value + '/' + value + '_get_all',{ "access_token": this.cookie, "session": this.session})
       	 .subscribe((staff)=>{
       	 	 console.log(staff.json())
              this.recipientList = staff.json();
@@ -166,7 +236,7 @@ public cookie:any;
   getSectionMethod(value){
      this.getSection = value;
      this.class_ref= _.where(this.getClassAll,{name:this.getClass,section:this.getSection})[0]['_id'];
-     this.http.post(this.url + '/student/students_get_for_class_ref',{class_ref:this.class_ref, access_token: this.cookie})
+     this.http.post(this.url + '/student/students_get_for_class_ref',{class_ref:this.class_ref, access_token: this.cookie, session: this.session})
         .subscribe((data)=>{
         	console.log(data.json());
         	this.checkStatus = [];
@@ -189,11 +259,13 @@ public cookie:any;
        for(let i=0;i<this.checkStatus.length;i++){
      	if(this.checkStatus[i]=== true){
      		if(this.recipientType === 'student'){
-
+         
              if((_.where(this.items,{display:this.recipientList[i]['parent_contact'],value:this.recipientList[i]['parent_contact']})).length==0){
 
              	this.items.push({display:this.recipientList[i]['parent_contact'],value:this.recipientList[i]['parent_contact']})
+              
              }
+
             // (<FormArray>this.messageForm.controls['to']).push(new FormControl(this.recipientList[i]['parent_contact']));
              
      	     }
@@ -212,20 +284,43 @@ public cookie:any;
      
   }
 
-  checkCheckbox(value,index,contact){
+  setFocus(value){
+    console.log(value);
+  }
+
+  checkCheckbox(value,contact){
+
+    //this.peopleList.push(...this.recipientList);
     console.log('contact',contact);
+    //console.log("peoples are:",this.peopleList);
     console.log(this.recipientList)
+
   	if(value == false){
   		let pos = this.items.map(function(item){
     	return item.value
         }).indexOf(contact)
-    
+      if(pos>-1){
        this.items.splice(pos,1);
+      }
   	}
    
       
 
     
   }
+
+
+// checkCheckbox(value,contact){
+//   if(value){
+//       this.peopleList.push(contact)
+//   }
+
+//   else{
+//     if(_.includes( this.peopleList,contact)){
+//        this.peopleList.splice(this.peopleList.indexOf(contact),1);
+//     }
+//   }
+
+//}
 
 }

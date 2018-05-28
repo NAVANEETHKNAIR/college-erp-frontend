@@ -33,15 +33,20 @@ const routes: Routes = [
   {
     path: '',
     component: AdminComponent,
+    
     children: [
       {
         path: '',
         redirectTo: 'dashboard',
-        pathMatch: 'full'
+        pathMatch: 'full',
+
+
+        
       },
       {
         path: 'dashboard',
         loadChildren: './dashboard/dashboard.module#DashboardModule'
+
       }, {
         path: 'widget',
         loadChildren: './widget/widget.module#WidgetModule'
@@ -119,6 +124,7 @@ const routes: Routes = [
       }
     ]
   },
+
   {
     path: 'student',
     component: StudentComponent,
@@ -209,9 +215,11 @@ const routes: Routes = [
     path:'404',
     component: ErrorComponent
   },
+
   {
     path: '**',
-    redirectTo: '404'
+    component: ErrorComponent
+
   },
 
 ];

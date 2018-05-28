@@ -2,6 +2,8 @@ import {Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angu
 import {state, style, transition, animate, trigger, AUTO_STYLE} from '@angular/animations';
 import 'rxjs/add/operator/filter';
 import {MenuItems} from '../../shared/menu-items/menu-items';
+import { CookieService } from 'ng2-cookies';
+
 
 @Component({
   selector: 'app-admin',
@@ -58,13 +60,15 @@ export class AdminComponent implements OnInit {
   isCollapsedMobile = 'no-block';
   toggleOn = true;
   windowWidth: number;
+  cookie:any = '';
   @ViewChild('searchFriends') search_friends: ElementRef;
   @ViewChild('toggleButton') toggle_button: ElementRef;
   @ViewChild('sideMenu') side_menu: ElementRef;
 
   config: any;
 
-  constructor(public menuItems: MenuItems) {
+  constructor(public menuItems: MenuItems, public cookieService: CookieService) {
+    this.cookie = this.cookieService.getAll()['cookieSet'];
     const scrollHeight = window.screen.height - 150;
     this.innerHeight = scrollHeight + 'px';
     this.windowWidth = window.innerWidth;

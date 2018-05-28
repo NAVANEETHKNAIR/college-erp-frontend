@@ -60,6 +60,7 @@
     "ngx-color-picker": "^6.1.0",
     "ngx-echarts": "^3.0.0",
     "ngx-perfect-scrollbar": "^6.0.0",
+    "ngx-quill": "^3.1.0",
     "number2text": "^1.1.0",
     "peity": "^3.3.0",
     "raphael": "^2.2.7",

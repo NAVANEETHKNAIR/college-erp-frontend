@@ -26,7 +26,7 @@ import {SelectModule} from 'ng-select';
 import {SelectOptionService} from './elements/select-option.service';
 import {FormWizardModule} from 'angular2-wizard';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
-//import { QuillModule } from 'ngx-quill'
+import { QuillModule } from 'ngx-quill'
 import {DataFilterPipe} from './elements/data-filter.pipe';
 import {DataTableModule} from 'angular2-datatable';
 import {FroalaEditorModule, FroalaViewModule} from 'angular-froala-wysiwyg';
@@ -70,7 +70,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       FormWizardModule,
       NgxDatatableModule,
       DataTableModule,
-      //QuillModule,
+      QuillModule,
       FroalaEditorModule.forRoot(),
       FroalaViewModule.forRoot(),
       FileUploadModule,
@@ -128,7 +128,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       NgxDatatableModule,
       DataTableModule,
       DataFilterPipe,
-      //QuillModule,
+      QuillModule,
       FroalaEditorModule,
       FroalaViewModule,
       FileUploadModule,
