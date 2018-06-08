@@ -98,6 +98,7 @@
             </tfoot>
           </table>
           </div>
+        
         </div>
       </div>
     </div>
@@ -124,7 +125,7 @@
 		    <label for="basic-addon1" style="display:block;text-align:left">Full Name</label> 
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control" formControlName = "name">
+		      <input type="text" class="form-control" formControlName = "name" [style.border]="(!studentForm.controls['name'].valid && studentForm.controls['name'].touched)?'2px solid #ff6060':'2px solid #ced4da'">
 		      <p *ngIf="!studentForm.controls['name'].valid && studentForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
 		    </div>
          <label for="basic-addon1" style="display:block;text-align:left">Student Contact</label>
@@ -191,6 +192,20 @@
 		      <input type="date" class="form-control"  formControlName = "date_of_join">
 		      <p *ngIf="!studentForm.controls['date_of_join'].valid && studentForm.controls['date_of_join'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the date of joining</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Dormitory</label>
+         <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" #dorm formControlName = "dormitory" (focusout)="addDorm(dorm.value)">
+          <p *ngIf="!studentForm.controls['dormitory'].valid && studentForm.controls['dormitory'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the dormitory</p>
+          <p *ngIf= "!correctDorm" style="color:red;display:block;width:100%;text-align:left">Invalid Dormitory</p>
+        </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Transport</label>
+         <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" #vehicle  formControlName = "transport" (focusout)="addVehicle(vehicle.value)">
+          <p *ngIf="!studentForm.controls['transport'].valid && studentForm.controls['transport'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the transport</p>
+         </div>
+          <p *ngIf= "!correctVehicle" style="color:red;display:block;width:100%;text-align:left">Invalid Transport</p>
         <label for="basic-addon1" style="display:block;text-align:left">Aadhaar number</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>

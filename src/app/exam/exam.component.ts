@@ -62,6 +62,7 @@ public cookie:any;
     this.session = session.session;
     console.log("session from session service",this.session);
     this.initializeForm();
+    console.log(this.examForm);
     
   });
    var now = moment();
@@ -107,7 +108,7 @@ public cookie:any;
   	console.log(this.selectClass);
   	console.log('select section:',this.selectSection);
     this.class_ref = _.where(this.getClassAll,{name: this.selectClass, section: value})[0]['_id'];
-    this.http.post(this.url + '/exam/exam_get_class',{class_ref:this.class_ref,session:this.session})
+    this.http.post(this.url + '/exam/exam_get_class',{class_ref:this.class_ref,session:this.session, access_token:this.cookie})
         .subscribe((exam)=>{
           console.log(exam.json());
           this.examList = exam.json();
@@ -212,7 +213,7 @@ public cookie:any;
         session: this.session,
         access_token: this.cookie
       }).subscribe((savedExam)=>{
-         this.http.post(this.url + '/exam/exam_get_class',{class_ref:this.class_ref,session:this.session})
+         this.http.post(this.url + '/exam/exam_get_class',{class_ref:this.class_ref,session:this.session,access_token: this.cookie})
                .subscribe((exam)=>{
                  this.examList = exam.json();
                })

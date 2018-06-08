@@ -19,6 +19,11 @@ import { MessageComponent } from './message/message.component';
 import { SystemComponent } from './system/system.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { LoginComponent } from './login/login.component';
+import { StudentdashboardComponent } from './student-dashboard/student-dashboard.component';
+import { AttendanceRecordComponent } from './attendance-record/attendance-record.component';
+import { FeesComponent } from './fees/fees.component';
+import { FeesReportComponent } from './fees-report/fees-report.component';
+
 import { 
          LoginGuardService,
          AdminAuthorizeGuardService,
@@ -163,7 +168,7 @@ const routes: Routes = [
   {
     path: 'library',
     component: LibraryComponent,
-    canActivate: [LoginGuardService,AdminAuthorizeGuardService,LibrarianAuthorizeGuardService]
+    canActivate: [LoginGuardService,AdminAuthorizeGuardService || LibrarianAuthorizeGuardService]
 
   },
   {
@@ -210,6 +215,34 @@ const routes: Routes = [
    path:'login',
    component: LoginComponent,
 
+  },
+  {
+  path: 'student-dashboard',
+  component: StudentdashboardComponent,
+  canActivate: [
+         LoginGuardService,
+         StudentAuthorizeGuardService ||
+         LibrarianAuthorizeGuardService ||
+         TeacherAuthorizeGuardService ||
+         AccountantGuardService ||
+         OtherAuthorizeGuardService
+       ]
+  
+  },
+  {
+   path: 'attendance-record',
+   component: AttendanceRecordComponent,
+   canActivate: [LoginGuardService, StudentAuthorizeGuardService]
+  },
+  {
+   path: 'fees',
+   component: FeesComponent,
+   canActivate: [LoginGuardService, AdminAuthorizeGuardService]
+  },
+  {
+   path: 'fees-report',
+   component: FeesReportComponent,
+   canActivate: [LoginGuardService, AdminAuthorizeGuardService]
   },
   {
     path:'404',

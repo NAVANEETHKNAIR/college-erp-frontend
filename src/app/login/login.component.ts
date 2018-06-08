@@ -53,10 +53,11 @@ putLogin(value){
        this.trueUser = true;
        this.cookieService.set('cookieSet',token.access_token);
        this.cookieService.set('userSet',token.user);
+       this.cookieService.set('idSet',token._id);
 
        console.log(this.cookieService.getAll());
        console.log('Hit this line');
-        this.router.navigate(['dashboard']);
+       this.router.navigate(['dashboard']);
        console.log('hitted');
        
 

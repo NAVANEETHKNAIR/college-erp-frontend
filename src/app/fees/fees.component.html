@@ -1,0 +1,149 @@
+<div class="card">
+  <div class="card-header">
+    <h5>Fees</h5>
+
+<!--     <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="modalOverflow.show()"> <i class="icofont icofont-plus m-r-5"></i> Add Student
+    </button> -->
+  
+  </div>
+  <div class="card-body">
+      <div class="card-body">
+    <div class="table-content crm-table">
+      <div class="project-table">
+        <div id="crm-contact" class="dt-responsive">
+          <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-4">
+              <div>
+                <label for= "getCity" class="label-control">Select Class
+                  <select name="getCity" #getClass class="form-control" [(ngModel)]="selectClass" (change)="getClassMethod(getClass.value)">
+                    <option style="display:none;"></option>
+                    <option *ngFor="let getClass of filterClass;let i= index;" [value]="getClass">{{getClass}}</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4">
+              <div *ngIf ="selectClass!==''">
+                <label for= "getSection" class="label-control">Select Section
+                  <select name="getSection" #getSection class="form-control" (change)="getSectionMethod(getSection.value)" [(ngModel)]="selectSection">
+                    <option style="display:none;"></option>
+                    <option *ngFor="let getSection of getSectionOfClass;let i= index;"  [value]="getSection.section">{{getSection.section}}</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4">
+              <div style="text-align: right;">
+                <label>Search:
+                  <input type="search" [(ngModel)]="filterQuery" class="form-control input-sm full-data-search" placeholder="Search name">
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="panel-heading">User information</div>-->
+          <div class="table-responsive">
+          <table class="table table-striped table-bordered full-data-table" [mfData]="studentList | dataFilter : filterQuery" #mf="mfDataTable"
+                 [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <thead>
+            <tr>
+              <th>
+                <mfDefaultSorter  by="image">Profile</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="name">Name</mfDefaultSorter>
+              </th>
+               <th>
+                <mfDefaultSorter  by="erp_id">ERP ID</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="action">Select</mfDefaultSorter>
+              </th>
+            </tr>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of mf.data;let i=index">
+              <td><img src="{{item.image}}" class="d-inline-block img-circle " alt="tbl"></td>
+              <td>{{item.name}}</td>
+              <td>{{item.erp_id}}</td>
+              <td>                
+                <div class="border-checkbox-section">
+                <div class="border-checkbox-group border-checkbox-group-success">
+                  <input class="border-checkbox" type="checkbox" id="checkbox{{i}}" [(ngModel)]="checkStatus[i]">
+                  <label class="border-checkbox-label" for="checkbox{{i}}">{{ "" }}</label>
+                </div>
+               </div>
+             </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <th>Profile</th>
+              <th>Name</th>
+              <th>erpID</th>
+              <th>Action</th>
+            </tr>
+            <tr>
+              <td>
+                <mfBootstrapPaginator class="pagination-main f-right"></mfBootstrapPaginator>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+          </div>
+        
+        </div>
+      </div>
+      <button class="btn btn-sm btn-primary text-right" (click)="proceed()" *ngIf= "studentList.length">Proceed</button>
+    </div>
+   
+   <app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
+          <h3>Fees</h3>
+          <div>
+            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
+       <form [formGroup]="feesForm">
+       <div class="text-center">       
+        <div class="row">
+        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+        <h5 style="text-align:left;">Add Fees</h5>
+        <br>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+          <button type="button" (click)="addFees()"><i class="icofont icofont-ui-add"></i></button>
+        </div>
+        </div>
+        
+
+        <div formArrayName = "feesArray">
+        <div class="input-group" *ngFor="let allowance of feesForm.controls['feesArray']['controls'];let j=index">
+          <div [formGroupName]= "j">
+          <div class="row">
+          <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
+          <label for="basic-addon1" style="display:block;text-align:left">Description</label>
+          <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" formControlName = "description">
+          <p *ngIf="!feesForm.controls.feesArray.controls[j]['controls']['description'].valid && feesForm.controls['feesArray']['controls'][j].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the description</p>
+         </div>
+
+          <label for="basic-addon1" style="display:block;text-align:left">Amount</label>
+          <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" formControlName = "amount">
+         <p *ngIf="!feesForm.controls['feesArray']['controls'][j]['controls']['amount'].valid && feesForm.controls.feesArray.controls[j].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the amount</p>
+         </div>
+         </div>
+         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+          <button (click) ="deleteFees(j)"><i class="icofont icofont-ui-delete"></i></button> 
+          </div>
+         </div>
+         </div>
+        </div>
+        </div>
+      </div>
+      <button *ngIf="feesForm.valid"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "generateFees(feesForm.value)">Generate Fees</button>
+   </form>
+  </perfect-scrollbar>
+</div>
+</app-modal-animation>

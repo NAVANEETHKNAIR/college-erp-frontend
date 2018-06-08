@@ -37,7 +37,10 @@ import { LoginGuardService,
          OtherAuthorizeGuardService
         } from './guards/admin-guard.service';
 import { ErrorComponent } from './error/error.component';
-//import { CookieService } from 'ng2-cookies';
+import { StudentdashboardComponent } from './student-dashboard/student-dashboard.component';
+import { AttendanceRecordComponent } from './attendance-record/attendance-record.component';
+import { FeesComponent } from './fees/fees.component';
+import { FeesReportComponent } from './fees-report/fees-report.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +66,11 @@ import { ErrorComponent } from './error/error.component';
     SystemComponent,
     CalendarComponent,
     LoginComponent,
-    ErrorComponent
+    ErrorComponent,
+    StudentdashboardComponent,
+    AttendanceRecordComponent,
+    FeesComponent,
+    FeesReportComponent
     
   ],
   imports: [

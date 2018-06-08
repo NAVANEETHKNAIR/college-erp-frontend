@@ -22,15 +22,6 @@
                 </label>
               </div>
             </div>
-            <!-- <div class="col-xs-12 col-sm-4 col-md-4">
-              <div *ngIf ="selectClass!==''">
-                <label for= "getSection" class="label-control">Select Section
-                  <select name="getSection" #getSection class="form-control" (change)="getSectionMethod(getSection.value)" [(ngModel)]="selectSection">
-                    <option *ngFor="let getSection of getSectionOfClass;let i= index;"  [value]="getSection.section">{{getSection.section}}</option>
-                  </select>
-                </label>
-              </div>
-            </div> -->
             <div class="col-xs-12 col-sm-4 col-md-4">
               <div style="text-align: right;">
                 <label>Search:
@@ -104,15 +95,7 @@
 </div>
 
          
-<!--  <app-modal-basic #modalOverflow [hideHeader]="true" [hideFooter]="true">
-<div class="app-modal-body">
-  <button type="button" class="close basic-close-light-box" (click)="modalOverflow.hide()">
-    <span aria-hidden="true">&times;</span>
-  </button>
- 
-     <br>
-     </div>
- </app-modal-basic> -->
+
 
  <app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
           <h3>Add Staff</h3>
@@ -176,6 +159,18 @@
 		      <input type="date" class="form-control"  formControlName = "date_of_join">
 		      <p *ngIf="!staffForm.controls['date_of_join'].valid && staffForm.controls['date_of_join'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the date of joining</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Dormitory</label>
+         <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control"  formControlName = "dormitory">
+          <p *ngIf="!staffForm.controls['dormitory'].valid && staffForm.controls['dormitory'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the dormitory</p>
+        </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Transport</label>
+         <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control"  formControlName = "transport">
+          <p *ngIf="!staffForm.controls['transport'].valid && staffForm.controls['transport'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the transport</p>
+         </div>
         <label for="basic-addon1" style="display:block;text-align:left">Aadhar Number</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>

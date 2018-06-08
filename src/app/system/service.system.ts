@@ -12,6 +12,8 @@ export class SystemService {
  public url:any = 'http://localhost:3000';
  public sessionData:any;
  public cookie: any;
+ public userId: any;
+ public overdue:number = 1;
  constructor(private http:Http,private cookieService: CookieService){
  	this.cookie = this.cookieService.getAll()['cookieSet'];
  }
@@ -28,8 +30,43 @@ export class SystemService {
             .do((data) => {
             	console.log(data);
               this.sessionData = data;
+
             });
     }
   }
-  
+
+
+  getOverdue(){
+    console.log('returning overdue:',this.overdue);
+    return this.overdue;
+  }
+
+
+
+
+  getUser(){
+   if(this.userId) {
+      console.log("yeah this is...");
+      return Observable.of(this.userId);
+    }
+
+   else {
+   let user = (this.cookieService.getAll()['userSet']).toLowerCase();
+   if(user!== 'admin'){
+   return this.http.post(this.url + '/' + user + '/' + user + '_get_for_user_id',{
+        user_id: this.cookieService.getAll()['idSet'],
+        session: this.sessionData,
+        access_token: this.cookie
+   }).map(res=>{
+     return res.json()
+   }).do((data)=>{
+     this.userId = data;
+   })
 }
+
+}
+
+}
+
+}
+

@@ -109,14 +109,7 @@ public cookie:any;
   
   putStaff(value){
   	 console.log(value);
-  	 if(!value.dormitory){
-        value.dormitory = undefined;
 
-  	 }
-
-  	 if(!value.transport){
-  	 	value.transport = undefined;
-  	 }
 
      console.log("value:",value.type)
 

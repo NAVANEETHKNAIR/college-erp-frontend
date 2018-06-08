@@ -50,8 +50,12 @@ public editMode:boolean;
 public session:any = '';
 public url:any = 'http://localhost:3000';
 public cookie:any;
+public dormitory_id:any = "";
+public vehicle_id: any = "";
+public correctDorm:boolean = true;
+public correctVehicle:boolean = true;
   //import { SystemService } from '../system/service.system';
-  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
+ constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
     this.session = session.session;
@@ -145,14 +149,7 @@ public cookie:any;
   
   putStudent(value){
   	 console.log(value);
-  	 if(!value.dormitory){
-        value.dormitory = undefined;
 
-  	 }
-
-  	 if(!value.transport){
-  	 	value.transport = undefined;
-  	 }
   	let class_ref:any = _.where(this.getClassAll,{name:value.class,section:value.section})[0];
     this.http.post( this.url+ '/student/student',{
     	"username":value.email,
@@ -165,8 +162,8 @@ public cookie:any;
       "birthday": value.birthday,
       "email": value.email,
       "class_ref": class_ref._id,
-      "dormitory": value.dormitory,
-      "transport": value.transport,
+      "dormitory": this.dormitory_id || undefined,
+      "transport": this.vehicle_id || undefined,
       "date_of_join": value.date_of_join,
       "aadhar_num":value.aadhar_num,
       "account_name": value.account_name,
@@ -233,8 +230,8 @@ public cookie:any;
   		this.email = (this.studentList[student]).email;
   		this.class =  this.selectClass;
   		this.section = this.selectSection;
-  		this.dormitory = (this.studentList[student]).dormitory;
-  		this.transport = (this.studentList[student]).transport;
+  		this.dormitory = (this.studentList[student]).dormitory ? (this.studentList[student]).dormitory.room_num : "";
+  		this.transport = (this.studentList[student]).transport ?  (this.studentList[student]).transport.vehicle_num: "";
   		this.date_of_join = (this.studentList[student]).date_of_join;
   		this.aadhar_num = (this.studentList[student]).aadhar_num;
   		this.account_name = (this.studentList[student]).account_name;
@@ -248,4 +245,49 @@ public cookie:any;
         console.log(this.studentForm);
         this.openMyModal('effect-13');
   }
+
+  addDorm(dorm){
+    if(dorm){
+      this.http.post(this.url + '/dormitory/dormitory_get_room',{room_num:dorm, access_token: this.cookie})
+           .subscribe((dormitory:any)=>{
+             dormitory = dormitory.json();
+             console.log(dormitory);
+             console.log(typeof dormitory!== 'string');
+             if(typeof dormitory!== 'string'){
+               this.dormitory_id = dormitory._id;
+
+               this.correctDorm = true;
+             }
+
+             else{
+               this.correctDorm = false;
+             }
+
+           })
+    }
+  }
+
+    addVehicle(vehicle){
+    if(vehicle){
+      this.http.post(this.url + '/transport/transport_get_vehicle',{vehicle_num:vehicle, access_token: this.cookie})
+           .subscribe((transport:any)=>{
+            
+             transport = transport.json();
+              console.log(transport);
+              console.log(typeof transport!== 'string')
+             if(typeof transport!== 'string'){
+               this.vehicle_id = transport._id;
+               console.log(this.vehicle_id);
+               this.correctVehicle = true;
+             }
+
+              else{
+               this.correctVehicle = false;
+             }
+
+           })
+    }
+  }
+
 }
+

@@ -1,0 +1,81 @@
+
+<app-card>
+<div class="row">
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-left">
+<h4>Total Attendance= {{totalAttendance}} %</h4>
+</div>
+<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-right">
+<h4>Filtered Attendance= {{filteredAttendance}} %</h4>
+</div>
+</div>
+<br>
+  
+<div class="row">
+ <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+    <div class="form-group">
+    <div class="input-group">
+      <input class="form-control" placeholder="yyyy-mm-dd"
+             name="dp1" [(ngModel)]="startDate" ngbDatepicker #d1="ngbDatepicker">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary btn-primary text-center" (click)="d1.toggle()" type="button">
+          <i class="icofont icofont-calendar"></i>
+        </button>
+      </div>
+    </div>
+    </div>
+ </div>
+ <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+ 	<div class="form-group">
+    <div class="input-group">
+      <input class="form-control" placeholder="yyyy-mm-dd"
+             name="dp2" [(ngModel)]="endDate" ngbDatepicker #d2="ngbDatepicker">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary btn-primary" (click)="d2.toggle()" type="button">
+          <i class="icofont icofont-calendar text-center"></i>
+        </button>
+      </div>
+      <p *ngIf= "!dateCorrect"  style="color:red;display:block;width:100%;text-align:left">Please enter Valid Date range</p>
+    </div>
+    </div>
+   </div>
+  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+     <button *ngIf= "startDate && endDate" (click) = "filterAttendance(startDate,endDate)" class="btn btn-primary btn-sm">Filter Attendance</button>
+  </div>
+</div>
+
+
+          <div class="table-responsive">
+          <table class="table table-striped table-bordered full-data-table" [mfData]="filteredAttendanceList | dataFilter : filterQuery" #mf="mfDataTable"
+                 [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <thead>
+            <tr>
+              <th>
+                <mfDefaultSorter by="date">Date</mfDefaultSorter>
+              </th>
+               <th>
+                <mfDefaultSorter by="Status">Status</mfDefaultSorter>
+              </th>
+            </tr>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of mf.data;let i=index">
+              <td>{{item.date}}</td>
+              <td>{{item.status}}</td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+            <tr>
+              <td colspan="10">
+                <mfBootstrapPaginator class="pagination-main f-right"></mfBootstrapPaginator>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+          </div>
+</app-card>

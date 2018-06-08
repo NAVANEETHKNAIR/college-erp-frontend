@@ -51,16 +51,19 @@
             <thead>
             <tr>
                <th>
-                <mfDefaultSorter by="phone_no">Date</mfDefaultSorter>
+                <mfDefaultSorter by="date">Date</mfDefaultSorter>
               </th>
               <th>
                 <mfDefaultSorter  by="name">Name</mfDefaultSorter>
               </th>
               <th>
-                <mfDefaultSorter  by="erpID">Subject</mfDefaultSorter>
+                <mfDefaultSorter  by="subject">Subject</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="duration">Duration</mfDefaultSorter>
               </th>
                <th>
-                <mfDefaultSorter by="phone_no">Total Marks</mfDefaultSorter>
+                <mfDefaultSorter by="total_marks">Total Marks</mfDefaultSorter>
               </th>
               <th>
                 <mfDefaultSorter>Action</mfDefaultSorter>
@@ -74,6 +77,7 @@
               <td>{{item.date}}</td>
               <td>{{item.name}}</td>
               <td>{{item.subject_ref.name}}</td>
+              <td>{{item.duration}} hrs.</td>
               <td>{{item.total_marks}}</td>              
               <td class="action-icon">
                 <button type="button" (click)="editExam(i)" class="m-r-15 crm-action-edit text-muted text-primary"><i class="icofont icofont-ui-edit"></i></button>
@@ -86,6 +90,7 @@
               <th>Date</th>
               <th>Name</th>
               <th>Subject</th>
+              <th>Duration</th>
               <th>Total Marks</th>
               <th>Action</th>
               

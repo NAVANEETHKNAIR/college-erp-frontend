@@ -1,0 +1,351 @@
+
+<div class="card print-only" *ngIf="!printDiv">
+  <div class="card-header">
+    <h5>Fees</h5>
+
+
+  
+  </div>
+  <div class="card-body">
+      <div class="card-body">
+    <div class="table-content crm-table">
+      <div class="project-table">
+        <div id="crm-contact" class="dt-responsive">
+          <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-4">
+              <div>
+                <label for= "getCity" class="label-control">Select Class
+                  <select name="getCity" #getClass class="form-control" [(ngModel)]="selectClass" (change)="getClassMethod(getClass.value)">
+                    <option style="display:none;"></option>
+                    <option *ngFor="let getClass of filterClass;let i= index;" [value]="getClass">{{getClass}}</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4">
+              <div *ngIf ="selectClass!==''">
+                <label for= "getSection" class="label-control">Select Section
+                  <select name="getSection" #getSection class="form-control" (change)="getSectionMethod(getSection.value)" [(ngModel)]="selectSection">
+                    <option style="display:none;"></option>
+                    <option *ngFor="let getSection of getSectionOfClass;let i= index;"  [value]="getSection.section">{{getSection.section}}</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<div class="print-only"  *ngIf="!printDiv">
+       <div class="col-lg-12  filter-bar">
+          <nav class="navbar navbar-light bg-faded m-b-30 p-10">
+      <ul class="nav navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="javascript:;">Filter: <span class="sr-only">(current)</span></a>
+        </li>
+        <li ngbDropdown="" class="nav-item dropdown">
+          <a ngbDropdownToggle="" class="nav-link dropdown-toggle" href="javascript:;" id="bydate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-clock-time"></i> By Date:{{byDate}}</a>
+          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="bydate">
+            <a class="dropdown-item" href="javascript:;" (click)="getDate('show-all')">Show all</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="javascript:;" (click)="getDate('today')">Today</a>
+            <a class="dropdown-item" href="javascript:;" (click)="getDate('yesterday')">Yesterday</a>
+            <a class="dropdown-item" href="javascript:;" (click)="getDate('week')">This week</a>
+            <a class="dropdown-item" href="javascript:;" (click)="getDate('month')">This month</a>
+            <a class="dropdown-item" href="javascript:;" (click)="openPromptSwal()">Custom Date</a>
+          </div>
+        </li>
+        <!-- end of by date dropdown -->
+        <li ngbDropdown class="nav-item dropdown">
+          <a ngbDropdownToggle class="nav-link dropdown-toggle" href="javascript:;" id="bystatus" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-chart-histogram-alt"></i> By Status:{{byStatus}}</a>
+          <div  ngbDropdownMenu class="dropdown-menu" aria-labelledby="bystatus">
+            <a class="dropdown-item" (click)="getStatus('show')">Show all</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item"  (click)="getStatus('Paid')">Paid</a>
+            <a class="dropdown-item"  (click)="getStatus('Unpaid')">Unpaid</a>
+            
+          </div>
+        </li>
+        <li>
+          <button (click)="exportCSV()" class="btn btn-primary btn-sm">Export CSV</button>
+        </li>
+         </ul>
+        <!-- end of by status dropdown -->
+      
+<!--       <div class="nav-item nav-grid">
+        <span class="m-r-15">View Mode: </span>
+        <button type="button" class="btn btn-sm btn-primary waves-effect waves-light m-r-10" data-toggle="tooltip" data-placement="top" title="list view">
+          <i class="icofont icofont-listine-dots"></i>
+        </button>
+        <button type="button" class="btn btn-sm btn-primary waves-effect waves-light" data-toggle="tooltip" data-placement="top" title="grid view">
+          <i class="icofont icofont-table"></i>
+        </button>
+      </div> -->
+      <!-- end of by priority dropdown -->
+      
+      
+      <div class="nav-item nav-grid">
+        <label for="basic-addon1" style="display:block;text-align:left;color:black">Search By Name Or ERP ID</label> 
+        <div class="input-group">
+        <input type="text" (keyup.enter)="searchMethodNameErpString(val.value)" class="form-control" id="basic-addon1" #val placeholder="Search.." name="search">
+        <button type="submit"  (click)= 'searchMethodNameErpString(val.value)' class="btn btn-lg">
+         <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user-search"></i></label></span></button>
+        </div>
+        </div> 
+      
+     
+
+
+        
+  
+    </nav>
+  </div>
+  
+<div class="row">
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12" *ngFor="let student of filteredStudentArray;let i=index;">
+        <!-- Invoice list card start -->
+        <div class="card card-border-primary" >
+          <div class="card-header">
+            <div class="row">
+             <div class="col">
+            <h6>{{student.student.name}} </h6>
+             <h6>{{student.student.erp_id}} </h6>
+           </div>
+           <div class="col">
+            <!-- <span class="label label-default f-right"> 28 January, 2015 </span> -->
+            <div ngbDropdown class="dropdown-secondary dropdown f-right">
+              <button ngbDropdownToggle class="btn btn-primary btn-mini dropdown-toggle waves-effect waves-light" type="button" id="dropdown8" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{student.status}}</button>
+              <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown8" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                <a class="dropdown-item waves-light waves-effect" (click)="changeStatus('OverDue',i)"><span class="point-marker bg-warning"></span>OverDue</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item waves-light waves-effect active" (click)="changeStatus('Paid',i)"><span class="point-marker bg-success"></span>Paid</a>
+                <a class="dropdown-item waves-light waves-effect" (click)="changeStatus('Unpaid',i)"><span class="point-marker bg-info"></span>UnPaid</a>
+              </div>
+              <!-- end of dropdown menu -->
+              <span class="f-left m-r-5 text-inverse">Status : </span>
+            </div>
+          </div>
+          </div>
+        </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-7">
+                <ul class="list list-unstyled">
+                  <!-- <li>Invoice #: &nbsp;0028</li> -->
+                  <li>Issued on: <span class="text-semibold">{{filteredDateArray[i]}}</span></li>
+                </ul>
+              </div>
+              <div class="col-sm-5">
+                <ul class="list list-unstyled text-right">
+                  <li>Amount: {{filteredFeeSumArray[i]}}</li>
+                  <li>Method: <span class="text-semibold">SWIFT</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="task-list-table">
+              <p *ngIf="student['status'] == 'Unpaid'" class="task-due"><strong> Status : </strong><strong [class]="(unpaidStatus[i]) == 'OverDue'?'label label-danger':'label label-warning'">{{unpaidStatus[i]}}</strong></p>
+              <p class="task-due" *ngIf="student['status'] == 'Paid'"><strong> Status : </strong><strong class="label label-success">{{unpaidStatus[i]}}</strong></p>
+            </div>
+            <div class="task-board m-0">
+              <button href="javasript:;" class="btn btn-info btn-mini b-none" (click)="showFees(i)"><i class="icofont icofont-eye-alt m-0"></i></button>
+              <!-- end of dropdown-secondary -->
+              <div ngbDropdown class="dropdown-secondary dropdown">
+                <button ngbDropdownToggle class="btn btn-info btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
+                <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown2" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                  <a class="dropdown-item waves-light waves-effect" href="javascript:;"><i class="icofont icofont-ui-alarm"></i> Print Invoice</a>
+                  <a class="dropdown-item waves-light waves-effect" href="javascript:;"><i class="icofont icofont-attachment"></i> Download invoice</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item waves-light waves-effect" href="javascript:;"><i class="icofont icofont-spinner-alt-5"></i> Edit Invoice</a>
+                  <a class="dropdown-item waves-light waves-effect" href="javascript:;" (click)= "removeFees(i)"><i class="icofont icofont-ui-edit"></i> Remove Invoice</a>
+                </div>
+                <!-- end of dropdown menu -->
+              </div>
+              <!-- end of seconadary -->
+            </div>
+            <!-- end of pull-right class -->
+          </div>
+          <!-- end of card-footer -->
+        </div>
+        <!-- Invoice list card end -->
+</div>
+
+</div>
+</div>
+
+
+<div *ngIf="printDiv">
+  <div class="container">
+ 
+  <div>
+
+    <div class="card">          
+      <div class="card-body">
+        <div class="row invoive-info">
+          <div class="col-md-12 col-xs-12 invoice-client-info">
+            <h6>Client Information :</h6>
+            <p class="m-0" *ngIf="modalStudent">{{modalStudent.student.name}}</p>
+            <p class="m-0 m-t-10" *ngIf="modalStudent">{{modalStudent.student.address}}</p>
+          </div>
+          <div class="col-md-12 col-sm-12">
+            <h6>Order Information :</h6>
+            <table class="table table-responsive invoice-table invoice-order table-borderless">
+              <tbody>
+              <tr>
+                <th>Date :</th>
+                <td>{{modalDate}}</td>
+              </tr>
+              <tr>
+                <th>Status :</th>
+                <td>
+                  <span  *ngIf="modalStudent">{{modalStudent.status}}</span>
+                </td>
+              </tr>
+              <tr>
+                <th>Id :</th>
+                <td *ngIf="modalStudent">
+                  {{modalStudent.student.erp_id}}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-12 col-sm-12">
+            <h6 class="m-b-20">Invoice Number   <span>#12398521473</span></h6>
+            <h6 class="text-uppercase text-primary">Total Amount :
+              <span>{{modalFeeSum}}</span>
+            </h6>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="table-responsive">
+              <table class="table  invoice-detail-table">
+                <thead>
+                <tr class="thead-default">
+                  <th>Description</th>
+                  <th>Amount</th>
+                 </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let feeDetail of modalFee">
+                  <td>
+                    {{feeDetail.description}}
+                  </td>
+                  <td>{{feeDetail.amount}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+    
+        <div class="row">
+          <div class="col-sm-12">
+            <h6>Terms And Condition :</h6>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+
+
+
+<app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'" class="print-only"  *ngIf="!printDiv">
+
+<h3 class="print-only">Fee Summary</h3>
+<div>
+  <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
+  <div class="container">
+ 
+  <div>
+
+    <div class="card">          
+  
+             <button type="button" class="btn btn-primary btn-print-invoice waves-effect waves-light m-b-10 btn-sm m-r-20 text-right print-only" (click)="printInvoice()">Print Invoice
+              </button>
+      <div class="card-body">
+        <div class="row invoive-info">
+          <div class="col-md-12 col-xs-12 invoice-client-info">
+            <h6>Client Information :</h6>
+            <p class="m-0" *ngIf="modalStudent">{{modalStudent.student.name}}</p>
+            <p class="m-0 m-t-10" *ngIf="modalStudent">{{modalStudent.student.address}}</p>
+          </div>
+          <div class="col-md-12 col-sm-12">
+            <h6>Order Information :</h6>
+            <table class="table table-responsive invoice-table invoice-order table-borderless">
+              <tbody>
+              <tr>
+                <th>Date :</th>
+                <td>{{modalDate}}</td>
+              </tr>
+              <tr>
+                <th>Status :</th>
+                <td>
+                  <span [class]="(modalStudent.status) == 'Unpaid'?'label label-warning' : 'label label-success'" *ngIf="modalStudent">{{modalStudent.status}}</span>
+                </td>
+              </tr>
+              <tr>
+                <th>Id :</th>
+                <td *ngIf="modalStudent">
+                  {{modalStudent.student.erp_id}}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-12 col-sm-12">
+            <h6 class="m-b-20">Invoice Number   <span>#12398521473</span></h6>
+            <h6 class="text-uppercase text-primary">Total Amount :
+              <span>{{modalFeeSum}}</span>
+            </h6>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="table-responsive">
+              <table class="table  invoice-detail-table">
+                <thead>
+                <tr class="thead-default">
+                  <th>Description</th>
+                  <th>Amount</th>
+                 </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let feeDetail of modalFee">
+                  <td>
+                    {{feeDetail.description}}
+                  </td>
+                  <td>{{feeDetail.amount}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+    
+        <div class="row">
+          <div class="col-sm-12">
+            <h6>Terms And Condition :</h6>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</perfect-scrollbar>
+
+</div>
+</app-modal-animation>
