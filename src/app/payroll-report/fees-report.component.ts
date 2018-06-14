@@ -780,8 +780,8 @@ removeFees(index){
 
    
              this.getDate(this.selectDate);
-             this.searchMethodNameErpString(this.searchvalue);
              this.getStatus(this.status);
+             this.searchMethodNameErpString(this.searchvalue);
              this.checkOverDueStatus();
 
          })

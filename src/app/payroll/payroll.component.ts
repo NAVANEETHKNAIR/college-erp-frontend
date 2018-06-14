@@ -136,6 +136,7 @@ getStaff(staff){
 
    this.http.post(this.url+ '/payroll/payroll',{
      user_id: this.user_id,
+     staff_id: this.id,
      basic_sal: value.basic_sal,
      month:this.month,
      allowances:value.allowances,
@@ -193,6 +194,7 @@ getStaff(staff){
   	this.editMode = false;
     this.index = i;
     this.user_id = this.staffList[i].user_id;
+    this.id =  this.staffList[i]._id;
     this.session = this.staffList[i].session;
     this.http.post(this.url + '/payroll/payroll_get_user_id',{
        user_id: this.user_id,
@@ -229,8 +231,6 @@ getStaff(staff){
       else{
       console.log(this.payrollForm);
       this.basic_sal = '';
-      this.month = '';
-      this.session = '';
       this.status = '';
       this.initializeForm();
       this.openMyModal('effect-13');

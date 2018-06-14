@@ -21,7 +21,7 @@ import { LibraryComponent } from './library/library.component';
 import { AttendanceStudentComponent } from './attendance-student/attendance-student.component';
 import { AttendanceStaffComponent } from './attendance-staff/attendance-staff.component';
 import { ExamComponent } from './exam/exam.component';
-import { PayrollComponent } from './payroll/payroll.component';
+import { PayrollComponent } from './payrollCopy/payroll.component';
 import { PayslipComponent } from './payslip/payslip.component';
 import { MessageComponent } from './message/message.component';
 import { SystemComponent } from './system/system.component';
@@ -41,6 +41,7 @@ import { StudentdashboardComponent } from './student-dashboard/student-dashboard
 import { AttendanceRecordComponent } from './attendance-record/attendance-record.component';
 import { FeesComponent } from './fees/fees.component';
 import { FeesReportComponent } from './fees-report/fees-report.component';
+import { PayslipReportComponent } from './payslip-report/payslip-report.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { FeesReportComponent } from './fees-report/fees-report.component';
     StudentdashboardComponent,
     AttendanceRecordComponent,
     FeesComponent,
-    FeesReportComponent
+    FeesReportComponent,
+    PayslipReportComponent
     
   ],
   imports: [

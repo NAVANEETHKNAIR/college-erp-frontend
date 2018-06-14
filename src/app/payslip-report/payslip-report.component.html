@@ -1,7 +1,7 @@
 
 <div class="card print-only" *ngIf="!printDiv">
   <div class="card-header">
-    <h5>Fees</h5>
+    <h5>PaySlip</h5>
 
 
   
@@ -13,21 +13,11 @@
         <div id="crm-contact" class="dt-responsive">
           <div class="row">
             <div class="col-xs-12 col-sm-4 col-md-4">
-              <div>
-                <label for= "getCity" class="label-control">Select Class
-                  <select name="getCity" #getClass class="form-control" [(ngModel)]="selectClass" (change)="getClassMethod(getClass.value)">
+                   <div>
+                <label for= "getStaff" class="label-control">Select Staff
+                  <select name="getStaff" #getStaff class="form-control" [(ngModel)]="selectStaff" (change)="getStaffMethod(getStaff.value)">
                     <option style="display:none;"></option>
-                    <option *ngFor="let getClass of filterClass;let i= index;" [value]="getClass">{{getClass}}</option>
-                  </select>
-                </label>
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-4 col-md-4">
-              <div *ngIf ="selectClass!==''">
-                <label for= "getSection" class="label-control">Select Section
-                  <select name="getSection" #getSection class="form-control" (change)="getSectionMethod(getSection.value)" [(ngModel)]="selectSection">
-                    <option style="display:none;"></option>
-                    <option *ngFor="let getSection of getSectionOfClass;let i= index;"  [value]="getSection.section">{{getSection.section}}</option>
+                    <option *ngFor="let getStaff of staffType;let i= index;" [value]="getStaff">{{getStaff}}</option>
                   </select>
                 </label>
               </div>
@@ -106,19 +96,19 @@
   
 <div class="row">
 
-      <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12" *ngFor="let student of filteredStudentArray;let i=index;">
+      <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12" *ngFor="let staff of filteredStaffArray;let i=index;">
         <!-- Invoice list card start -->
         <div class="card card-border-primary" >
           <div class="card-header">
             <div class="row">
              <div class="col">
-            <h6>{{student.student.name}} </h6>
-             <h6>{{student.student.erp_id}} </h6>
+            <h6>{{staff.staff.name}} </h6>
+             <h6>{{staff.staff.erp_id}} </h6>
            </div>
            <div class="col">
             <!-- <span class="label label-default f-right"> 28 January, 2015 </span> -->
             <div ngbDropdown class="dropdown-secondary dropdown f-right">
-              <button ngbDropdownToggle class="btn btn-primary btn-mini dropdown-toggle waves-effect waves-light" type="button" id="dropdown8" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{student.status}}</button>
+              <button ngbDropdownToggle class="btn btn-primary btn-mini dropdown-toggle waves-effect waves-light" type="button" id="dropdown8" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{staff.status}}</button>
               <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown8" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                 <a class="dropdown-item waves-light waves-effect" (click)="changeStatus('OverDue',i)"><span class="point-marker bg-warning"></span>OverDue</a>
                 <div class="dropdown-divider"></div>
@@ -141,7 +131,7 @@
               </div>
               <div class="col-sm-5">
                 <ul class="list list-unstyled text-right">
-                  <li>Amount: {{filteredFeeSumArray[i]}}</li>
+                  <li>Amount: {{filteredTotalSumArray[i]}}</li>
                   <li>Method: <span class="text-semibold">SWIFT</span></li>
                 </ul>
               </div>
@@ -149,11 +139,11 @@
           </div>
           <div class="card-footer">
             <div class="task-list-table">
-              <p *ngIf="student['status'] == 'Unpaid'" class="task-due"><strong> Status : </strong><strong [class]="(unpaidStatus[i]) == 'OverDue'?'label label-danger':'label label-warning'">{{unpaidStatus[i]}}</strong></p>
-              <p class="task-due" *ngIf="student['status'] == 'Paid'"><strong> Status : </strong><strong class="label label-success">{{unpaidStatus[i]}}</strong></p>
+              <p *ngIf="staff['status'] == 'Unpaid'" class="task-due"><strong> Status : </strong><strong [class]="(unpaidStatus[i]) == 'OverDue'?'label label-danger':'label label-warning'">{{unpaidStatus[i]}}</strong></p>
+              <p class="task-due" *ngIf="staff['status'] == 'Paid'"><strong> Status : </strong><strong class="label label-success">{{unpaidStatus[i]}}</strong></p>
             </div>
             <div class="task-board m-0">
-              <button href="javasript:;" class="btn btn-info btn-mini b-none" (click)="showFees(i)"><i class="icofont icofont-eye-alt m-0"></i></button>
+              <button href="javasript:;" class="btn btn-info btn-mini b-none" (click)="showPayslip(i)"><i class="icofont icofont-eye-alt m-0"></i></button>
               <!-- end of dropdown-secondary -->
               <div ngbDropdown class="dropdown-secondary dropdown">
                 <button ngbDropdownToggle class="btn btn-info btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
@@ -162,7 +152,7 @@
                   <a class="dropdown-item waves-light waves-effect" href="javascript:;"><i class="icofont icofont-attachment"></i> Download invoice</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item waves-light waves-effect" href="javascript:;"><i class="icofont icofont-spinner-alt-5"></i> Edit Invoice</a>
-                  <a class="dropdown-item waves-light waves-effect" href="javascript:;" (click)= "removeFees(i)"><i class="icofont icofont-ui-edit"></i> Remove Invoice</a>
+                  <a class="dropdown-item waves-light waves-effect" href="javascript:;" (click)= "removePayslip(i)"><i class="icofont icofont-ui-edit"></i> Remove Invoice</a>
                 </div>
                 <!-- end of dropdown menu -->
               </div>
@@ -189,8 +179,8 @@
         <div class="row invoive-info">
           <div class="col-md-12 col-xs-12 invoice-client-info">
             <h6>Client Information :</h6>
-            <p class="m-0" *ngIf="modalStudent">{{modalStudent.student.name}}</p>
-            <p class="m-0 m-t-10" *ngIf="modalStudent">{{modalStudent.student.address}}</p>
+            <p class="m-0" *ngIf="modalStaff">{{modalStaff.staff.name}}</p>
+            <p class="m-0 m-t-10" *ngIf="modalStaff">{{modalStaff.staff.address}}</p>
           </div>
           <div class="col-md-12 col-sm-12">
             <h6>Order Information :</h6>
@@ -203,13 +193,13 @@
               <tr>
                 <th>Status :</th>
                 <td>
-                  <span  *ngIf="modalStudent">{{modalStudent.status}}</span>
+                  <span  *ngIf="modalStaff">{{modalStaff.status}}</span>
                 </td>
               </tr>
               <tr>
                 <th>Id :</th>
-                <td *ngIf="modalStudent">
-                  {{modalStudent.student.erp_id}}
+                <td *ngIf="modalStaff">
+                  {{ modalStaff.staff.erp_id}}
                 </td>
               </tr>
               </tbody>
@@ -218,31 +208,61 @@
           <div class="col-md-12 col-sm-12">
             <h6 class="m-b-20">Invoice Number   <span>#12398521473</span></h6>
             <h6 class="text-uppercase text-primary">Total Amount :
-              <span>{{modalFeeSum}}</span>
+              <span>{{modalTotalPayslipSum}}</span>
+            </h6>
+            <h6 class="text-uppercase text-primary" *ngIf="modalPayslip">Basic Salary :
+              <span>{{modalPayslip.basic_sal}}</span>
             </h6>
           </div>
         </div>
         <div class="row">
           <div class="col-sm-12">
             <div class="table-responsive">
-              <table class="table  invoice-detail-table">
-                <thead>
-                <tr class="thead-default">
-                  <th>Description</th>
-                  <th>Amount</th>
-                 </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let feeDetail of modalFee">
-                  <td>
-                    {{feeDetail.description}}
-                  </td>
-                  <td>{{feeDetail.amount}}</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+              
+<table class="table table-framed">
+    <tr >
+      <th colspan="3">
+        Allowances
+      </th>
+      <th colspan="3">
+        Amount
+      </th>
+      <th colspan="3">
+        Deductions
+      </th>
+      <th colspan="3">
+        Amount
+      </th>
+    
+    </tr>
+
+    <tr *ngFor="let len of modalLooplen">
+
+     <td colspan="3">{{(modalPayslip.allowances[len]? modalPayslip.allowances[len].description : "")}}</td>
+     <td colspan="3">{{(modalPayslip.allowances[len]? modalPayslip.allowances[len].amount : "")}}</td>
+     <td colspan="3">{{(modalPayslip.deductions[len]? modalPayslip.deductions[len].description : "")}}</td>
+     <td colspan="3">{{(modalPayslip.deductions[len]? modalPayslip.deductions[len].amount : "")}}</td>
+
+    </tr>
+   <tr>
+    <th colspan="3">Total Allowance</th>
+    <td colspan="3">{{modalAllowancePayslipSum}}</td>
+    <th colspan="3">Total Deduction</th>
+    <td colspan="3">{{modalDeductionPayslipSum}}</td>
+  </tr>
+  <tr>
+    <td colspan="6">
+    </td>
+    <td colspan="6">
+      Net Salary: {{modalTotalPayslipSum}}
+    </td>
+  </tr>
+  
+  </table>
+  <h6>Amount in words:<strong> {{modalNetSalaryText}} only</strong></h6>
+  </div>
+    </div>
+
         </div>
     
         <div class="row">
@@ -260,10 +280,9 @@
 
 
 
-
 <app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'" class="print-only"  *ngIf="!printDiv">
 
-<h3 class="print-only">Fee Summary</h3>
+<h3 class="print-only">Salary Summary</h3>
 <div>
   <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
   <div class="container">
@@ -278,8 +297,8 @@
         <div class="row invoive-info">
           <div class="col-md-12 col-xs-12 invoice-client-info">
             <h6>Client Information :</h6>
-            <p class="m-0" *ngIf="modalStudent">{{modalStudent.student.name}}</p>
-            <p class="m-0 m-t-10" *ngIf="modalStudent">{{modalStudent.student.address}}</p>
+            <p class="m-0" *ngIf="modalStaff">{{modalStaff.staff.name}}</p>
+            <p class="m-0 m-t-10" *ngIf="modalStaff">{{modalStaff.staff.address}}</p>
           </div>
           <div class="col-md-12 col-sm-12">
             <h6>Order Information :</h6>
@@ -292,62 +311,94 @@
               <tr>
                 <th>Status :</th>
                 <td>
-                  <span [class]="(modalStudent.status) == 'Unpaid'?'label label-warning' : 'label label-success'" *ngIf="modalStudent">{{modalStudent.status}}</span>
+                  <span [class]="(modalStaff.status) == 'Unpaid'?'label label-warning' : 'label label-success'" *ngIf="modalStaff">{{modalStaff.status}}</span>
                 </td>
               </tr>
               <tr>
                 <th>Id :</th>
-                <td *ngIf="modalStudent">
-                  {{modalStudent.student.erp_id}}
+                <td *ngIf="modalStaff">
+                  {{modalStaff.staff.erp_id}}
                 </td>
               </tr>
               </tbody>
             </table>
           </div>
-          <div class="col-md-12 col-sm-12">
+<div class="col-md-12 col-sm-12">
             <h6 class="m-b-20">Invoice Number   <span>#12398521473</span></h6>
             <h6 class="text-uppercase text-primary">Total Amount :
-              <span>{{modalFeeSum}}</span>
+              <span>{{modalTotalPayslipSum}}</span>
+            </h6>
+             <h6 class="text-uppercase text-primary" *ngIf="modalPayslip">Basic Salary :
+              <span>{{modalPayslip.basic_sal}}</span>
             </h6>
           </div>
         </div>
         <div class="row">
           <div class="col-sm-12">
             <div class="table-responsive">
-              <table class="table  invoice-detail-table">
-                <thead>
-                <tr class="thead-default">
-                  <th>Description</th>
-                  <th>Amount</th>
-                 </tr>
-                </thead>
-                <tbody>
-                <tr *ngFor="let feeDetail of modalFee">
-                  <td>
-                    {{feeDetail.description}}
-                  </td>
-                  <td>{{feeDetail.amount}}</td>
-                </tr>
-                </tbody>
-              </table>
+ 
+
+    <table class="table table-framed">
+    <tr >
+      <th colspan="2">
+        Allowances
+      </th>
+      <th colspan="2">
+        Amount
+      </th>
+      <th colspan="2">
+        Deductions
+      </th>
+      <th colspan="2">
+        Amount
+      </th>
+    
+    </tr>
+
+    <tr *ngFor="let len of modalLooplen">
+
+     <td colspan="2">{{(modalPayslip.allowances[len]? modalPayslip.allowances[len].description : "")}}</td>
+     <td colspan="2">{{(modalPayslip.allowances[len]? modalPayslip.allowances[len].amount : "")}}</td>
+     <td colspan="2">{{(modalPayslip.deductions[len]? modalPayslip.deductions[len].description : "")}}</td>
+     <td colspan="2">{{(modalPayslip.deductions[len]? modalPayslip.deductions[len].amount : "")}}</td>
+
+    </tr>
+   <tr>
+    <th colspan="2">Total Allowance</th>
+    <td colspan="2">{{modalAllowancePayslipSum}}</td>
+    <th colspan="2">Total Deduction</th>
+    <td colspan="2">{{modalDeductionPayslipSum}}</td>
+  </tr>
+  <tr>
+    <td colspan="6">
+    </td>
+    <td colspan="6">
+      Net Salary: <strong>{{modalTotalPayslipSum}}</strong>
+    </td>
+  </tr>
+  </table>
+  
             </div>
           </div>
-        </div>
-    
+         </div>
+     
         <div class="row">
           <div class="col-sm-12">
+            <h6>Amount in words:<strong> {{modalNetSalaryText}} only</strong></h6>
             <h6>Terms And Condition :</h6>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor </p>
           </div>
         </div>
       </div>
     </div>
-
-  </div>
+ </div>
 </div>
 </perfect-scrollbar>
 
 </div>
+
+
+
 </app-modal-animation>
 
 
