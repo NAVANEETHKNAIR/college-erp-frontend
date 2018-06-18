@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import * as _  from 'underscore'; 
 import * as moment from 'moment';
@@ -26,7 +26,7 @@ import { CookieService } from 'ng2-cookies';
   selector: 'app-student-dashboard',
   templateUrl: './student-dashboard.component.html',
   styleUrls: ['./student-dashboard.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  
 })
 export class StudentdashboardComponent implements OnInit {
   public refresh: Subject<any> = new Subject(); 
@@ -115,3 +115,4 @@ logout(){
 }
 
 }
+ 

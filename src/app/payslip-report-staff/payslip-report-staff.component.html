@@ -1,0 +1,381 @@
+
+<div class="card print-only" *ngIf="!printDiv">
+  <div class="card-header">
+    <h5>PaySlip</h5>
+
+
+  
+  </div>
+</div>
+<div class="print-only"  *ngIf="!printDiv">
+       <div class="col-lg-12  filter-bar">
+          <nav class="navbar navbar-light bg-faded m-b-30 p-10">
+      <ul class="nav navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="javascript:;">Filter: <span class="sr-only">(current)</span></a>
+        </li>
+        <li ngbDropdown="" class="nav-item dropdown">
+          <a ngbDropdownToggle="" class="nav-link dropdown-toggle" href="javascript:;" id="bydate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-clock-time"></i> By Date:{{byDate}}</a>
+          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="bydate">
+            <a class="dropdown-item" href="javascript:;" (click)="getDate('show-all')">Show all</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="javascript:;" (click)="getDate('today')">Today</a>
+            <a class="dropdown-item" href="javascript:;" (click)="getDate('yesterday')">Yesterday</a>
+            <a class="dropdown-item" href="javascript:;" (click)="getDate('week')">This week</a>
+            <a class="dropdown-item" href="javascript:;" (click)="getDate('month')">This month</a>
+            <a class="dropdown-item" href="javascript:;" (click)="showModal()">Custom Date</a>
+          </div>
+        </li>
+        <!-- end of by date dropdown -->
+        <li ngbDropdown class="nav-item dropdown">
+          <a ngbDropdownToggle class="nav-link dropdown-toggle" href="javascript:;" id="bystatus" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-chart-histogram-alt"></i> By Status:{{byStatus}}</a>
+          <div  ngbDropdownMenu class="dropdown-menu" aria-labelledby="bystatus">
+            <a class="dropdown-item" (click)="getStatus('show')">Show all</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item"  (click)="getStatus('Paid')">Paid</a>
+            <a class="dropdown-item"  (click)="getStatus('Unpaid')">Unpaid</a>
+            
+          </div>
+        </li>
+        <li>
+          <button (click)="exportCSV()" class="btn btn-primary btn-sm">Export CSV</button>
+        </li>
+         </ul>
+        <!-- end of by status dropdown -->
+      
+      
+      <div class="nav-item nav-grid">
+        <label for="basic-addon1" style="display:block;text-align:left;color:black">Search By Name Or ERP ID</label> 
+        <div class="input-group">
+        <input type="text" (keyup.enter)="searchMethodNameErpString(val.value)" class="form-control" id="basic-addon1" #val placeholder="Search.." name="search">
+        <button type="submit"  (click)= 'searchMethodNameErpString(val.value)' class="btn btn-lg">
+         <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user-search"></i></label></span></button>
+        </div>
+        </div> 
+      
+     
+
+
+        
+  
+    </nav>
+  </div>
+  
+<div class="row">
+
+      <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12" *ngFor="let staff of filteredStaffArray;let i=index;">
+        <!-- Invoice list card start -->
+        <div class="card card-border-primary" >
+          <div class="card-header">
+            <div class="row">
+             <div class="col">
+            <h6>{{staff.staff.name}} </h6>
+             <h6>{{staff.staff.erp_id}} </h6>
+           </div>
+          </div>
+        </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-7">
+                <ul class="list list-unstyled">
+                  <!-- <li>Invoice #: &nbsp;0028</li> -->
+                  <li>Issued on: <span class="text-semibold">{{filteredDateArray[i]}}</span></li>
+                </ul>
+              </div>
+              <div class="col-sm-5">
+                <ul class="list list-unstyled text-right">
+                  <li>Amount: {{filteredTotalSumArray[i]}}</li>
+                  <li>Method: <span class="text-semibold">SWIFT</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="task-list-table">
+              <p *ngIf="staff['status'] == 'Unpaid'" class="task-due"><strong> Status : </strong><strong [class]="(unpaidStatus[i]) == 'OverDue'?'label label-danger':'label label-warning'">{{unpaidStatus[i]}}</strong></p>
+              <p class="task-due" *ngIf="staff['status'] == 'Paid'"><strong> Status : </strong><strong class="label label-success">{{unpaidStatus[i]}}</strong></p>
+            </div>
+            <div class="task-board m-0">
+              <button href="javasript:;" class="btn btn-info btn-mini b-none" (click)="showPayslip(i)"><i class="icofont icofont-eye-alt m-0"></i></button>
+              <!-- end of dropdown-secondary -->
+
+              <!-- end of seconadary -->
+            </div>
+            <!-- end of pull-right class -->
+          </div>
+          <!-- end of card-footer -->
+        </div>
+        <!-- Invoice list card end -->
+</div>
+
+</div>
+</div>
+
+
+<div *ngIf="printDiv">
+  <div class="container">
+ 
+  <div>
+
+    <div class="card">          
+      <div class="card-body">
+        <div class="row invoive-info">
+          <div class="col-md-12 col-xs-12 invoice-client-info">
+            <h6>Client Information :</h6>
+            <p class="m-0" *ngIf="modalStaff">{{modalStaff.staff.name}}</p>
+            <p class="m-0 m-t-10" *ngIf="modalStaff">{{modalStaff.staff.address}}</p>
+          </div>
+          <div class="col-md-12 col-sm-12">
+            <h6>Order Information :</h6>
+            <table class="table table-responsive invoice-table invoice-order table-borderless">
+              <tbody>
+              <tr>
+                <th>Date :</th>
+                <td>{{modalDate}}</td>
+              </tr>
+              <tr>
+                <th>Status :</th>
+                <td>
+                  <span  *ngIf="modalStaff">{{modalStaff.status}}</span>
+                </td>
+              </tr>
+              <tr>
+                <th>Id :</th>
+                <td *ngIf="modalStaff">
+                  {{ modalStaff.staff.erp_id}}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-12 col-sm-12">
+            <h6 class="m-b-20">Invoice Number   <span>#12398521473</span></h6>
+            <h6 class="text-uppercase text-primary">Total Amount :
+              <span>{{modalTotalPayslipSum}}</span>
+            </h6>
+            <h6 class="text-uppercase text-primary" *ngIf="modalPayslip">Basic Salary :
+              <span>{{modalPayslip.basic_sal}}</span>
+            </h6>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="table-responsive">
+              
+<table class="table table-framed">
+    <tr >
+      <th colspan="3">
+        Allowances
+      </th>
+      <th colspan="3">
+        Amount
+      </th>
+      <th colspan="3">
+        Deductions
+      </th>
+      <th colspan="3">
+        Amount
+      </th>
+    
+    </tr>
+
+    <tr *ngFor="let len of modalLooplen">
+
+     <td colspan="3">{{(modalPayslip.allowances[len]? modalPayslip.allowances[len].description : "")}}</td>
+     <td colspan="3">{{(modalPayslip.allowances[len]? modalPayslip.allowances[len].amount : "")}}</td>
+     <td colspan="3">{{(modalPayslip.deductions[len]? modalPayslip.deductions[len].description : "")}}</td>
+     <td colspan="3">{{(modalPayslip.deductions[len]? modalPayslip.deductions[len].amount : "")}}</td>
+
+    </tr>
+   <tr>
+    <th colspan="3">Total Allowance</th>
+    <td colspan="3">{{modalAllowancePayslipSum}}</td>
+    <th colspan="3">Total Deduction</th>
+    <td colspan="3">{{modalDeductionPayslipSum}}</td>
+  </tr>
+  <tr>
+    <td colspan="6">
+    </td>
+    <td colspan="6">
+      Net Salary: {{modalTotalPayslipSum}}
+    </td>
+  </tr>
+  
+  </table>
+  <h6>Amount in words:<strong> {{modalNetSalaryText}} only</strong></h6>
+  </div>
+    </div>
+
+        </div>
+    
+        <div class="row">
+          <div class="col-sm-12">
+            <h6>Terms And Condition :</h6>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+
+
+<app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'" class="print-only"  *ngIf="!printDiv">
+
+<h3 class="print-only">Salary Summary</h3>
+<div>
+  <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
+  <div class="container">
+ 
+  <div>
+
+    <div class="card">          
+  
+             <button type="button" class="btn btn-primary btn-print-invoice waves-effect waves-light m-b-10 btn-sm m-r-20 text-right print-only" (click)="printInvoice()">Print Invoice
+              </button>
+      <div class="card-body">
+        <div class="row invoive-info">
+          <div class="col-md-12 col-xs-12 invoice-client-info">
+            <h6>Client Information :</h6>
+            <p class="m-0" *ngIf="modalStaff">{{modalStaff.staff.name}}</p>
+            <p class="m-0 m-t-10" *ngIf="modalStaff">{{modalStaff.staff.address}}</p>
+          </div>
+          <div class="col-md-12 col-sm-12">
+            <h6>Order Information :</h6>
+            <table class="table table-responsive invoice-table invoice-order table-borderless">
+              <tbody>
+              <tr>
+                <th>Date :</th>
+                <td>{{modalDate}}</td>
+              </tr>
+              <tr>
+                <th>Status :</th>
+                <td>
+                  <span [class]="(modalStaff.status) == 'Unpaid'?'label label-warning' : 'label label-success'" *ngIf="modalStaff">{{modalStaff.status}}</span>
+                </td>
+              </tr>
+              <tr>
+                <th>Id :</th>
+                <td *ngIf="modalStaff">
+                  {{modalStaff.staff.erp_id}}
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+<div class="col-md-12 col-sm-12">
+            <h6 class="m-b-20">Invoice Number   <span>#12398521473</span></h6>
+            <h6 class="text-uppercase text-primary">Total Amount :
+              <span>{{modalTotalPayslipSum}}</span>
+            </h6>
+             <h6 class="text-uppercase text-primary" *ngIf="modalPayslip">Basic Salary :
+              <span>{{modalPayslip.basic_sal}}</span>
+            </h6>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="table-responsive">
+ 
+
+    <table class="table table-framed">
+    <tr >
+      <th colspan="2">
+        Allowances
+      </th>
+      <th colspan="2">
+        Amount
+      </th>
+      <th colspan="2">
+        Deductions
+      </th>
+      <th colspan="2">
+        Amount
+      </th>
+    
+    </tr>
+
+    <tr *ngFor="let len of modalLooplen">
+
+     <td colspan="2">{{(modalPayslip.allowances[len]? modalPayslip.allowances[len].description : "")}}</td>
+     <td colspan="2">{{(modalPayslip.allowances[len]? modalPayslip.allowances[len].amount : "")}}</td>
+     <td colspan="2">{{(modalPayslip.deductions[len]? modalPayslip.deductions[len].description : "")}}</td>
+     <td colspan="2">{{(modalPayslip.deductions[len]? modalPayslip.deductions[len].amount : "")}}</td>
+
+    </tr>
+   <tr>
+    <th colspan="2">Total Allowance</th>
+    <td colspan="2">{{modalAllowancePayslipSum}}</td>
+    <th colspan="2">Total Deduction</th>
+    <td colspan="2">{{modalDeductionPayslipSum}}</td>
+  </tr>
+  <tr>
+    <td colspan="6">
+    </td>
+    <td colspan="6">
+      Net Salary: <strong>{{modalTotalPayslipSum}}</strong>
+    </td>
+  </tr>
+  </table>
+  
+            </div>
+          </div>
+         </div>
+     
+        <div class="row">
+          <div class="col-sm-12">
+            <h6>Amount in words:<strong> {{modalNetSalaryText}} only</strong></h6>
+            <h6>Terms And Condition :</h6>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor </p>
+          </div>
+        </div>
+      </div>
+    </div>
+ </div>
+</div>
+</perfect-scrollbar>
+
+</div>
+
+
+
+</app-modal-animation>
+
+
+<!-- <button type="button" class="btn btn-success ripple light" (click)="customDateModel()">Small</button> -->
+<app-modal-basic #modalSmall [dialogClass]="'modal-sm'">
+  <div class="app-modal-header">
+    <h4 class="modal-title">Custom Date</h4>
+    <button type="button" class="close basic-close" (click)="modalSmall.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="app-modal-body">
+   <label for="basic-addon1" style="display:block;text-align:left">Start Date</label>
+      <div class="input-group">
+      <input type="text" class="form-control" [readOnly]= true placeholder="yyyy-mm-dd"
+             name="dp1" [(ngModel)]="startDate" ngbDatepicker #dp1="ngbDatepicker">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary btn-primary text-center" (click)="dp1.toggle()" type="button">
+          <i class="icofont icofont-calendar"></i>
+        </button>
+      </div>
+    </div>
+   <label for="basic-addon1" style="display:block;text-align:left">End Date</label>
+     <div class="input-group">
+      <input type="text" [readOnly]= true class="form-control" placeholder="yyyy-mm-dd"
+             name="dp2" [(ngModel)]="endDate" ngbDatepicker #dp2="ngbDatepicker">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary btn-primary text-center" (click)="dp2.toggle()" type="button">
+          <i class="icofont icofont-calendar"></i>
+        </button>
+      </div>
+    </div>  
+  </div>
+  <div class="app-modal-footer">
+    <button *ngIf="startDate && endDate" type="button" class="btn btn-default ripple" (click)="hideModal()">Show Report</button>
+  </div>
+</app-modal-basic>

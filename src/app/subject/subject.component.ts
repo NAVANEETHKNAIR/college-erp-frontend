@@ -4,6 +4,7 @@ import * as _  from 'underscore';
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { CookieService } from 'ng2-cookies';
+import { SystemService } from '../system/service.system';
 //private cookieService: CookieService
 //import { ModalComponent } from '../components/advanced-component
 @Component({
@@ -27,11 +28,15 @@ public allSubject:any;
 public editMode:boolean;
 public id:any;
 public cookie:any;
-  constructor(public http: Http,private cookieService: CookieService) {
+  constructor(public http: Http, private cookieService: CookieService, public fetchsession: SystemService) {
   this.cookie = this.cookieService.getAll()['cookieSet'];
   this.initializeForm();
-
-
+  console.log(this.subjectForm);
+  this.fetchsession.getSession().subscribe((session)=>{
+    this.session = session.session;
+    console.log("session from session service",this.session);
+    this.initializeForm();
+  })
 }
 
 ngOnInit() {

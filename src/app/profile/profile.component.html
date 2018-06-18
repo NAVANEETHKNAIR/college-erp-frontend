@@ -1,0 +1,204 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="md-tabs">
+      <ngb-tabset>
+        <ngb-tab title="Manage Profile">
+          <ng-template ngbTabContent>
+            <div class="m-t-15">
+              <!-- personal card start -->
+              <div class="card">
+                <div class="card-header">
+                  <h5 class="card-header-text">About Me</h5>
+                 <!--  <button id="edit-btn" type="button" class="btn btn-sm btn-primary waves-effect waves-light f-right" (click)="toggleEditProfile()">
+                    <i class="icofont {{ editProfileIcon }}"></i>
+                  </button> -->
+                </div>
+                <div class="card-body">
+                  <div class="view-info" *ngIf="user">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="general-info">
+                          <div class="row">
+                            <div class="col-lg-12 col-xl-6">
+                              <table class="table m-0 table-responsive">
+                                <tbody>
+                                <tr>
+                                  <th scope="row">Full Name</th>
+                                  <td>{{ user.name }}</td>
+                                </tr>
+                                 <tr>
+                                  <th scope="row">ERP ID</th>
+                                  <td>{{ user.erp_id }}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">Gender</th>
+                                  <td>{{ user.gender }}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">Birth Date</th>
+                                  <td>{{ user.birthday }}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">Date of Join</th>
+                                  <td>{{ user.date_of_join }}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">Address</th>
+                                  <td>{{ user.address }}</td>
+                                </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <!-- end of table col-lg-6 -->
+                            <div class="col-lg-12 col-xl-6">
+                              <table class="table table-responsive">
+                                <tbody>
+                                <tr>
+                                  <th scope="row">Email</th>
+                                  <td><a href="javascript:;">{{ user.email }}</a></td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">Mobile Number</th>
+                                  <td *ngIf="user.phone">{{user.phone}}</td>
+                                  <td *ngIf="user.student_contact">{{ user.student_contact }}</td>
+                                </tr>
+                                 <tr *ngIf="user.parent_contact">
+                                  <th scope="row">Parent Contact</th>
+                                  <td>{{ user.parent_contact }}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">Gender</th>
+                                  <td>{{user.gender}}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">Caste</th>
+                                  <td>{{user.caste}}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">Aadhar Number</th>
+                                  <td>{{user.adhaar_num}}</td>
+                                </tr>
+                                 <tr>
+                                  <th scope="row">Account Name</th>
+                                  <td>{{ user.account_name }}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">Account Number</th>
+                                  <td>{{ user.account_number }}</td>
+                                </tr>
+                                <tr>
+                                  <th scope="row">IFSC Code</th>
+                                  <td><a href="javascript:;">{{ user.ifsc }}</a></td>
+                                </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                            <!-- end of table col-lg-6 -->
+                          </div>
+                          <!-- end of row -->
+                        </div>
+                        <!-- end of general info -->
+                      </div>
+                      <!-- end of col-lg-12 -->
+                    </div>
+                    <!-- end of row -->
+                  </div>
+                  <!-- end of view-info -->
+
+                  <!-- end of edit-info -->
+                </div>
+                <!-- end of card-body -->
+              </div>
+              <!-- personal card end-->
+            </div>
+          </ng-template>
+        </ngb-tab>
+
+      </ngb-tabset>
+    </div>
+  </div>
+</div>
+
+<!--profile cover end-->
+
+
+
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="md-tabs">
+      <ngb-tabset>
+        <ngb-tab title="Change Password">
+          <ng-template ngbTabContent>
+            <div class="m-t-15">
+              <!-- personal card start -->
+              <div class="card">
+                <div class="card-body">
+                  <!-- end of view-info -->
+                  <div class="edit-info">
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="general-info">
+                          <div class="row">
+                            <div class="col-lg-6">
+                              <table class="table">
+                                <tbody>
+                                <tr>
+                                  <td>
+                                    <div class="input-group">
+                                      <span class="input-group-prepend"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+                                      <input type="text" class="form-control" placeholder="Current Password" value="">
+                                    </div>
+                                  </td>
+                                </tr>
+
+
+                                <tr>
+                                  <td>
+                                    <div class="input-group">
+                                      <span class="input-group-prepend"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+                                      <input type="text" class="form-control" placeholder="New Password" value="">
+                                    </div>
+                                  </td>
+                                </tr>
+
+                                <tr>
+                                  <td>
+                                    <div class="input-group">
+                                      <span class="input-group-prepend"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+                                      <input type="text" class="form-control" placeholder="Confirm New Password" value="">
+                                    </div>
+                                  </td>
+                                </tr>
+
+
+                                </tbody>
+                              </table>
+                            </div>
+                            <!-- end of table col-lg-6 -->
+                          </div>
+                          <!-- end of row -->
+                          <div class="text-center">
+                            <a href="javascript:;" class="btn btn-primary waves-effect waves-light m-r-20">Save</a>
+                          </div>
+                        </div>
+                        <!-- end of edit info -->
+                      </div>
+                      <!-- end of col-lg-12 -->
+                    </div>
+                    <!-- end of row -->
+                  </div>
+                  <!-- end of edit-info -->
+                </div>
+                <!-- end of card-body -->
+              </div>
+              <!-- personal card end-->
+            </div>
+          </ng-template>
+        </ngb-tab>
+
+      </ngb-tabset>
+    </div>
+  </div>
+</div>
+

@@ -9,11 +9,11 @@ import { SystemService } from '../system/service.system';
 
 
 @Component({
-  selector: 'app-attendance-record',
-  templateUrl: './attendance-record.component.html',
-  styleUrls: ['./attendance-record.component.scss']
+  selector: 'app-attendance-staff-record',
+  templateUrl: './attendance-staff-record.component.html',
+  styleUrls: ['./attendance-staff-record.component.scss']
 })
-export class AttendanceRecordComponent implements OnInit {
+export class AttendanceStaffRecordComponent implements OnInit {
   
  public cookie:any;
  public session:any;
@@ -32,6 +32,7 @@ export class AttendanceRecordComponent implements OnInit {
  public maxDate : any;
  public len:any;
  public filteredAttendance:any;
+ public user:any;
   constructor(public http: Http, public fetchsession:SystemService, private cookieService: CookieService,public datePickerService:NgbDatepickerConfig,public parseFormatter:NgbDateParserFormatter){
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
@@ -48,37 +49,44 @@ getAttendance(){
   
  this.fetchsession.getUser().subscribe((user)=>{
     console.log(user._id);
-  	this.http.post(this.url + '/attendance/attendance_student_day',{
-  		class_ref: user.class_ref,
-  		session: this.session,
-  		student_id : user._id,
-  		access_token: this.cookie
-  	}).subscribe((userArray)=>{
-  		this.attendanceList = userArray.json();
-  		this.filteredAttendanceList = this.attendanceList.slice()
-  	
-  		let count = 0;
-  		this.len = this.attendanceList.length;
-  		for(let i=0;i<this.len;i++){
-  			if(this.attendanceList[i]['status'] === 'Present'){
+    this.user = this.cookieService.getAll()['userSet'].toLowerCase();
+    if(this.user!=='admin'){
+       this.http.post(this.url + '/attendance/attendance_'+this.user+'_day',{
+      session: this.session,
+      staff_id : user._id,
+      access_token : this.cookie
+    }).subscribe((userArray)=>{
+      console.log(userArray.json())
+      this.attendanceList = userArray.json();
+      this.filteredAttendanceList = this.attendanceList.slice()
+    
+      let count = 0;
+      this.len = this.attendanceList.length;
+      for(let i=0;i<this.len;i++){
+        if(this.attendanceList[i]['status'] === 'Present'){
              count++;
-  			}
-  		}
+        }
+      }
 
-  		this.datePickerService.minDate = this.attendanceList[0]['date'];
-  		this.totalAttendance = +(((count/this.len)*100).toFixed(2))
-  		this.filteredAttendance = this.totalAttendance;
-  		let mindate = this.attendanceList[0]['date'].split()
-  		this.minDate = {day:mindate[2],month:mindate[1],year:mindate[0]}
+      this.datePickerService.minDate = this.attendanceList[0]['date'];
+      this.totalAttendance = +(((count/this.len)*100).toFixed(2))
+      this.filteredAttendance = this.totalAttendance;
+      let mindate = this.attendanceList[0]['date'].split()
+      this.minDate = {day:mindate[2],month:mindate[1],year:mindate[0]}
 
-  		let maxdate = this.attendanceList[this.attendanceList.length -1]['date'].split()
-  		this.maxDate = {day:maxdate[2],month:maxdate[1],year:maxdate[0]}
+      let maxdate = this.attendanceList[this.attendanceList.length -1]['date'].split()
+      this.maxDate = {day:maxdate[2],month:maxdate[1],year:maxdate[0]}
 
-  	})
+    })
 
-  })
+  
+    }
+  	
 
+})
 }
+
+
 
 //2018-05-21 startDate 2018-05-16 2018-05-18 2018-05-22
 
@@ -112,7 +120,6 @@ filterAttendance(startDate,endDate){
    if(i == this.len){
    	startIndex = this.len -1;
    }
-
 
    while(j+startIndex < this.len){
    	if(toDate == this.attendanceList[j+startIndex]['date']){

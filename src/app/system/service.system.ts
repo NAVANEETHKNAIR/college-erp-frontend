@@ -45,21 +45,24 @@ export class SystemService {
 
 
   getUser(){
-   if(this.userId) {
+   this.cookie = this.cookieService.getAll()['cookieSet'];
+   if(this.userId){
       console.log("yeah this is...");
       return Observable.of(this.userId);
     }
 
    else {
+
    let user = (this.cookieService.getAll()['userSet']).toLowerCase();
    if(user!== 'admin'){
    return this.http.post(this.url + '/' + user + '/' + user + '_get_for_user_id',{
         user_id: this.cookieService.getAll()['idSet'],
-        session: this.sessionData,
+        session: this.sessionData.session,
         access_token: this.cookie
    }).map(res=>{
      return res.json()
    }).do((data)=>{
+     console.log("userId",data);
      this.userId = data;
    })
 }

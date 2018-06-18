@@ -38,10 +38,17 @@ import { LoginGuardService,
         } from './guards/admin-guard.service';
 import { ErrorComponent } from './error/error.component';
 import { StudentdashboardComponent } from './student-dashboard/student-dashboard.component';
-import { AttendanceRecordComponent } from './attendance-record/attendance-record.component';
+import { AttendanceStudentRecordComponent } from './attendance-student-record/attendance-student-record.component';
+import { AttendanceStaffRecordComponent } from './attendance-staff-record/attendance-staff-record.component';
 import { FeesComponent } from './fees/fees.component';
 import { FeesReportComponent } from './fees-report/fees-report.component';
+import { PayslipReportStaffComponent } from './payslip-report-staff/payslip-report-staff.component';
 import { PayslipReportComponent } from './payslip-report/payslip-report.component';
+import { FeesReportStudentComponent } from './fees-report-student/fees-report-student.component';
+import { MarksComponent } from './marks/marks.component';
+import { ExpenseComponent } from './expense/expense.component';
+import { SideMenuComponent } from './sidemenu/sidemenu.component';
+import { ProfileComponent } from './profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -69,10 +76,17 @@ import { PayslipReportComponent } from './payslip-report/payslip-report.componen
     LoginComponent,
     ErrorComponent,
     StudentdashboardComponent,
-    AttendanceRecordComponent,
+    AttendanceStudentRecordComponent,
+    AttendanceStaffRecordComponent,
     FeesComponent,
     FeesReportComponent,
-    PayslipReportComponent
+    PayslipReportComponent,
+    MarksComponent,
+    ExpenseComponent,
+    SideMenuComponent,
+    ProfileComponent,
+    PayslipReportStaffComponent,
+    FeesReportStudentComponent
     
   ],
   imports: [

@@ -20,10 +20,16 @@ import { SystemComponent } from './system/system.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { LoginComponent } from './login/login.component';
 import { StudentdashboardComponent } from './student-dashboard/student-dashboard.component';
-import { AttendanceRecordComponent } from './attendance-record/attendance-record.component';
+import { AttendanceStudentRecordComponent } from './attendance-student-record/attendance-student-record.component';
+import { AttendanceStaffRecordComponent } from './attendance-staff-record/attendance-staff-record.component';
 import { FeesComponent } from './fees/fees.component';
 import { FeesReportComponent } from './fees-report/fees-report.component';
 import { PayslipReportComponent } from './payslip-report/payslip-report.component';
+import { MarksComponent } from './marks/marks.component';
+import { SideMenuComponent } from './sidemenu/sidemenu.component';
+import { ProfileComponent } from './profile/profile.component';
+import { PayslipReportStaffComponent } from './payslip-report-staff/payslip-report-staff.component';
+import { FeesReportStudentComponent } from './fees-report-student/fees-report-student.component';
 
 import { 
          LoginGuardService,
@@ -34,26 +40,20 @@ import {
          AccountantGuardService,
          OtherAuthorizeGuardService
        } from './guards/admin-guard.service';
-import { ErrorComponent } from './error/error.component'
+import { ErrorComponent } from './error/error.component';
+import { ExpenseComponent } from './expense/expense.component';
 const routes: Routes = [
   {
-    path: '',
+    path: 'dashboard',
     component: AdminComponent,
     
     children: [
       {
-        path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full',
-
-
-        
-      },
-      {
         path: 'dashboard',
         loadChildren: './dashboard/dashboard.module#DashboardModule'
 
-      }, {
+      }, 
+      {
         path: 'widget',
         loadChildren: './widget/widget.module#WidgetModule'
       }, {
@@ -118,9 +118,10 @@ const routes: Routes = [
     ]
   },
   {
-    path: '',
+    path: 'auth',
     component: AuthComponent,
     children: [
+
       {
         path: 'auth',
         loadChildren: './auth/auth.module#AuthModule'
@@ -130,98 +131,105 @@ const routes: Routes = [
       }
     ]
   },
+  {
+    path: '',
+    component: SideMenuComponent,
+    canActivate: [LoginGuardService],
+    
+    children:[
+ {
+    path: '',
+    redirectTo: 'student-dashboard',
+    pathMatch: 'full',
+    canActivateChild: [LoginGuardService]
+
+
+    
+  }, 
 
   {
     path: 'student',
     component: StudentComponent,
-    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'staff',
     component: StaffComponent,
-    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'class',
     component: ClassComponent,
-    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'subject',
     component: SubjectComponent,
-    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'transport',
     component: TransportComponent,
-    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'dormitory',
     component: DormitoryComponent,
-    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'routine',
     component: RoutineComponent,
-    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'library',
     component: LibraryComponent,
-    canActivate: [LoginGuardService,AdminAuthorizeGuardService || LibrarianAuthorizeGuardService]
+    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService || LibrarianAuthorizeGuardService]
 
   },
   {
     path: 'attendance-student',
     component: AttendanceStudentComponent,
-    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
 
   },
   {
     path: 'attendance-staff',
     component: AttendanceStaffComponent,
-    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'exam',
     component: ExamComponent,
-    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'payroll',
     component: PayrollComponent,
-    canActivate: [LoginGuardService,AdminAuthorizeGuardService],
-    children:[{
-     path:'payslip',
-     component: PayslipComponent
-     }]
+    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService],
   },
   {
     path:'message',
     component: MessageComponent,
-    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path:'system',
     component: SystemComponent,
-    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
     path: 'calendar',
     component: CalendarComponent,
-    canActivate: [LoginGuardService,AdminAuthorizeGuardService]
-  },
-  {
-   path:'login',
-   component: LoginComponent,
-
+    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
   },
   {
   path: 'student-dashboard',
   component: StudentdashboardComponent,
-  canActivate: [
+  canActivateChild: [
          LoginGuardService,
+         AdminAuthorizeGuardService ||
          StudentAuthorizeGuardService ||
          LibrarianAuthorizeGuardService ||
          TeacherAuthorizeGuardService ||
@@ -231,29 +239,72 @@ const routes: Routes = [
   
   },
   {
-   path: 'attendance-record',
-   component: AttendanceRecordComponent,
-   canActivate: [LoginGuardService, StudentAuthorizeGuardService]
+   path: 'attendance-student-record',
+   component: AttendanceStudentRecordComponent,
+   canActivateChild: [LoginGuardService, StudentAuthorizeGuardService]
+  },
+   {
+   path: 'attendance-staff-record',
+   component: AttendanceStudentRecordComponent,
+   canActivateChild: [LoginGuardService, StudentAuthorizeGuardService]
   },
   {
    path: 'fees',
    component: FeesComponent,
-   canActivate: [LoginGuardService, AdminAuthorizeGuardService]
+   canActivateChild: [LoginGuardService, AdminAuthorizeGuardService]
   },
   {
    path: 'fees-report',
    component: FeesReportComponent,
-   canActivate: [LoginGuardService, AdminAuthorizeGuardService]
+   canActivateChild: [LoginGuardService, AdminAuthorizeGuardService]
+  },
+    {
+   path: 'fees-report-student',
+   component: FeesReportStudentComponent,
+   canActivateChild: [LoginGuardService, StudentAuthorizeGuardService]
+  },
+  {
+   path: 'marks',
+   component: MarksComponent,
+   canActivateChild: [LoginGuardService, AdminAuthorizeGuardService]
+  },
+  {
+   path: 'expense',
+   component: ExpenseComponent,
+   canActivateChild: [LoginGuardService, AdminAuthorizeGuardService]
   },
   {
    path: 'payslip-report',
    component: PayslipReportComponent,
-   canActivate: [LoginGuardService, AdminAuthorizeGuardService] 
+   canActivateChild: [LoginGuardService, AdminAuthorizeGuardService] 
+  },
+    {
+   path: 'payslip-report-staff',
+   component: PayslipReportStaffComponent,
+   canActivateChild: [LoginGuardService,
+         LibrarianAuthorizeGuardService ||
+         TeacherAuthorizeGuardService ||
+         AccountantGuardService ||
+         OtherAuthorizeGuardService] 
+  },
+  {
+   path: 'profile',
+   component: ProfileComponent,
+   canActivateChild: [LoginGuardService] 
+  },
+  ]
+
+  },
+  {
+   path:'login',
+   component: LoginComponent,
+
   },
   {
     path:'404',
     component: ErrorComponent
   },
+
 
   {
     path: '**',

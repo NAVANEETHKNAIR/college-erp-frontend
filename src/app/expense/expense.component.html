@@ -1,0 +1,165 @@
+<div class="card">
+  <div class="card-header">
+    <h5>Expense</h5>
+    <div class="row">
+    <div class="col col-lg-10">
+    <div class="text-right">
+    <a (click)="categoryAdd()" style="color:blue;display:inline;">Add New Category</a>
+    </div>
+   </div>
+   <div class="col col-lg-2">
+    <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="addExpense()"> <i class="icofont icofont-plus m-r-5"></i> Add Expense
+    </button>
+  </div>
+  </div>
+  </div>
+  <div class="card-body">
+    <div class="table-content crm-table">
+      <div class="project-table">
+        <div id="crm-contact" class="dt-responsive">
+          <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-4">
+              <div>
+                <label for= "getCategoryLabel" class="label-control">Select Category
+                  <select name="getCategoryLabel" #getCategoryValue class="form-control" (change)="getExpense(getCategoryValue.value)">
+                    <option style="display:none;"></option>
+                    <option *ngFor="let getCategory of categoryList;let i= index;" [value]="getCategory._id">{{getCategory.category}}</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+        
+            <div class="col-xs-12 col-sm-4 col-md-4">
+              <div style="text-align: right;">
+                <label>Search:
+                  <input type="search" [(ngModel)]="filterQuery" class="form-control input-sm full-data-search" placeholder="Search name">
+                </label>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="panel-heading">User information</div>-->
+          <div class="table-responsive">
+          <table class="table table-striped table-bordered full-data-table" [mfData]="expenseList | dataFilter : filterQuery" #mf="mfDataTable"
+                 [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <thead>
+            <tr>
+               <th>
+                <mfDefaultSorter  by="image">Date</mfDefaultSorter>
+              </th>
+               <th>
+                <mfDefaultSorter  by="image">Expense</mfDefaultSorter>
+              </th>
+               <th>
+                <mfDefaultSorter  by="image">Amount</mfDefaultSorter>
+              </th>
+               <th>
+                <mfDefaultSorter>Action</mfDefaultSorter>
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of mf.data;let i=index">
+              <td>{{item.date}}</td>
+              <td>{{item.title}}</td>
+              <td>{{item.amount}}</td>
+
+              <td class="action-icon">
+                <button type="button" (click)="editExpense(i)" class="m-r-15 crm-action-edit text-muted text-primary"><i class="icofont icofont-ui-edit"></i></button>
+                <a href="javascript:;" class="crm-action-delete text-muted text-danger"><i class="icofont icofont-delete-alt"></i></a>
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <th>Date</th>
+              <th>Expense</th>
+              <th>Amount</th>
+              <th>Action</th>
+            </tr>
+            <tr>
+              <td colspan="10">
+                <mfBootstrapPaginator class="pagination-main f-right"></mfBootstrapPaginator>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
+          <h3>Add Expense</h3>
+          <div>
+            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
+		   <form [formGroup]="expenseForm">
+		   <div class="text-center">
+		    <label for="basic-addon1" style="display:block;text-align:left">Title</label>
+		    <div class="input-group">
+		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+		      <input type="text" class="form-control" formControlName = "title">
+		      <p *ngIf="!expenseForm.controls['title'].valid && expenseForm.controls['title'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the Title</p>
+		    </div>
+
+        <div class="row">
+        <div class="col-lg-7 text-left">
+        <label for="basic-addon1" style="display:block;text-align:left">Category</label>
+         <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <select type="text"  class="form-control" formControlName = "category" >
+            <option style="display:none;"></option>
+            <option *ngFor = "let categoryvalue of categoryList" [value]="categoryvalue._id">{{categoryvalue.category}}</option>
+          </select>
+          <p *ngIf="!expenseForm.controls['category'].valid && expenseForm.controls['category'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the category</p>
+        </div>
+        </div>
+      </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Amount</label>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" formControlName = "amount">
+          <p *ngIf="!expenseForm.controls['amount'].valid && expenseForm.controls['amount'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the amount</p>
+        </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Date of Expense</label>
+        <div class="input-group">
+         <input type="text" [readOnly]= true class="form-control" placeholder="yyyy-mm-dd"
+             name="dp2" formControlName = "date" [ngModel]="date" ngbDatepicker #dp2="ngbDatepicker">
+         <div class="input-group-append">
+        <button class="btn btn-outline-secondary btn-primary text-center" (click)="dp2.toggle()" type="button">
+          <i class="icofont icofont-calendar"></i>
+        </button>
+         </div>
+         </div>
+		    <button *ngIf="expenseForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putExpense(expenseForm.value)">Save</button>
+        <button *ngIf="expenseForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedExpense(expenseForm.value)">Save</button>
+
+
+       </div>
+		     </form>          
+		    </perfect-scrollbar>
+            <br>
+          </div>
+          <button (click)="closeMyModal($event)" aria-label="Close" class="md-close-btn"><i class="icofont icofont-ui-close"></i></button>
+</app-modal-animation>
+
+<app-modal-basic #modalSmall [dialogClass]="'modal-sm'">
+  
+  <div class="app-modal-header">
+    <h6>Add New Category</h6>
+      <label for="basic-addon1" style="display:block;text-align:left">Category</label>
+  <div class="input-group">
+    <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label>
+    </span>
+
+    <input type="text" class="form-control"  [(ngModel)]="categoryNew">
+    <button type="submit" *ngIf="categoryNew" class="btn btn-sm btn-success text-center" (click)="categorySave(categoryNew)">Submit</button>
+    <p *ngIf="categoryExist" style="color:red;display:block;width:100%;text-align:left">Category Already Exist</p>
+  </div>
+</div>
+</app-modal-basic>
+
+
+
+

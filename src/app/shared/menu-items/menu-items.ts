@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import * as _  from 'underscore'; 
 
 export interface BadgeItem {
   type: string;
@@ -596,13 +597,321 @@ const MENUITEMS = [
   }
 ];
 
+
+
+
+const MENU = [
+{
+  type: 'STUDENT',
+  menu:[{
+    label:'Dashboard',
+    link: '/student-dashboard',
+    icon:'ti-home'
+  },
+  {
+    label:'Attendance',
+    link:'/attendance-student-record',
+    icon:'ti-check-box'
+  },
+  {
+    label:'Time-Table',
+    link : '/routine',
+    icon: 'ti-notepad'
+  },
+  {
+    label:'Marks',
+    link:'/marks',
+    icon: 'ti-bar-chart'
+  },
+  {
+    label:'Exam',
+    link: '/exam',
+    icon:'ti-layout-width-default'
+  },
+  {
+    label:'Fees',
+    link: '/fees-report-student',
+    icon: 'ti-server'
+  },
+  {
+    label:'Library',
+    link: '/library',
+    icon: 'ti-book'
+  },
+  {
+    label:'Profile',
+    link: '/profile',
+    icon: 'ti-user'
+  }]
+},{
+  type:'TEACHER',
+  menu:[{
+    label: 'Dashboard',
+    link: '/student-dashboard',
+    icon: 'ti-home'
+  },
+  {
+    label:'Attendance',
+    link:'/attendance-staff-record',
+    icon:'ti-check-box'
+  },
+  {
+    label:'Time-Table',
+    link : '/routine',
+    icon: 'ti-notepad'
+  },
+  {
+    label:'Payslip',
+    link: '/payslip-report-staff',
+    icon: 'ti-email'
+  },
+  {
+    label:'Profile',
+    link: '/profile',
+    icon: 'ti-user'
+  }]
+},
+{
+  type: 'LIBRARIAN',
+  menu:[{
+    label: 'Dashboard',
+    link: '/student-dashboard',
+    icon: 'ti-home'
+  },
+  {
+    label:'Attendance',
+    link:'/attendance-staff-record',
+    icon:'ti-check-box'
+  },
+  {
+    label:'Payslip',
+    link: '/payslip-report-staff',
+    icon: 'ti-email'
+  },
+  {
+    label: 'Library',
+    link: '/library',
+    icon: 'ti-book'
+  },
+  {
+    label: 'Profile',
+    link: '/profile',
+    icon: 'ti-user'
+  }]
+
+
+},{
+
+  type:'ACCOUNTANT',
+  menu:[{
+    label: 'Dashboard',
+    link: '/student-dashboard',
+    icon: 'ti-home'
+  },
+  {
+    label:'Attendance',
+    link:'/attendance-staff-record',
+    icon:'ti-check-box'
+  },
+  {
+    label:'Payslip',
+    link: '/payroll',
+    icon: 'ti-email'
+  },
+  {
+    label:'Payslip Report',
+    link: '/payroll-report-staff',
+    icon: 'ti-email'
+  },
+  {
+    label:'Fees',
+    link: '/fees',
+    icon: 'ti-server'
+  },
+  {
+    label:'Fees Report',
+    link: '/fees-report',
+    icon: 'ti-email'
+  },
+  {
+    label:'Expense',
+    link: '/expense',
+    icon: 'ti-bar-chart'
+  },
+  {
+    label:'Profile',
+    link: '/profile',
+    icon: 'ti-user'
+  }]
+},
+{
+  type:'OTHER',
+  menu:[{
+    label: 'Dashboard',
+    link: '/student-dashboard',
+    icon: 'ti-home'
+  },
+  {
+    label:'Attendance',
+    link:'/attendance-staff-record',
+    icon:'ti-check-box'
+  },
+  {
+    label:'Time-Table',
+    link : '/routine',
+    icon: 'ti-notepad'
+  },
+  {
+    label:'Payslip',
+    link: '/payslip-report-staff',
+    icon: 'ti-email'
+  },
+  {
+    label:'Profile',
+    link: '/profile',
+    icon: 'ti-user'
+  }]
+},
+{
+  type: 'ADMIN',
+  menu:[{
+     label:'Dashboard',
+     link: '/student-dashboard',
+     icon: 'ti-home'
+  },
+  {
+    label:'Student Attendance',
+    link:'/attendance-student',
+    icon:'ti-check-box'
+  },
+  {
+    label:'Teacher Attendance',
+    link:'/attendance-staff',
+    icon:'ti-check-box'
+  },
+  {
+    label:'Student',
+    link:'/student',
+    icon:'ti-check-box'
+  },
+  {
+    label:'Staff',
+    link:'/staff',
+    icon:'ti-check-box'
+  },
+  {
+    label:'Subject',
+    link:'/subject',
+    icon:'ti-check-box'
+  },
+  {
+    label:'Transport',
+    link:'/transport',
+    icon:'ti-check-box'
+  },
+  {
+    label:'Class',
+    link:'/class',
+    icon:'ti-check-box'
+  },
+  {
+    label:'Dormitory',
+    link:'/dormitory',
+    icon:'ti-check-box'
+  },
+  // {
+  //   label:'Attendance Student Record',
+  //   link:'/attendance-student-record',
+  //   icon:'ti-check-box'
+  // },
+  //   {
+  //   label:'Attendance Teacher Record',
+  //   link:'/attendance-teacher-record',
+  //   icon:'ti-check-box'
+  // },
+  {
+    label:'Routine',
+    link:'/routine',
+    icon:'ti-check-box'
+  },
+  {
+    label:'Message',
+    link:'/message',
+    icon:'ti-check-box'
+  },
+  {
+    label:'System',
+    link:'/system',
+    icon:'ti-check-box'
+  },
+  {
+    label:'Calendar',
+    link:'/calendar',
+    icon:'ti-check-box'
+  },
+  {
+    label:'Exam',
+    link:'/exam',
+    icon:'ti-check-box'
+  },
+  {
+    label:'Payslip',
+    link: '/payroll',
+    icon: 'ti-email'
+  },
+  {
+    label:'Payslip Report',
+    link: '/payslip-report',
+    icon: 'ti-email'
+  },
+  {
+    label:'Fees',
+    link: '/fees',
+    icon: 'ti-server'
+  },
+  {
+    label:'Fees Report',
+    link: '/fees-report',
+    icon: 'ti-email'
+  },
+  {
+    label:'Expense',
+    link: '/expense',
+    icon: 'ti-bar-chart'
+  },
+  {
+    label:'Marks',
+    link:'/marks',
+    icon:'ti-check-box'
+  },
+  {
+    label:'Profile',
+    link:'/profile',
+    icon:'ti-user'
+  }]
+
+  }]
+
 @Injectable()
 export class MenuItems {
   getAll(): Menu[] {
     return MENUITEMS;
   }
-
-  /*add(menu: Menu) {
-    MENUITEMS.push(menu);
-  }*/
 }
+
+@Injectable()
+export class ErpMenu{
+
+  getMenu(value){
+    let menu:any;
+     _.each(MENU,(val,index)=>{
+           if(val.type == value.toUpperCase()){
+             menu=MENU[index]
+           }
+     })
+     return menu;
+  }
+
+}
+
+

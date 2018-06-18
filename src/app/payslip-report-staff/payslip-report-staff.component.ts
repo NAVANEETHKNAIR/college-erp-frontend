@@ -11,11 +11,11 @@ import { NgbDateParserFormatter, NgbDateStruct, NgbDatepickerConfig  } from '@ng
 import * as number2text from 'number2text';
 //import { ModalComponent } from '../components/advanced-component
 @Component({
-  selector: 'app-payslip-report',
-  templateUrl: './payslip-report.component.html',
-  styleUrls: ['./payslip-report.component.scss']
+  selector: 'app-payslip-staff-report',
+  templateUrl: './payslip-report-staff.component.html',
+  styleUrls: ['./payslip-report-staff.component.scss']
 })
-export class PayslipReportComponent implements OnInit {
+export class PayslipReportStaffComponent implements OnInit {
 @ViewChild('modalSmall') modalSmall:any;
 public data: any;
 public rowsOnPage = 10;
@@ -110,77 +110,29 @@ public datePriorityLooplenArray:any=[];
 public statusPriorityLooplenArray:any=[];
 public filteredLooplenArray:any=[];
 public modalNetSalaryText:any;
+public user_id:any;
+public user:any;
 
-  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService,public parseFormatter:NgbDateParserFormatter) {
+ constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService,public parseFormatter:NgbDateParserFormatter) {
    this.cookie = this.cookieService.getAll()['cookieSet'];
+   this.user_id = this.cookieService.getAll()['idSet'];
+   this.user = this.cookieService.getAll()['userSet'].toLowerCase();
    this.fetchsession.getSession().subscribe((session)=>{
    this.session = session.session;
    this.overdue = this.fetchsession.getOverdue();
     console.log('OverDue is:',this.overdue);
     console.log("session from session service",this.session);
     console.log(this.cookieService.getAll()['cookieSet']);
- 
-    
-  });
-   
-  }
-
-  ngOnInit() {
-    // this.http.post(this.url + '/newClass/get_class_all',{ "access_token": this.cookie})
-    //   .subscribe((data) => {
-    //     console.log(data.json());
-    //     this.getClassAll = data.json();
-    //     let classArray:any
-    //     this.filterClass= _.uniq(_.pluck(this.getClassAll,'name')); 
-          
-    
-    //     console.log("filterCLass:",this.filterClass);
-            let date = (new Date()).toLocaleDateString().split("/")    
-           let todaydate = (date[2] + '-' + ((+date[0]<10)?'0'+date[0]:date[0]) + '-' + ((+date[1]<10)?'0'+date[1]:date[1]));
-           this.today = todaydate;
+    if(this.user!=='admin')
+    this.http.post(this.url+ '/' + this.user + '/'+ this.user + '_get_for_user_id',{
+          user_id: this.user_id,
+          session: this.session,
+          access_token: this.cookie
+    }).subscribe((userDetail:any)=>{
+      userDetail = userDetail.json();
+      let staff_id = userDetail._id;
      
-  }
-  
-    getStaffMethod(value){
-    this.datePriorityStaffArray = [];
-    this.datePriorityDateArray = [];
-    this.datePriorityPayslipArray = [];
-    this.datePriorityIdArray = [];
-    this.datePriorityAllowanceSumArray = [];
-    this.datePriorityDeductionSumArray = [];
-    this.datePriorityTotalSumArray = [];
-    this.statusPriorityStaffArray = [];
-    this.statusPriorityDateArray = [];
-    this.statusPriorityPayslipArray = [];
-    this.statusPriorityIdArray = [];
-    this.statusPriorityTotalSumArray = [];
-    this.statusPriorityAllowanceSumArray = [];
-    this.statusPriorityDeductionSumArray = [];
-    this.filteredStaffArray = [];
-    this.filteredDateArray = [];
-    this.filteredPayslipArray = [];
-    this.filteredIdArray = [];
-    this.filteredTotalSumArray = [];
-    this.filteredAllowanceSumArray = [];
-    this.filteredDeductionSumArray = [];
-    this.staffArray = [];
-    this.dateArray = [];
-    this.payslipArray = [];
-    this.idArray = [];
-    this.totalFeeSum = [];
-    this.totalAllowanceSum = [];
-    this.totalDeductionSum = [];
-    this.looplenArray = [];
-    this.datePriorityLooplenArray=[];
-    this.statusPriorityLooplenArray=[];
-    this.filteredLooplenArray=[];
-    this.status = '';
-    this.staff = value.toLowerCase()
-
-    console.log("getStaffMethod value:",value);
-    this.type = value.toUpperCase();
-    console.log("type:",this.type)
-    this.http.post((this.url + '/payroll/get_payroll_for_'+ this.staff + '_all'),{ access_token: this.cookie,session: this.session})
+this.http.post((this.url + '/payroll/get_payroll_for_'+this.user+ '_ref'),{ access_token: this.cookie,session: this.session,staff_id:staff_id})
     .subscribe((staff)=>{
       console.log(staff.json());
        
@@ -252,14 +204,29 @@ public modalNetSalaryText:any;
 
             this.createNameErpString();
             this.checkOverDueStatus();
-
-
-
+             
+      })
     })
+    
+  });
+   
   }
 
-
-
+  ngOnInit() {
+    // this.http.post(this.url + '/newClass/get_class_all',{ "access_token": this.cookie})
+    //   .subscribe((data) => {
+    //     console.log(data.json());
+    //     this.getClassAll = data.json();
+    //     let classArray:any
+    //     this.filterClass= _.uniq(_.pluck(this.getClassAll,'name')); 
+          
+    
+    //     console.log("filterCLass:",this.filterClass);
+            let date = (new Date()).toLocaleDateString().split("/")    
+           let todaydate = (date[2] + '-' + ((+date[0]<10)?'0'+date[0]:date[0]) + '-' + ((+date[1]<10)?'0'+date[1]:date[1]));
+           this.today = todaydate;
+     
+  }
   
    openMyModal(event) {
     document.querySelector('#' + event).classList.add('md-show');
@@ -651,109 +618,6 @@ public modalNetSalaryText:any;
  }
 
 
- changeStatus(value,index){
-   console.log(index);
-   let idIndex = [];
-    let id = this.filteredIdArray[index];
-    console.log("id for change status:",id);
-    console.log("value:",value);
-    
-       
-       this.http.post(this.url+ '/payroll/payroll_edit_' + this.staff,{
-         _id: id,
-         staff_id: this.filteredStaffArray[index]['staff']['_id'],
-         status: value,
-         session: this.session,
-         access_token: this.cookie
-       }).subscribe((editedPayslip:any)=>{
-         editedPayslip = editedPayslip.json();
-         console.log(editedPayslip);
-         this.http.post(this.url + '/payroll/get_payroll_'+this.staff+'_one',{
-           _id: id,
-           access_token: this.cookie
-         }).subscribe((editedPayslipDoc:any)=>{
-           editedPayslipDoc = editedPayslipDoc.json();
-           console.log("editedPayslipDoc:",editedPayslipDoc);
-            _.each(this.staffList,(payslip,index)=>{
-           if(payslip['_id'] == editedPayslipDoc._id){
-             idIndex.push(index);
-
-           }
-         })
-
-          console.log("IdIndex:",idIndex);
-          this.staffList[idIndex[0]] = editedPayslipDoc;
-          console.log(this.staffList[idIndex[0]])
-          console.log(this.staffList)
-          this.staffArray = [];
-          this.dateArray = [];
-          this.payslipArray = [];
-          this.idArray = [];
-          this.totalFeeSum = [];
-            console.log('before editing');
-            console.log("FeeSum:", this.payslipArray);
-            console.log('StaffArray:',this.staffArray);
-            console.log('idArray:',this.idArray);
-            console.log('dateArray:',this.dateArray);
-            console.log('payslipArray:',this.payslipArray);
-            console.log('totalFeeSum:',this.totalFeeSum);
-
-          for(let i=0;i<this.staffList.length;i++){
-
-                 for(let j=0;j<this.staffList[i].staffs.length;j++){
-                  this.staffArray.push(this.staffList[i].staffs[j]);
-                  this.idArray.push(this.staffList[i]._id);
-                  this.dateArray.push(this.staffList[i].date);
-                  this.payslipArray.push(this.staffList[i].salary[0]);
-                  this.totalPayslipSum.push(this.payslipArray[i]);
-                  this.totalAllowanceSum.push(this.allowanceSumArray[i]);
-                  this.totalDeductionSum.push(this.deductionSumArray[i]);
-                  this.looplenArray.push(this.looplenArrayMethod(this.staffList[i].salary[0]['allowances'].length>this.staffList[i].salary[0]['deductions'].length?
-                                        this.staffList[i].salary[0]['allowances'].length:this.staffList[i].salary[0]['deductions'].length));
-                 
-                }
-                           console.log("FeeSum:", this.payslipArray);
-            console.log('StaffArray:',this.staffArray);
-            console.log('idArray:',this.idArray);
-            console.log('dateArray:',this.dateArray);
-            console.log('payslipArray:',this.payslipArray);
-            console.log('totalFeeSum:',this.totalFeeSum);
-             }
-            this.datePriorityStaffArray = this.staffArray.slice();
-            this.datePriorityIdArray = this.idArray.slice();
-            this.datePriorityDateArray = this.dateArray.slice();
-            this.datePriorityPayslipArray = this.payslipArray.slice();
-            this.datePriorityAllowanceSumArray = this.totalAllowanceSum.slice();
-            this.datePriorityDeductionSumArray = this.totalDeductionSum.slice();
-            this.datePriorityLooplenArray = this.looplenArray.slice();
-            this.datePriorityTotalSumArray = this.totalPayslipSum.slice();
-            this.statusPriorityStaffArray = this.datePriorityStaffArray.slice();
-            this.statusPriorityIdArray = this.datePriorityIdArray.slice();
-            this.statusPriorityDateArray = this.datePriorityDateArray.slice();
-            this.statusPriorityPayslipArray = this.datePriorityPayslipArray.slice();
-            this.statusPriorityAllowanceSumArray = this.datePriorityAllowanceSumArray.slice();
-            this.statusPriorityDeductionSumArray = this.datePriorityDeductionSumArray.slice();
-            this.statusPriorityTotalSumArray = this.datePriorityTotalSumArray.slice();
-            this.statusPriorityLooplenArray=this.datePriorityLooplenArray.slice();
-            this.filteredStaffArray = this.statusPriorityStaffArray.slice();
-            this.filteredIdArray = this.statusPriorityIdArray.slice();
-            this.filteredDateArray = this.statusPriorityDateArray.slice();
-            this.filteredPayslipArray = this.statusPriorityPayslipArray.slice();
-            this.filteredAllowanceSumArray = this.statusPriorityAllowanceSumArray.slice();
-            this.filteredDeductionSumArray = this.statusPriorityDeductionSumArray.slice();
-            this.filteredTotalSumArray = this.statusPriorityTotalSumArray.slice();
-            this.filteredLooplenArray=this.statusPriorityLooplenArray.slice();
-             this.createNameErpString();
-             this.getDate(this.selectDate);
-             
-             this.searchMethodNameErpString(this.searchvalue);
-             this.getStatus(this.status);
-             this.checkOverDueStatus();
-
-         })
-       })
-       
-    }
  
 
 
@@ -810,105 +674,7 @@ else{
  
 }
 
-removePayslip(index){
-   console.log(index);
-   let idIndex = [];
-    let id = this.filteredIdArray[index];
-    console.log("id for change status:",id);
-   
-    
-       
-       this.http.post(this.url+ '/payroll/payroll_remove_'+ this.staff,{
-         _id: id,
-         staff_id: this.filteredStaffArray[index]['staff']['_id'],
-         access_token: this.cookie
-       }).subscribe((editedFee:any)=>{
-         editedFee = editedFee.json();
-         this.payslipArray = [];
-         this.staffArray = [];
-         this.dateArray = [];
-         this.idArray = [];
-         this.totalPayslipSum = [];
-          this.totalAllowanceSum = [];
-           this.totalDeductionSum = [];
-           this.looplenArray = [];
-         console.log(editedFee);
-        this.http.post((this.url + '/payroll/get_payroll_for_'+ this.staff + '_all'),{ access_token: this.cookie,session: this.session})
-    .subscribe((staff)=>{
-      console.log(staff.json());
-       
-      this.staffList = staff.json();
-      for(let staff of this.staffList){
-           let allowanceSum =  +(_.pluck(staff.salary[0]['allowances'], 'amount')).reduce((acc,val)=>{
 
-                return (+acc) + (+val);
-              })
-             this.allowanceSumArray.push(allowanceSum);
-
-            }
-
-     for(let staff of this.staffList){
-           let  deductionSum =  +(_.pluck(staff.salary[0]['deductions'], 'amount')).reduce((acc,val)=>{
-
-                return (+acc) + (+val);
-              })
-             this.deductionSumArray.push(deductionSum);
-
-            }
-   // //this.netSalaryInWords = number2text(this.netSalary);
-   // for(let ){
-   //   this.looplen =  (this.payslip.allowances.length>this.payslip.deductions.length?this.payslip.allowances.length:this.payslip.deductions.length)
-   //   this.loopLenArray = this.looplenArrayMethod(this.looplen); 
-   // }
-  
-     for(let i=0;i<this.staffList.length;i++){
-
-                for(let j=0;j<this.staffList[i].staffs.length;j++){
-
-                 this.staffArray.push(this.staffList[i].staffs[j]);
-                 this.idArray.push(this.staffList[i]._id);
-                 this.dateArray.push(this.staffList[i].date);
-                 this.payslipArray.push(this.staffList[i].salary[0]);
-                 this.totalAllowanceSum.push(this.allowanceSumArray[i]);
-                 this.totalDeductionSum.push(this.deductionSumArray[i]);
-                 this.totalPayslipSum.push(+this.staffList[i].salary[0]['basic_sal']+this.allowanceSumArray[i] - this.deductionSumArray[i]);
-                 this.looplenArray.push(this.looplenArrayMethod(this.staffList[i].salary[0]['allowances'].length>this.staffList[i].salary[0]['deductions'].length?
-                                        this.staffList[i].salary[0]['allowances'].length:this.staffList[i].salary[0]['deductions'].length));
-               } 
-            }
-
-            this.rowsOnPage = this.staffList.length;
-            this.datePriorityStaffArray = this.staffArray.slice();
-            this.datePriorityIdArray = this.idArray.slice();
-            this.datePriorityDateArray = this.dateArray.slice();
-            this.datePriorityPayslipArray = this.payslipArray.slice();
-            this.datePriorityAllowanceSumArray = this.totalAllowanceSum.slice();
-            this.datePriorityDeductionSumArray = this.totalDeductionSum.slice();
-            this.datePriorityLooplenArray = this.looplenArray.slice();
-            this.datePriorityTotalSumArray = this.totalPayslipSum.slice();
-            this.statusPriorityStaffArray = this.datePriorityStaffArray.slice();
-            this.statusPriorityIdArray = this.datePriorityIdArray.slice();
-            this.statusPriorityDateArray = this.datePriorityDateArray.slice();
-            this.statusPriorityPayslipArray = this.datePriorityPayslipArray.slice();
-            this.statusPriorityAllowanceSumArray = this.datePriorityAllowanceSumArray.slice();
-            this.statusPriorityDeductionSumArray = this.datePriorityDeductionSumArray.slice();
-            this.statusPriorityTotalSumArray = this.datePriorityTotalSumArray.slice();
-            this.statusPriorityLooplenArray=this.datePriorityLooplenArray.slice();
-            this.filteredStaffArray = this.statusPriorityStaffArray.slice();
-            this.filteredIdArray = this.statusPriorityIdArray.slice();
-            this.filteredDateArray = this.statusPriorityDateArray.slice();
-            this.filteredPayslipArray = this.statusPriorityPayslipArray.slice();
-            this.filteredAllowanceSumArray = this.statusPriorityAllowanceSumArray.slice();
-            this.filteredDeductionSumArray = this.statusPriorityDeductionSumArray.slice();
-            this.filteredTotalSumArray = this.statusPriorityTotalSumArray.slice();
-            this.filteredLooplenArray=this.statusPriorityLooplenArray.slice();
-            this.createNameErpString();
-            this.checkOverDueStatus();
-
-         })
-       })
-       
-    }
 
    printInvoice(){
      this.printDiv = true;

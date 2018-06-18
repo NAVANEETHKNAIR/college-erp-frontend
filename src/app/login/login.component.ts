@@ -1,5 +1,5 @@
-import { Component, OnInit, AfterViewInit} from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router'
+import { Component, OnInit, AfterViewInit,NgZone} from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Http } from '@angular/http';
 import * as _  from 'underscore'; 
 import * as moment from 'moment';
@@ -22,7 +22,7 @@ public username:any;
 public password:any;
 public url:any = 'http://localhost:3000';
 public trueUser:boolean = true;
-constructor(private http:Http,private cookieService: CookieService, public router: Router,public seeRoute: ActivatedRoute){
+constructor(private http:Http,private cookieService: CookieService, public router: Router,public seeRoute: ActivatedRoute, public _ngZone: NgZone){
  
  this.initializeForm();
 }
@@ -34,8 +34,8 @@ ngOnInit(){
 
 initializeForm(){
   this.loginForm = new FormGroup({
-    "username": new FormControl("",[Validators.required,Validators.email]),
-    "password": new FormControl("",[Validators.required])
+    "username": new FormControl(this.username,[Validators.required,Validators.email]),
+    "password": new FormControl(this.password,[Validators.required])
   })
 }
 
@@ -50,6 +50,9 @@ putLogin(value){
        this.trueUser = false;
      }
      else{
+       this.username = value.username;
+       this.password = value.password;
+       this.initializeForm();
        this.trueUser = true;
        this.cookieService.set('cookieSet',token.access_token);
        this.cookieService.set('userSet',token.user);
@@ -57,8 +60,16 @@ putLogin(value){
 
        console.log(this.cookieService.getAll());
        console.log('Hit this line');
-       this.router.navigate(['dashboard']);
+       // this._ngZone.run(() => {
+       // this.router.navigate(['']);
+       this.router.navigate(['student-dashboard']);
        console.log('hitted');
+    
+        
+          
+        
+       // this.router.navigate();
+       
        
 
      }

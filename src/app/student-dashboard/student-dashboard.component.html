@@ -2,14 +2,35 @@
 
 <app-card>
 <div class="row">
-	<div class="col">
+<!-- 	<div class="col col-lg-11 col-md-11 col-sm-11 col-xs-12 ">
 	<div class="text-right">
-	<h5 >Welcome {{userdetail.name}}</h5>
-	<br>
-	<br>
-	<button class="btn btn-sm btn-primary" (click)="logout()">Logout</button>
+   <div class="dropdown">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+    </button>
+    <div class="dropdown-menu" style="padding:40px">
+     <h5 *ngIf="isUser">Welcome {{userdetail.name}}</h5>
+     <br>
+     <div class="text-center">
+     <button class="btn btn-primary btn-small" style="text-align:center;"  (click)="logout()">Logout</button>
+     </div>
     </div>
+   </div>
+</div>
+</div> -->
+       <div class="col col-lg-11 col-md-11 col-sm-11 col-xs-12 ">
+	    <div class="text-right">
+        <div ngbDropdown class="dropdown-default dropdown open">
+          <button ngbDropdownToggle class="btn btn-default dropdown-toggle waves-effect waves-light " type="button" id="dropdown1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Profile</button>
+          <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown1" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" style="padding:40px">
+            <h5 *ngIf="isUser" style="display:inline;text-align:left;" width="100%">{{userdetail.name}}</h5>
+		     <br>
+		     <div class="text-center">
+		     <button class="btn btn-primary btn-sm" style="text-align:center;padding:5px"  (click)="logout()">Logout</button>
+          </div>
+        </div>
     </div>
+   </div>
+</div>
 </div>
 <div class="row">
 <div class="col-lg-4 col-sm-4 col-md-4 col-xs-3">	

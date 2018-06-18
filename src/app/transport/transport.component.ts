@@ -47,7 +47,7 @@ ngOnInit() {
   }
   
 getallTransport(){
- this.http.post((this.url+'/transport/transport_get_all'),{ "access_token": this.cookie})
+ this.http.post((this.url+'/transport/transport_get_all'),{ "access_token": this.cookie,"session":this.session})
  .subscribe((transport)=>{
    console.log(transport.json());
    this.allTransport = transport.json();

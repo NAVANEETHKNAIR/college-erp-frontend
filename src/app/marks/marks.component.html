@@ -1,0 +1,169 @@
+<div class="card" *ngIf="!editMarks">
+  <div class="card-header">
+
+</div>
+
+
+<app-card [title]="'Manage Exam'" [classHeader]="true" [blockClass]="'table-border-style'">
+  <div class="card-body">
+    <div class="table-content crm-table">
+      <div class="project-table">
+        <div id="crm-contact" class="dt-responsive">
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4">
+    
+             <!--  <label for="date" class="label-control">Input Date
+              <input type="text" id="date" [(ngModel)] = "date" class="form-control col-xs-12" [readOnly] = true>
+              <ngb-datepicker (select)="selectDate($event)"  class="col-xs-12"></ngb-datepicker>
+              </label> -->
+            
+          </div>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+              <div>
+                <label for= "getClass" class="label-control">Select Class
+                  <select name="getClass" #getClass class="form-control" [(ngModel)]="selectClass" (change)="getClassMethod(getClass.value)">
+                    <option style="display:none;"></option>
+                    <option *ngFor="let getClass of filterClass;let i= index;" [value]="getClass">{{getClass}}</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+              <div *ngIf ="selectClass!==''">
+                <label for= "getSection" class="label-control">Select Section
+                  <select name="getSection" #getSection class="form-control" (change)="getSectionMethod(getSection.value)" [(ngModel)]="selectSection">
+                    <option style="display:none;"></option>
+                    <option *ngFor="let getSection of getSectionOfClass;let i= index;"  [value]="getSection.section">{{getSection.section}}</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+          <table class="table table-striped table-bordered full-data-table" [mfData]="examList | dataFilter : filterQuery" #mf="mfDataTable"
+                 [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <thead>
+            <tr>
+               <th>
+                <mfDefaultSorter by="date">Date</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="name">Name</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="subject">Subject</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="duration">Duration</mfDefaultSorter>
+              </th>
+               <th>
+                <mfDefaultSorter by="total_marks">Total Marks</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter>Action</mfDefaultSorter>
+              </th>
+            </tr>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of mf.data;let i=index" >
+              <td>{{item.date}}</td>
+              <td>{{item.name}}</td>
+              <td>{{item.subject_ref.name}}</td>
+              <td>{{item.duration}} hrs.</td>
+              <td>{{item.total_marks}}</td>              
+              <td class="action-icon">
+                <button type="button" (click)="addMarks(i)" class="m-r-15 crm-action-edit text-muted text-primary"><i class="icofont icofont-ui-edit"></i></button>
+                <a href="javascript:;" class="crm-action-delete text-muted text-danger"><i class="icofont icofont-delete-alt"></i></a>
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <th>Date</th>
+              <th>Name</th>
+              <th>Subject</th>
+              <th>Duration</th>
+              <th>Total Marks</th>
+              <th>Action</th>
+              
+            </tr>
+            <tr>
+              <td colspan="10">
+                <mfBootstrapPaginator class="pagination-main f-right"></mfBootstrapPaginator>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-card>
+</div>
+
+
+<div  class= "card" *ngIf="editMarks">
+   <div class="row">
+    
+     <div class="col-lg-10">
+       <button class="btn btn-success btn-sm" (click)="saveMarks()" style="text-align:right">Save</button> 
+       <br>
+     </div>
+      <div class="col-lg-2">
+
+       <button class="btn btn-success btn-sm" (click)="cancelMarks()" style="text-align:right">Cancel</button> 
+       <br>
+  
+   </div>
+   </div>
+   <br>
+
+      <ngx-datatable
+        #mydatatable
+        class="material data-table"
+        [headerHeight]="50"
+        [limit]="10"
+        [scrollbarH]= false
+        [virtualization] = false
+        [columnMode]="'force'"
+        [footerHeight]="50"
+        [rowHeight]="'auto'"
+        [rows]="rows">
+         <ngx-datatable-column name="Name" prop="name">
+          <ng-template ngx-datatable-cell-template let-value="value">
+            {{value}}
+          </ng-template>
+        </ngx-datatable-column>
+          <ngx-datatable-column name="ERP_ID" prop="erp_id">
+          <ng-template ngx-datatable-cell-template let-value="value">
+            {{value}}
+          </ng-template>
+        </ngx-datatable-column>
+         <ngx-datatable-column name="Total" prop="totalMarks">
+          <ng-template ngx-datatable-cell-template let-value="value">
+            {{value}}
+          </ng-template>
+        </ngx-datatable-column >
+        <ngx-datatable-column name="Marks" prop="marks_obtained">
+          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+            <span
+              title="Double click to edit"
+              (click)="editing[rowIndex + '-marks_obtained'] = true"
+              *ngIf="!editing[rowIndex + '-marks_obtained']">
+              {{value}}
+            </span>
+            <input
+              autofocus
+              (blur)="updateValue($event, 'marks_obtained', rowIndex)"
+              *ngIf="editing[rowIndex+ '-marks_obtained']"
+              type="text"
+              [value]="value"
+              class="form-control"
+            />
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+</div>

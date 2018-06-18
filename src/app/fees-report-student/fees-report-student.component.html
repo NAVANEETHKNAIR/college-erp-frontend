@@ -6,38 +6,7 @@
 
   
   </div>
-  <div class="card-body">
-      <div class="card-body">
-    <div class="table-content crm-table">
-      <div class="project-table">
-        <div id="crm-contact" class="dt-responsive">
-          <div class="row">
-            <div class="col-xs-12 col-sm-4 col-md-4">
-              <div>
-                <label for= "getCity" class="label-control">Select Class
-                  <select name="getCity" #getClass class="form-control" [(ngModel)]="selectClass" (change)="getClassMethod(getClass.value)">
-                    <option style="display:none;"></option>
-                    <option *ngFor="let getClass of filterClass;let i= index;" [value]="getClass">{{getClass}}</option>
-                  </select>
-                </label>
-              </div>
-            </div>
-            <div class="col-xs-12 col-sm-4 col-md-4">
-              <div *ngIf ="selectClass!==''">
-                <label for= "getSection" class="label-control">Select Section
-                  <select name="getSection" #getSection class="form-control" (change)="getSectionMethod(getSection.value)" [(ngModel)]="selectSection">
-                    <option style="display:none;"></option>
-                    <option *ngFor="let getSection of getSectionOfClass;let i= index;"  [value]="getSection.section">{{getSection.section}}</option>
-                  </select>
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+
 </div>
 <div class="print-only"  *ngIf="!printDiv">
        <div class="col-lg-12  filter-bar">
@@ -106,7 +75,7 @@
   
 <div class="row">
 
-      <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12" *ngFor="let student of filteredStudentArray;let i=index;">
+      <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12" *ngFor="let student of filteredStudentArray;let i=index;">
         <!-- Invoice list card start -->
         <div class="card card-border-primary" >
           <div class="card-header">
@@ -115,20 +84,7 @@
             <h6>{{student.student.name}} </h6>
              <h6>{{student.student.erp_id}} </h6>
            </div>
-           <div class="col">
-            <!-- <span class="label label-default f-right"> 28 January, 2015 </span> -->
-            <div ngbDropdown class="dropdown-secondary dropdown f-right">
-              <button ngbDropdownToggle class="btn btn-primary btn-mini dropdown-toggle waves-effect waves-light" type="button" id="dropdown8" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{student.status}}</button>
-              <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown8" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-                <a class="dropdown-item waves-light waves-effect" (click)="changeStatus('OverDue',i)"><span class="point-marker bg-warning"></span>OverDue</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item waves-light waves-effect active" (click)="changeStatus('Paid',i)"><span class="point-marker bg-success"></span>Paid</a>
-                <a class="dropdown-item waves-light waves-effect" (click)="changeStatus('Unpaid',i)"><span class="point-marker bg-info"></span>UnPaid</a>
-              </div>
-              <!-- end of dropdown menu -->
-              <span class="f-left m-r-5 text-inverse">Status : </span>
-            </div>
-          </div>
+
           </div>
         </div>
           <div class="card-body">
@@ -155,17 +111,6 @@
             <div class="task-board m-0">
               <button href="javasript:;" class="btn btn-info btn-mini b-none" (click)="showFees(i)"><i class="icofont icofont-eye-alt m-0"></i></button>
               <!-- end of dropdown-secondary -->
-              <div ngbDropdown class="dropdown-secondary dropdown">
-                <button ngbDropdownToggle class="btn btn-info btn-mini dropdown-toggle waves-light b-none txt-muted" type="button" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="icofont icofont-navigation-menu"></i></button>
-                <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="dropdown2" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
-                  <a class="dropdown-item waves-light waves-effect" href="javascript:;"><i class="icofont icofont-ui-alarm"></i> Print Invoice</a>
-                  <a class="dropdown-item waves-light waves-effect" href="javascript:;"><i class="icofont icofont-attachment"></i> Download invoice</a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item waves-light waves-effect" href="javascript:;"><i class="icofont icofont-spinner-alt-5"></i> Edit Invoice</a>
-                  <a class="dropdown-item waves-light waves-effect" href="javascript:;" (click)= "removeFees(i)"><i class="icofont icofont-ui-edit"></i> Remove Invoice</a>
-                </div>
-                <!-- end of dropdown menu -->
-              </div>
               <!-- end of seconadary -->
             </div>
             <!-- end of pull-right class -->

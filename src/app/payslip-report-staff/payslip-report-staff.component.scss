@@ -1,0 +1,12 @@
+#data-default-tag{
+  display:none;
+}
+
+
+
+    @media print {
+
+        .print-only{
+            display: none;
+        }
+}

@@ -8,14 +8,14 @@ import { CookieService } from 'ng2-cookies';
 import { Router, ActivatedRoute } from '@angular/router';
 import swal from 'sweetalert2';
 import { NgbDateParserFormatter, NgbDateStruct, NgbDatepickerConfig  } from '@ng-bootstrap/ng-bootstrap';
-//import { ModalComponent } from '../components/advanced-component
+
 @Component({
-  selector: 'app-fees-report',
-  templateUrl: './fees-report.component.html',
-  styleUrls: ['./fees-report.component.scss']
+  selector: 'app-fees-report-student',
+  templateUrl: './fees-report-student.component.html',
+  styleUrls: ['./fees-report-student.component.scss']
 })
-export class FeesReportComponent implements OnInit {
-@ViewChild('modalSmall') modalSmall:TemplateRef<any>;
+export class FeesReportStudentComponent implements OnInit {
+@ViewChild('modalSmall') modalSmall:any;
 public data: any;
 public rowsOnPage = 10;
 public filterQuery = '';
@@ -94,136 +94,114 @@ public startDate:any;
 public endDate:any;
 public formattedStartDate:any;
 public formattedEndDate:any;
+public user:any;
+public user_id:any;
 
   constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService,public parseFormatter:NgbDateParserFormatter) {
    this.cookie = this.cookieService.getAll()['cookieSet'];
+   this.user_id = this.cookieService.getAll()['idSet'];
+   this.user = this.cookieService.getAll()['userSet'].toLowerCase();
    this.fetchsession.getSession().subscribe((session)=>{
    this.session = session.session;
    this.overdue = this.fetchsession.getOverdue();
     console.log('OverDue is:',this.overdue);
     console.log("session from session service",this.session);
     console.log(this.cookieService.getAll()['cookieSet']);
- 
+    if(this.user!=='admin')
+    this.http.post(this.url+ '/' + this.user + '/'+ this.user + '_get_for_user_id',{
+          user_id: this.user_id,
+          session: this.session,
+          access_token: this.cookie
+    }).subscribe((userDetail:any)=>{
+      userDetail = userDetail.json();
+      let student_id = userDetail._id;
+      let class_ref = userDetail.class_ref;
+      this.http.post(this.url+ '/fees/get_fees_for_'+ this.user+ '_ref',{
+        class_ref: class_ref,
+        session: this.session,
+        access_token: this.cookie,
+        student_id: student_id
+      }).subscribe((feesstudent)=>{
+         this.feesList = feesstudent.json();
+         console.log("feesList:",this.feesList);
+          for(let fee of this.feesList){
+           let feeSum =  +(_.pluck(fee.fees, 'amount')).reduce((acc,val)=>{
+
+              return (+acc) + (+val);
+            })
+           this.feeSumArray.push(feeSum);
+
+          }
+          console.log("started loop");
+          for(let i=0;i<this.feesList.length;i++){
+              console.log("in outer loop");
+              for(let j=0;j<this.feesList[i].students.length;j++){
+                console.log("in loop");
+                console.log(this.feesList[i].students[j])
+               this.studentArray.push(this.feesList[i].students[j]);
+               console.log(this.feesList[i]._id)
+               this.idArray.push(this.feesList[i]._id);
+              console.log(this.feesList[i].date)
+               this.dateArray.push(this.feesList[i].date);
+               console.log(this.feesList[i].fees)
+               this.feeArray.push(this.feesList[i].fees);
+
+               this.totalFeeSum.push(this.feeSumArray[i]);
+
+             } 
+          }
+          console.log("loop ended");
+          console.log("ONINIT");
+          console.log("FeeSum:", this.feeSumArray);
+          console.log('studentArray:',this.studentArray);
+          console.log('idArray:',this.idArray);
+          console.log('dateArray:',this.dateArray);
+          console.log('feeArray:',this.feeArray);
+          console.log('totalFeeSum:',this.totalFeeSum);
+
+
+          this.datePriorityStudentArray = this.studentArray.slice();
+          this.datePriorityIdArray = this.idArray.slice();
+          this.datePriorityDateArray = this.dateArray.slice();
+          this.datePriorityFeeArray = this.feeArray.slice();
+          this.datePriorityFeeSumArray = this.totalFeeSum.slice();
+          this.statusPriorityStudentArray = this.datePriorityStudentArray.slice();
+          this.statusPriorityIdArray = this.datePriorityIdArray.slice();
+          this.statusPriorityDateArray = this.datePriorityDateArray.slice();
+          this.statusPriorityFeeArray = this.datePriorityFeeArray.slice();
+          this.statusPriorityFeeSumArray = this.datePriorityFeeSumArray.slice();
+          this.filteredStudentArray = this.statusPriorityStudentArray.slice();
+          this.filteredIdArray = this.statusPriorityIdArray.slice();
+          this.filteredDateArray = this.statusPriorityDateArray.slice();
+          this.filteredFeeArray = this.statusPriorityFeeArray.slice();
+          this.filteredFeeSumArray = this.statusPriorityFeeSumArray.slice();
+          this.createNameErpString();
+          this.checkOverDueStatus();
+
+
+
+          console.log('after');
+          console.log("FeeSum:", this.feeSumArray);
+          console.log('studentArray:',this.studentArray);
+          console.log('idArray:',this.idArray);
+          console.log('dateArray:',this.dateArray);
+          console.log('feeArray:',this.feeArray);
+          console.log('totalFeeSum:',this.totalFeeSum);
+             
+      })
+    })
     
   });
    
   }
 
-  ngOnInit() {
-    this.http.post(this.url + '/newClass/get_class_all',{ "access_token": this.cookie})
-      .subscribe((data) => {
-        console.log(data.json());
-        this.getClassAll = data.json();
-        let classArray:any
-        this.filterClass= _.uniq(_.pluck(this.getClassAll,'name')); 
-          
+
+  ngOnInit(){
     
-        console.log("filterCLass:",this.filterClass);
-            let date = (new Date()).toLocaleDateString().split("/")    
-           let todaydate = (date[2] + '-' + ((+date[0]<10)?'0'+date[0]:date[0]) + '-' + ((+date[1]<10)?'0'+date[1]:date[1]));
-           this.today = todaydate;
-      });
+
   }
 
-  getSectionMethod(value){
 
-    this.feeSumArray = [];
-    this.datePriorityStudentArray = [];
-    this.datePriorityDateArray = [];
-    this.datePriorityFeeArray = [];
-    this.datePriorityIdArray = [];
-    this.datePriorityFeeSumArray = [];
-    this.statusPriorityStudentArray = [];
-    this.statusPriorityDateArray = [];
-    this.statusPriorityFeeArray = [];
-    this.statusPriorityIdArray = [];
-    this.statusPriorityFeeSumArray = [];
-    this.filteredStudentArray = [];
-    this.filteredDateArray = [];
-    this.filteredFeeArray = [];
-    this.filteredIdArray = [];
-    this.filteredFeeSumArray = [];
-    this.studentArray = [];
-    this.dateArray = [];
-    this.feeArray = [];
-    this.idArray = [];
-    this.totalFeeSum = [];
-    this.status = '';
-    console.log('Before');
-    console.log("FeeSum:", this.feeSumArray);
-    console.log('studentArray:',this.studentArray);
-    console.log('idArray:',this.idArray);
-    console.log('dateArray:',this.dateArray);
-    console.log('feeArray:',this.feeArray);
-    console.log('totalFeeSum:',this.totalFeeSum);
-    console.log(value);
-   this.selectSection = value;
-    console.log(this.selectClass);
-    console.log('select section:',this.selectSection);
-    this.result = _.where(this.getClassAll,{name: this.selectClass, section: value})[0];
-    console.log(this.result._id);
-    this.http.post(this.url + '/fees/get_fees_for_class_ref',{class_ref:this.result._id,access_token: this.cookie,session:this.session})
-        .subscribe((data)=>{
-          console.log(data.json());
-          this.feesList = data.json();
-          
-
-
-          this.class_ref = this.result._id;
-            this.rowsOnPage = this.feesList.length;
-            for(let fee of this.feesList){
-             let feeSum =  +(_.pluck(fee.fees, 'amount')).reduce((acc,val)=>{
-
-                return (+acc) + (+val);
-              })
-             this.feeSumArray.push(feeSum);
-
-            }
-
-            for(let i=0;i<this.feesList.length;i++){
-
-                for(let j=0;j<this.feesList[i].students.length;j++){
-                 this.studentArray.push(this.feesList[i].students[j]);
-                 this.idArray.push(this.feesList[i]._id);
-                 this.dateArray.push(this.feesList[i].date);
-                 this.feeArray.push(this.feesList[i].fees);
-                 this.totalFeeSum.push(this.feeSumArray[i]);
- 
-               } 
-            }
-
-
-            this.datePriorityStudentArray = this.studentArray.slice();
-            this.datePriorityIdArray = this.idArray.slice();
-            this.datePriorityDateArray = this.dateArray.slice();
-            this.datePriorityFeeArray = this.feeArray.slice();
-            this.datePriorityFeeSumArray = this.totalFeeSum.slice();
-            this.statusPriorityStudentArray = this.datePriorityStudentArray.slice();
-            this.statusPriorityIdArray = this.datePriorityIdArray.slice();
-            this.statusPriorityDateArray = this.datePriorityDateArray.slice();
-            this.statusPriorityFeeArray = this.datePriorityFeeArray.slice();
-            this.statusPriorityFeeSumArray = this.datePriorityFeeSumArray.slice();
-            this.filteredStudentArray = this.statusPriorityStudentArray.slice();
-            this.filteredIdArray = this.statusPriorityIdArray.slice();
-            this.filteredDateArray = this.statusPriorityDateArray.slice();
-            this.filteredFeeArray = this.statusPriorityFeeArray.slice();
-            this.filteredFeeSumArray = this.statusPriorityFeeSumArray.slice();
-            this.createNameErpString();
-            this.checkOverDueStatus();
-
-
-
-            console.log('after');
-            console.log("FeeSum:", this.feeSumArray);
-            console.log('studentArray:',this.studentArray);
-            console.log('idArray:',this.idArray);
-            console.log('dateArray:',this.dateArray);
-            console.log('feeArray:',this.feeArray);
-            console.log('totalFeeSum:',this.totalFeeSum);
-             
-
-        })
-  }
 
    openMyModal(event) {
     document.querySelector('#' + event).classList.add('md-show');
@@ -233,35 +211,6 @@ public formattedEndDate:any;
     ((event.target.parentElement.parentElement).parentElement).classList.remove('md-show');
   }
 
-  getClassMethod(value){
-    this.feeSumArray = [];
-    this.datePriorityStudentArray = [];
-    this.datePriorityDateArray = [];
-    this.datePriorityFeeArray = [];
-    this.datePriorityIdArray = [];
-    this.datePriorityFeeSumArray = [];
-    this.statusPriorityStudentArray = [];
-    this.statusPriorityDateArray = [];
-    this.statusPriorityFeeArray = [];
-    this.statusPriorityIdArray = [];
-    this.statusPriorityFeeSumArray = [];
-    this.filteredStudentArray = [];
-    this.filteredDateArray = [];
-    this.filteredFeeArray = [];
-    this.filteredIdArray = [];
-    this.filteredFeeSumArray = [];
-    this.studentArray = [];
-    this.dateArray = [];
-    this.feeArray = [];
-    this.idArray = [];
-    this.totalFeeSum = [];
-    this.status = '';
-
-    console.log(value);
-    this.selectClass = value;
-    this.getSectionOfClass = _.where(this.getClassAll,{name:this.selectClass});
-    console.log("getSectionOfClass:",this.getSectionOfClass);
-  }
 
   showFees(i){
      console.log(i);
@@ -339,7 +288,7 @@ public formattedEndDate:any;
     //dateFormat : 2018-06-04(YYYY-MM-DD) 2018-05
    
     if(value){
-      this.datePriorityStudentArray = [];
+    this.datePriorityStudentArray = [];
     this.datePriorityDateArray = [];
     this.datePriorityFeeArray = [];
     this.datePriorityIdArray = [];
@@ -537,9 +486,9 @@ public formattedEndDate:any;
   
     }  
 
-    }
-    
-   }
+ }
+}
+
 
  createNameErpString(){
    // for(i=0;i<this.filteredStudentArray.length;i++){
@@ -561,99 +510,6 @@ public formattedEndDate:any;
  }
 
 
- changeStatus(value,index){
-   console.log(index);
-   let idIndex = [];
-    let id = this.filteredIdArray[index];
-    console.log("id for change status:",id);
-    console.log("value:",value);
-    
-       
-       this.http.post(this.url+ '/fees/fees_edit',{
-         _id: id,
-         student_id: this.filteredStudentArray[index]['student']['_id'],
-         document_id: this.filteredStudentArray[index]['_id'],
-         status: value,
-         session: this.session,
-         access_token: this.cookie
-       }).subscribe((editedFee:any)=>{
-         editedFee = editedFee.json();
-         console.log(editedFee);
-         this.http.post(this.url + '/fees/get_fees_one',{
-           _id: id,
-           access_token: this.cookie
-         }).subscribe((editedFeeDoc:any)=>{
-           editedFeeDoc = editedFeeDoc.json();
-           console.log("editedFeeDoc:",editedFeeDoc);
-            _.each(this.feesList,(fee,index)=>{
-           if(fee['_id'] == editedFeeDoc._id){
-             idIndex.push(index);
-
-           }
-         })
-
-          console.log("IdIndex:",idIndex);
-          this.feesList[idIndex[0]] = editedFeeDoc;
-          console.log(this.feesList[idIndex[0]])
-          console.log(this.feesList)
-          this.studentArray = [];
-          this.dateArray = [];
-          this.feeArray = [];
-          this.idArray = [];
-          this.totalFeeSum = [];
-            console.log('before editing');
-            console.log("FeeSum:", this.feeSumArray);
-            console.log('studentArray:',this.studentArray);
-            console.log('idArray:',this.idArray);
-            console.log('dateArray:',this.dateArray);
-            console.log('feeArray:',this.feeArray);
-            console.log('totalFeeSum:',this.totalFeeSum);
-
-          for(let i=0;i<this.feesList.length;i++){
-
-                 for(let j=0;j<this.feesList[i].students.length;j++){
-                  this.studentArray.push(this.feesList[i].students[j]);
-                  this.idArray.push(this.feesList[i]._id);
-                  this.dateArray.push(this.feesList[i].date);
-                  this.feeArray.push(this.feesList[i].fees);
-                  this.totalFeeSum.push(this.feeSumArray[i]);
-
-                } 
-             }
-            console.log('after editing');
-            console.log("FeeSum:", this.feeSumArray);
-            console.log('studentArray:',this.studentArray);
-            console.log('idArray:',this.idArray);
-            console.log('dateArray:',this.dateArray);
-            console.log('feeArray:',this.feeArray);
-            console.log('totalFeeSum:',this.totalFeeSum);
-
-             this.datePriorityStudentArray = this.studentArray.slice();
-             this.datePriorityIdArray = this.idArray.slice();
-             this.datePriorityDateArray = this.dateArray.slice();
-             this.datePriorityFeeArray = this.feeArray.slice();
-             this.datePriorityFeeSumArray = this.totalFeeSum.slice();
-             this.statusPriorityStudentArray = this.datePriorityStudentArray.slice();
-             this.statusPriorityIdArray = this.datePriorityIdArray.slice();
-             this.statusPriorityDateArray = this.datePriorityDateArray.slice();
-             this.statusPriorityFeeArray = this.datePriorityFeeArray.slice();
-             this.statusPriorityFeeSumArray = this.datePriorityFeeSumArray.slice();
-             this.filteredStudentArray = this.statusPriorityStudentArray.slice();
-             this.filteredIdArray = this.statusPriorityIdArray.slice();
-             this.filteredDateArray = this.statusPriorityDateArray.slice();
-             this.filteredFeeArray = this.statusPriorityFeeArray.slice();
-             this.filteredFeeSumArray = this.statusPriorityFeeSumArray.slice();
-             this.createNameErpString();
-             this.getDate(this.selectDate);
-             
-             this.searchMethodNameErpString(this.searchvalue);
-             this.getStatus(this.status);
-             this.checkOverDueStatus();
-
-         })
-       })
-       
-    }
  
 
 
@@ -701,93 +557,6 @@ else{
  
 }
 
-removeFees(index){
-   console.log(index);
-   let idIndex = [];
-    let id = this.filteredIdArray[index];
-    console.log("id for change status:",id);
-   
-    
-       
-       this.http.post(this.url+ '/fees/fees_remove',{
-         _id: id,
-         student_id: this.filteredStudentArray[index]['student']['_id'],
-         access_token: this.cookie
-       }).subscribe((editedFee:any)=>{
-         editedFee = editedFee.json();
-         this.feeSumArray = [];
-         this.studentArray = [];
-         this.dateArray = [];
-         this.feeArray = [];
-         this.idArray = [];
-         this.totalFeeSum = [];
-         console.log(editedFee);
-        this.http.post(this.url + '/fees/get_fees_for_class_ref',{class_ref:this.class_ref,access_token: this.cookie,session:this.session})
-        .subscribe((data)=>{
-          console.log(data.json());
-          this.feesList = data.json();
-          this.rowsOnPage = this.feesList.length;
-            for(let fee of this.feesList){
-             let feeSum =  +(_.pluck(fee.fees, 'amount')).reduce((acc,val)=>{
-
-                return (+acc) + (+val);
-              })
-             this.feeSumArray.push(feeSum);
-
-            }
-
-            for(let i=0;i<this.feesList.length;i++){
-
-                for(let j=0;j<this.feesList[i].students.length;j++){
-                 this.studentArray.push(this.feesList[i].students[j]);
-                 this.idArray.push(this.feesList[i]._id);
-                 this.dateArray.push(this.feesList[i].date);
-                 this.feeArray.push(this.feesList[i].fees);
-                 this.totalFeeSum.push(this.feeSumArray[i]);
-
-               } 
-            }
-
-
-            this.datePriorityStudentArray = this.studentArray.slice();
-            this.datePriorityIdArray = this.idArray.slice();
-            this.datePriorityDateArray = this.dateArray.slice();
-            this.datePriorityFeeArray = this.feeArray.slice();
-            this.datePriorityFeeSumArray = this.totalFeeSum.slice();
-            this.statusPriorityStudentArray = this.datePriorityStudentArray.slice();
-            this.statusPriorityIdArray = this.datePriorityIdArray.slice();
-            this.statusPriorityDateArray = this.datePriorityDateArray.slice();
-            this.statusPriorityFeeArray = this.datePriorityFeeArray.slice();
-            this.statusPriorityFeeSumArray = this.datePriorityFeeSumArray.slice();
-            this.filteredStudentArray = this.statusPriorityStudentArray.slice();
-            this.filteredIdArray = this.statusPriorityIdArray.slice();
-            this.filteredDateArray = this.statusPriorityDateArray.slice();
-            this.filteredFeeArray = this.statusPriorityFeeArray.slice();
-            this.filteredFeeSumArray = this.statusPriorityFeeSumArray.slice();
-
-            this.createNameErpString();
-          
-
-
-            console.log('after');
-            console.log("FeeSum:", this.feeSumArray);
-            console.log('studentArray:',this.studentArray);
-            console.log('idArray:',this.idArray);
-            console.log('dateArray:',this.dateArray);
-            console.log('feeArray:',this.feeArray);
-            console.log('totalFeeSum:',this.totalFeeSum);
-             
-
-   
-             this.getDate(this.selectDate);
-             this.getStatus(this.status);
-             this.searchMethodNameErpString(this.searchvalue);
-             this.checkOverDueStatus();
-
-         })
-       })
-       
-    }
 
    printInvoice(){
      this.printDiv = true;
@@ -893,8 +662,8 @@ exportCSV(){
 
 showModal(){
   console.log(this.modalSmall);
-  this.modalSmall['dialogClass'] = 'modal-sm';
-  this.modalSmall.show();
+    this.modalSmall.dialogClass= "'modal-sm'";
+ this.modalSmall.show();
 
 }
 
@@ -905,7 +674,7 @@ hideModal(){
   this.datePriorityIdArray = [];
   this.datePriorityFeeSumArray = [];
   this.datePriorityDateArray = [];
-  this.modalSmall.hide();
+ this.modalSmall.hide();
   console.log("startDate",this.startDate);
   console.log("endDate",this.endDate);
   this.formattedStartDate = this.parseFormatter.format(this.startDate);

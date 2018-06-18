@@ -9,18 +9,19 @@ import { CookieService } from 'ng2-cookies';
 //private cookieService: CookieService
 //import { ModalComponent } from '../components/advanced-component
 @Component({
-  selector: 'app-exam',
-  templateUrl: './exam.component.html',
-  styleUrls: ['./exam.component.scss']
+  selector: 'app-marks',
+  templateUrl: './marks.component.html',
+  styleUrls: ['./marks.component.scss']
 })
 
 
-export class ExamComponent implements OnInit, AfterViewInit {
+export class MarksComponent implements OnInit, AfterViewInit {
 //@ViewChild('t') t:ElementRef;
 
 
 
 //public checkStatus:any= [];
+public index:number;
 public data: any;
 public rowsOnPage = 10;
 public filterQuery = '';
@@ -47,9 +48,16 @@ public total_marks:any;
 public url:any = 'http://localhost:3000';
 public class_ref: any;
 public subjectList:any =  [];
+public studentList:any = [];
 public id:any;
 public fetch:boolean = false;
 public cookie:any;
+public editMarks:boolean = false;
+public rows:any[] = [];
+public editing = {};
+public marksArray:any[] = [];
+public exam_ref:any;
+public studentArray:any[] = [];
 
   //import { SystemService } from '../system/service.system';
   constructor(public http: Http,
@@ -62,7 +70,7 @@ public cookie:any;
     
     this.session = session.session;
     console.log("session from session service",this.session);
-    this.initializeForm();
+    //this.initializeForm();
     console.log(this.examForm);
     
   });
@@ -73,7 +81,7 @@ public cookie:any;
     this.datePickerService.maxDate = {day:now.date(),month:now.month()+1,year:now.year()}
        
     
-   this.initializeForm();
+  
   }
 
 
@@ -102,7 +110,7 @@ public cookie:any;
        })
   }
 
-  getSectionMethod(value){
+ getSectionMethod(value){
     this.fetch = true;
   	console.log(value);
  	this.selectSection = value;
@@ -113,19 +121,14 @@ public cookie:any;
         .subscribe((exam)=>{
           console.log(exam.json());
           this.examList = exam.json();
-          //this.parseFormattedDate.pu
-
-        })
+       })
     
 
-
-
-  }
-
+}
 
 
 
-  getClassMethod(value){
+ getClassMethod(value){
     this.fetch= false;
     this.selectSection = '';
     this.examList = [];
@@ -135,98 +138,96 @@ public cookie:any;
     console.log("getSectionOfClass:",this.getSectionOfClass);
   }
 
-  openMyModal(event) {
+  openMyModal(event){
     document.querySelector('#' + event).classList.add('md-show');
   }
 
-  closeMyModal(event) {
+  closeMyModal(event){
     ((event.target.parentElement.parentElement).parentElement).classList.remove('md-show');
   }
-
-  initializeForm(){
-    this.examForm = new FormGroup({
-      "name" : new FormControl(this.name,Validators.required),
-      "date" : new FormControl(this.date,Validators.required),
-      "subject_ref" : new FormControl(this.subject_ref, Validators.required),
-      "total_marks": new FormControl(this.total_marks, Validators.required),
-      "duration" : new FormControl(this.duration,Validators.required),
-      "session" : new FormControl(this.session,Validators.required)
-    })
-  }
-
-  addExam(){
-    this.editMode = false;
-    this.id  = '';
-    this.name = '';
-    this.date = '';
-    this.subject_ref = '';
-    this.total_marks = '';
-    this.duration = '';
-    
-    this.initializeForm();
-    this.openMyModal('effect-13');
-  }
-
-  editExam(index){
-   this.editMode =true;
-   this.id =this.examList[index]['_id']; 
-   this.name = this.examList[index]['name'];
-   this.date = this.parseFormatter.parse(this.examList[index]['date']);
-   this.subject_ref = this.examList[index]['subject_ref']['name'];
-   this.total_marks = this.examList[index]['total_marks'];
-   this.duration = this.examList[index]['duration'];
-   
-   this.initializeForm();
-   this.openMyModal('effect-13');
-  }
-
-
-  putExam(value){
-      
-      console.log(value);
-      this.http.post(this.url + '/exam/exam',{
-        name: value.name,
-        date: this.parseFormatter.format(value.date),
-        class_ref: this.class_ref,
-        subject_ref: _.where(this.subjectList,{name: value.subject_ref})[0]['_id'],
-        total_marks: value.total_marks,
-        duration: value.duration,
-        session: this.session,
-        access_token: this.cookie
-      }).subscribe((savedExam)=>{
-        console.log("This is working i think;")
-         this.http.post(this.url + '/exam/exam_get_class',{class_ref:this.class_ref,session:this.session,access_token: this.cookie})
-               .subscribe((exam)=>{
-                 this.examList = exam.json();
-                 console.log("After save",this.examList);
-               })
-      })
-  }
-
-
- putExamEdited(value){
-    
-      this.http.post(this.url + '/exam/exam_edit',{
-         _id: this.id,
-        name: value.name,
-        date: this.parseFormatter.format(value.date),
-        class_ref: this.class_ref,
-        subject_ref: _.where(this.subjectList,{name: value.subject_ref})[0]['_id'],
-        total_marks: value.total_marks,
-        duration: value.duration,
-        session: this.session,
-        access_token: this.cookie
-      }).subscribe((savedExam)=>{
-         this.http.post(this.url + '/exam/exam_get_class',{class_ref:this.class_ref,session:this.session,access_token: this.cookie})
-               .subscribe((exam)=>{
-                 this.examList = exam.json();
-               })
-      })
-  }
-
-
-  
  
+ addMarks(i){
+   this.editMarks = true;
+   this.index = i;
+   this.exam_ref = this.examList[i]['_id'];
+   this.http.post(this.url+ '/student/students_get_for_class_ref',{class_ref:this.class_ref,session:this.session,access_token:this.cookie})
+    .subscribe((students)=>{
+   let studentsArray:any[] = students.json();
+   this.studentList = _.map(studentsArray,(student)=>{
+     this.studentArray.push(student._id);
+     console.log("examList:",this.examList[this.index]);
+     return {name:student.name,erp_id:student.erp_id,totalMarks:+this.examList[this.index]['total_marks'],marks_obtained:0}
+   })
+   
+   this.rows = [...this.studentList];
+
+   this.http.post(this.url+ '/marks/marks_get_for_exam_ref',{
+     exam_ref:this.exam_ref,
+     session:this.session,
+     access_token: this.cookie
+   }).subscribe((marks:any)=>{
+      marks = marks.json();
+      console.log("marks:",Boolean(marks));
+      if(marks){
+        this.studentList = [];
+        for(let i=0;i<marks.students.length;i++){
+          this.studentList.push({name:marks['students'][i]['student']['name'],
+                                erp_id:marks['students'][i]['student']['erp_id'],
+                                totalMarks:+this.examList[this.index]['total_marks'],
+                                marks_obtained:marks['students'][i]['marks']})
+        }
+        this.rows = [...this.studentList];
+        console.log('This line is not hit');
+      }
+
+   })
+
+   console.log("List student:",this.studentList);
+   console.log(this.rows);
+ })
+
+   
+   
+}
+
+updateValue(event, cell, row) {
+    this.editing[row + '-' + cell] = false;
+    this.rows[row][cell] = event.target.value; 
+    this.marksArray[row] = event.target.value;
+    console.log("marksArray:",this.marksArray);
+
+  }
+
+  saveMarks(){
+
+     let students = [];
+    for(let i=0;i<this.studentList.length;i++){
+       if(!this.marksArray[i]){
+         this.marksArray[i] = 0;
+         
+       }
+
+       students.push({student:this.studentArray[i],marks:this.marksArray[i]})
+
+    }
+
+    this.http.post(this.url+ '/marks/marks',{
+      exam_ref:this.exam_ref,
+      students: students,
+      session: this.session,
+      access_token: this.cookie
+    }).subscribe((marks)=>{
+       console.log(marks);
+       this.editMarks = false;
+      
+    })
+
+  }
+
+  cancelMarks(){
+    this.editMarks =false;
+  }
+
 }
 
 

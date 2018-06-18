@@ -4,7 +4,7 @@ import {CommonModule} from '@angular/common';
 import 'd3';
 import 'nvd3';
 
-import { MenuItems } from './menu-items/menu-items';
+import { MenuItems,ErpMenu } from './menu-items/menu-items';
 import { AccordionAnchorDirective, AccordionLinkDirective, AccordionDirective } from './accordion';
 import { ToggleFullscreenDirective } from './fullscreen/toggle-fullscreen.directive';
 import {CardRefreshDirective} from './card/card-refresh.directive';
@@ -150,6 +150,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       SelectOptionService,
       NotificationsService,
       CookieService,
+      ErpMenu,
       
     {
       provide: PERFECT_SCROLLBAR_CONFIG,

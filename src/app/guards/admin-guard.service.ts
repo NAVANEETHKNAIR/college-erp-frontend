@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable,OnInit,OnChanges } from '@angular/core';
 import { CanActivate, ActivatedRoute,ActivatedRouteSnapshot, Router} from '@angular/router';
 import { CookieService } from 'ng2-cookies';
 import { Http } from '@angular/http';
@@ -6,14 +6,18 @@ import { Http } from '@angular/http';
 @Injectable({
   providedIn: 'root'
 })
-export class LoginGuardService implements CanActivate {
+export class LoginGuardService implements CanActivate{
 
 public cookie:any;
   constructor(public http: Http, public cookieService: CookieService, public route: Router) {
-  this.cookie = this.cookieService.getAll()['cookieSet'];
+     this.cookie = this.cookieService.getAll()['cookieSet'];
+  console.log("Only constructor is running");
 }
 
+
+
   canActivate(){
+  	this.cookie = this.cookieService.getAll()['cookieSet'];
     if(!this.cookie){
       console.log('This guard is dope');
        this.route.navigate(['login']);

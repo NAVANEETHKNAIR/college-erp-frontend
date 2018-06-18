@@ -75,7 +75,7 @@ public cookie:any;
 public session:any;
 public peopleList:any[] = [];
 
-  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
+ constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
     this.session = session.session;
@@ -176,7 +176,7 @@ public peopleList:any[] = [];
   }
 
   addTag(value){
-     console.log(value);
+     console.log("addTag:",value);
      this.items.push(value);
   }
 
@@ -309,18 +309,5 @@ public peopleList:any[] = [];
     
   }
 
-
-// checkCheckbox(value,contact){
-//   if(value){
-//       this.peopleList.push(contact)
-//   }
-
-//   else{
-//     if(_.includes( this.peopleList,contact)){
-//        this.peopleList.splice(this.peopleList.indexOf(contact),1);
-//     }
-//   }
-
-//}
 
 }

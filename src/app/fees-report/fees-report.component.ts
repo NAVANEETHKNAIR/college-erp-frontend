@@ -8,14 +8,14 @@ import { CookieService } from 'ng2-cookies';
 import { Router, ActivatedRoute } from '@angular/router';
 import swal from 'sweetalert2';
 import { NgbDateParserFormatter, NgbDateStruct, NgbDatepickerConfig  } from '@ng-bootstrap/ng-bootstrap';
-//import { ModalComponent } from '../components/advanced-component
+
 @Component({
   selector: 'app-fees-report',
   templateUrl: './fees-report.component.html',
   styleUrls: ['./fees-report.component.scss']
 })
 export class FeesReportComponent implements OnInit {
-@ViewChild('modalSmall') modalSmall:TemplateRef<any>;
+@ViewChild('modalSmall') modalSmall:any;
 public data: any;
 public rowsOnPage = 10;
 public filterQuery = '';
@@ -893,8 +893,8 @@ exportCSV(){
 
 showModal(){
   console.log(this.modalSmall);
-  this.modalSmall['dialogClass'] = 'modal-sm';
-  this.modalSmall.show();
+    this.modalSmall.dialogClass= "'modal-sm'";
+ this.modalSmall.show();
 
 }
 
@@ -905,7 +905,7 @@ hideModal(){
   this.datePriorityIdArray = [];
   this.datePriorityFeeSumArray = [];
   this.datePriorityDateArray = [];
-  this.modalSmall.hide();
+ this.modalSmall.hide();
   console.log("startDate",this.startDate);
   console.log("endDate",this.endDate);
   this.formattedStartDate = this.parseFormatter.format(this.startDate);
