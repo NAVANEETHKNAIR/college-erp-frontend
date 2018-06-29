@@ -28,14 +28,7 @@ import { SystemComponent } from './system/system.component';
 import { SystemService } from './system/service.system';
 import { CalendarComponent } from './calendar/calendar.component';
 import { LoginComponent } from './login/login.component';
-import { LoginGuardService,
-         AdminAuthorizeGuardService,
-         StudentAuthorizeGuardService,
-         LibrarianAuthorizeGuardService,
-         TeacherAuthorizeGuardService,
-         AccountantGuardService,
-         OtherAuthorizeGuardService
-        } from './guards/admin-guard.service';
+import { LoginGuardService,RolesGuardAuthorizeGuardService} from './guards/admin-guard.service';
 import { ErrorComponent } from './error/error.component';
 import { StudentdashboardComponent } from './student-dashboard/student-dashboard.component';
 import { AttendanceStudentRecordComponent } from './attendance-student-record/attendance-student-record.component';
@@ -49,6 +42,12 @@ import { MarksComponent } from './marks/marks.component';
 import { ExpenseComponent } from './expense/expense.component';
 import { SideMenuComponent } from './sidemenu/sidemenu.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ExamReportComponent } from './exam-report/exam-report.component';
+import { MarksReportComponent } from './marks-report/marks-report.component';
+import { LibraryReportComponent } from './library-report/library-report.component';
+import { RoutineReportComponent } from './routine-report/routine-report.component';
+import { SuperAdminComponent } from './super-admin/super-admin.component';
+
 
 @NgModule({
   declarations: [
@@ -86,7 +85,12 @@ import { ProfileComponent } from './profile/profile.component';
     SideMenuComponent,
     ProfileComponent,
     PayslipReportStaffComponent,
-    FeesReportStudentComponent
+    FeesReportStudentComponent,
+    ExamReportComponent,
+    MarksReportComponent,
+    LibraryReportComponent,
+    RoutineReportComponent,
+    SuperAdminComponent
     
   ],
   imports: [
@@ -99,12 +103,7 @@ import { ProfileComponent } from './profile/profile.component';
   providers: [ 
                SystemService, 
                LoginGuardService,
-               AdminAuthorizeGuardService,
-               StudentAuthorizeGuardService,
-               LibrarianAuthorizeGuardService,
-               TeacherAuthorizeGuardService,
-               AccountantGuardService,
-               OtherAuthorizeGuardService 
+               RolesGuardAuthorizeGuardService 
               ],
   bootstrap: [AppComponent]
 })

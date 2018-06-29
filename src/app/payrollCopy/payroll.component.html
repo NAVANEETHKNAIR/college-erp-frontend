@@ -88,7 +88,7 @@
             <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
        <form [formGroup]="payrollForm">
        <div class="text-center">
-        <label for="basic-addon1" style="display:block;text-align:left">Basic Salary</label> 
+        <label for="basic-addon1" style="display:block;text-align:left">Basic Salary(required)</label> 
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control"  formControlName = "basic_sal">
@@ -111,14 +111,14 @@
           <div [formGroupName]= "j">
           <div class="row">
           <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-          <label for="basic-addon1" style="display:block;text-align:left">Description</label>
+          <label for="basic-addon1" style="display:block;text-align:left">Description(required)</label>
           <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" formControlName = "description">
           <p *ngIf="!payrollForm.controls.allowances.controls[j]['controls']['description'].valid && payrollForm.controls['allowances']['controls'][j].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the description</p>
          </div>
 
-          <label for="basic-addon1" style="display:block;text-align:left">Amount</label>
+          <label for="basic-addon1" style="display:block;text-align:left">Amount(required)</label>
           <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" formControlName = "amount">
@@ -149,14 +149,14 @@
           <div [formGroupName]= "k">
           <div class="row">
           <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-          <label for="basic-addon1" style="display:block;text-align:left">Description</label>
+          <label for="basic-addon1" style="display:block;text-align:left">Description(required)</label>
           <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" formControlName = "description">
           <p *ngIf="!payrollForm.controls['deductions']['controls'][k]['controls']['description'].valid && payrollForm.controls.deductions.controls[k].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the description</p>
          </div>
 
-          <label for="basic-addon1" style="display:block;text-align:left">Amount</label>
+          <label for="basic-addon1" style="display:block;text-align:left">Amount(required)</label>
           <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" formControlName = "amount">

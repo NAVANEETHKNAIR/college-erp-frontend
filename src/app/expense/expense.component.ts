@@ -36,6 +36,7 @@ public category:any;
 public categoryExist:boolean = false;
 public date:any;
 public categoryNew:any = "";
+public currentSession:any;
   constructor(public http: Http,
     public fetchsession:SystemService, 
     public parseFormatter:NgbDateParserFormatter,
@@ -44,7 +45,8 @@ public categoryNew:any = "";
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
     
-    this.session = session.session;
+     this.currentSession = session.session;
+    this.session = this.fetchsession.getReportSession();
     console.log("session from session service",this.session);
     this.initializeForm();
     console.log(this.expenseForm);

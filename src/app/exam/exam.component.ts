@@ -50,7 +50,7 @@ public subjectList:any =  [];
 public id:any;
 public fetch:boolean = false;
 public cookie:any;
-
+public currentSession:any;
   //import { SystemService } from '../system/service.system';
   constructor(public http: Http,
     public fetchsession:SystemService, 
@@ -60,7 +60,8 @@ public cookie:any;
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
     
-    this.session = session.session;
+    this.currentSession = session.session;
+    this.session = this.fetchsession.getReportSession();
     console.log("session from session service",this.session);
     this.initializeForm();
     console.log(this.examForm);
@@ -205,7 +206,7 @@ public cookie:any;
 
 
  putExamEdited(value){
-    
+      
       this.http.post(this.url + '/exam/exam_edit',{
          _id: this.id,
         name: value.name,

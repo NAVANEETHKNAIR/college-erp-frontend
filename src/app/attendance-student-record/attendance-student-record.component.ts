@@ -33,10 +33,12 @@ export class AttendanceStudentRecordComponent implements OnInit {
  public len:any;
  public filteredAttendance:any;
  public user:any;
+ public currentSession:any;
   constructor(public http: Http, public fetchsession:SystemService, private cookieService: CookieService,public datePickerService:NgbDatepickerConfig,public parseFormatter:NgbDateParserFormatter){
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
-    this.session = session.session;
+       this.currentSession = session.session;
+    this.session = this.fetchsession.getReportSession();
     console.log("session from session service",this.session);
     this.user = this.cookieService.getAll()['userSet'].toLowerCase();
     this.getAttendance();

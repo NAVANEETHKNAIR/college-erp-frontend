@@ -1,0 +1,125 @@
+<!-- <div class="card">
+  <div class="card-header">
+    <h5>Manage Routine</h5>
+    <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" [disabled] = "!this.selectSection" (click)="addRoutine()"> <i class="icofont icofont-plus m-r-5"></i> Add Routine
+    </button>
+    <br>
+    <br>
+    <br>
+    <p *ngIf = "!this.selectSection" style="color:red;text-align:right" >Please Select Class &amp; Section First</p>
+
+    </div>
+  <div class="card-body">
+    <div class="table-content crm-table">
+      <div class="project-table">
+        <div id="crm-contact" class="dt-responsive">
+          <div class="row">
+            <div class="col-xs-12 col-sm-4 col-md-4">
+              <div>
+                <label for= "getClass" class="label-control">Select Class
+                  <select name="getClass" #getClass class="form-control" [(ngModel)]="selectClass" (change)="getClassMethod(getClass.value)">
+                    <option style="display:none;"></option>
+                    <option *ngFor="let getClass of filterClass;let i= index;" [value]="getClass">{{getClass}}</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4">
+              <div *ngIf ="selectClass!==''">
+                <label for= "getSection" class="label-control">Select Section
+                  <select name="getSection" #getSection class="form-control" (change)="getSectionMethod(getSection.value)" [(ngModel)]="selectSection">
+                    <option style="display:none;"></option>
+                    <option *ngFor="let getSection of getSectionOfClass;let i= index;"  [value]="getSection.section">{{getSection.section}}</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4">
+              <div style="text-align: right;">
+                <label>Search:
+                  <input type="search" [(ngModel)]="filterQuery" class="form-control input-sm full-data-search" placeholder="Search name">
+                </label>
+              </div>
+            </div>
+          </div> -->
+          <!-- <div class="panel-heading">User information</div>-->
+  <div class="card">
+  <div class="card-header">
+    <h5>Time Table</h5> 
+          <div class="table-responsive">
+          <table class="table table-striped table-bordered full-data-table" [mfData]="subjectDaySorted | dataFilter : filterQuery" #mf="mfDataTable"
+                 [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+
+            <tbody>
+            <tr *ngFor="let itemArray of mf.data;let i=index">
+               <td>{{dayList[i]}}</td>
+               <td *ngFor="let item of itemArray"><button type="button" (click)=editSchedule(item._id)> {{item.subject_ref.name}}({{item.start_time}}-{{item.end_time}})</button></td>
+ 
+            </tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+
+
+
+<!--  <app-modal-animation [modalID]="'effect-13'" [modalClass]="'md-effect-13'">
+          <h3>Add routine</h3>
+          <div>
+            <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
+		   <form [formGroup]="routineForm">
+		   <div class="text-center">
+		    <label for="basic-addon1" style="display:block;text-align:left">Day</label> 
+		    <div class="input-group">
+		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+		      <select type="text"  class="form-control" placeholder="Day" formControlName = "day">
+          <option style="display:none;"></option>
+          <option *ngFor= "let day of dayList" [value] = "day">{{day}}</option>  
+          </select>
+
+		      <p *ngIf="!routineForm.controls['day'].valid && routineForm.controls['day'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the day</p>
+		    </div>
+        <label for="basic-addon2" style="display:block;text-align:left">Subject</label>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon2"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <select type="text" class="form-control" placeholder="Subject" formControlName = "subject_ref">
+              <option style="display:none;"></option>
+              <option *ngFor="let subject of getSubjectAll" [value] = "subject.name">{{subject.name}}</option>
+          </select>
+          <p *ngIf="!routineForm.controls['subject_ref'].valid && routineForm.controls['subject_ref'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the subject</p>
+        </div>
+        <label for="basic-addon2" style="display:block;text-align:left">Teacher</label>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon3"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <select type="text" class="form-control" placeholder="Teacher" formControlName = "teacher_ref" #teacherEdit>
+             <option style="display:none;"></option>
+             <option *ngFor="let teacher of getTeacherAll" [value]="teacher.erp_id">{{teacher.name}} {{teacher.erp_id}}</option>
+          </select>
+          <p *ngIf="!routineForm.controls['teacher_ref'].valid && routineForm.controls['teacher_ref'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the subject teacher</p>
+        </div>
+        <label for="basic-addon2" style="display:block;text-align:left">Start time</label>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon4"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="time" class="form-control" placeholder="Start time" formControlName = "start_time">
+          <p *ngIf="!routineForm.controls['start_time'].valid && routineForm.controls['start_time'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the start time</p>
+        </div>
+        <label for="basic-addon2" style="display:block;text-align:left">End time</label>
+         <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon5"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="time" class="form-control" placeholder="End Time" formControlName = "end_time">
+          <p *ngIf="!routineForm.controls['end_time'].valid && routineForm.controls['end_time'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the end time</p>
+        </div>
+		    <button *ngIf="routineForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putRoutine(routineForm.value)">Save</button>
+        <button *ngIf="routineForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedRoutine(routineForm.value)">Save</button>
+
+
+       </div>
+		     </form>          
+		    </perfect-scrollbar>
+            <br>
+          </div>
+          <button (click)="closeMyModal($event)" aria-label="Close" class="md-close-btn"><i class="icofont icofont-ui-close"></i></button>
+</app-modal-animation> -->
+
+

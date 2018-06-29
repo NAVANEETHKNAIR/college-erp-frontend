@@ -94,11 +94,13 @@ public startDate:any;
 public endDate:any;
 public formattedStartDate:any;
 public formattedEndDate:any;
+public currentSession:any;
 
   constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService,public parseFormatter:NgbDateParserFormatter) {
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
-   this.session = session.session;
+      this.currentSession = session.session;
+    this.session = this.fetchsession.getReportSession();
    this.overdue = this.fetchsession.getOverdue();
     console.log('OverDue is:',this.overdue);
     console.log("session from session service",this.session);
@@ -658,7 +660,7 @@ public formattedEndDate:any;
 
 
  searchMethodNameErpString(value){
-    if(value){
+    if(value || value == ""){
     let count = 0;
     this.searchNameErpString = [];
     this.filteredStudentArray = [];
@@ -687,6 +689,7 @@ public formattedEndDate:any;
     this.filteredDateArray.push(this.statusPriorityDateArray[this.searchNameErpString[i]]);
     this.filteredFeeArray.push(this.statusPriorityFeeArray[this.searchNameErpString[i]]);
     this.filteredFeeSumArray.push(this.statusPriorityFeeSumArray[this.searchNameErpString[i]]);
+    this.checkOverDueStatus();
   }
    
 }
@@ -697,6 +700,7 @@ else{
        this.filteredDateArray = this.statusPriorityDateArray.slice();
        this.filteredFeeArray = this.statusPriorityFeeArray.slice();
        this.filteredFeeSumArray = this.statusPriorityFeeSumArray.slice();
+       this.checkOverDueStatus();
 }
  
 }
@@ -821,6 +825,7 @@ dateDiffInDays(date1, date2) {
 checkOverDueStatus(){
   this.unpaidStatus = [];
   let overdueValue:any;
+  console.log("overdue status",this.filteredStudentArray);
   for(let i=0;i<this.filteredStudentArray.length;i++){
    
    if(this.filteredStudentArray[i]['status'] == 'Unpaid'){

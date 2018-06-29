@@ -1,7 +1,8 @@
 <div class="card">
   <div class="card-header">
     <h5>Contact</h5>
-    <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="addStudent()"> <i class="icofont icofont-plus m-r-5"></i> Add Student
+
+    <button type="button" *ngIf="session==currentSession" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="addStudent()"> <i class="icofont icofont-plus m-r-5"></i> Add Student
     </button>
 <!--     <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="modalOverflow.show()"> <i class="icofont icofont-plus m-r-5"></i> Add Student
     </button> -->
@@ -70,14 +71,16 @@
             </thead>
             <tbody>
             <tr *ngFor="let item of mf.data;let i=index">
-              <td><img src="{{item.image}}" class="d-inline-block img-circle " alt="tbl"></td>
+              <td *ngIf="!item.image"><img src="{{item.image}}" class="d-inline-block img-circle " alt="tbl"></td>
+              <td *ngIf="item.image"><img src={{img[i]}} class="d-inline-block img-circle " alt="tbl"></td>
               <td>{{item.name}}</td>
               <td>{{item.erp_id}}</td>
               <td>{{item.email}}</td>
               <td>{{item.student_contact}}</td>
               <td class="action-icon">
-                <button type="button" (click)="editStudent(i)" class="m-r-15 crm-action-edit text-muted text-primary"><i class="icofont icofont-ui-edit"></i></button>
-                <a href="javascript:;" class="crm-action-delete text-muted text-danger"><i class="icofont icofont-delete-alt"></i></a>
+                <button type="button"  *ngIf="session==currentSession" (click)="editStudent(i)" class="m-r-15 crm-action-edit text-muted text-primary"><i class="icofont icofont-ui-edit"></i></button>
+                <!-- <a href="javascript:;" class="crm-action-delete text-muted text-danger"><i class="icofont icofont-delete-alt"></i></a> -->
+                <button type="button"  *ngIf="session!==currentSession" (click)="editStudent(i)" class="m-r-15 crm-action-edit text-muted text-primary">Promote</button>
               </td>
             </tr>
             </tbody>
@@ -120,27 +123,33 @@
           <h3>Add Student</h3>
           <div>
             <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
-		    <form [formGroup]="studentForm" (ngSubmit) ="putStudent(studentForm.value)">
+		    <form [formGroup]="studentForm">
 		   <div class="text-center">
-		    <label for="basic-addon1" style="display:block;text-align:left">Full Name</label> 
+		    <label for="basic-addon1" style="display:block;text-align:left">Full Name(required)</label> 
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <input type="text" class="form-control" formControlName = "name" [style.border]="(!studentForm.controls['name'].valid && studentForm.controls['name'].touched)?'2px solid #ff6060':'2px solid #ced4da'">
 		      <p *ngIf="!studentForm.controls['name'].valid && studentForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
 		    </div>
+        <label for="basic-addon1" style="display:block;text-align:left">Guardian Name(required)</label> 
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <input type="text" class="form-control" formControlName = "guardian" [style.border]="(!studentForm.controls['guardian'].valid && studentForm.controls['guardian'].touched)?'2px solid #ff6060':'2px solid #ced4da'">
+          <p *ngIf="!studentForm.controls['guardian'].valid && studentForm.controls['guardian'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the guardian name</p>
+        </div>
          <label for="basic-addon1" style="display:block;text-align:left">Student Contact</label>
 		     <div class="input-group">
-		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control"  formControlName = "student_contact">
+		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text">+91</label></span>
+		      <input type="number" class="form-control"  formControlName = "student_contact">
 		     <p *ngIf="!studentForm.controls['student_contact'].valid && studentForm.controls['student_contact'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the student contact</p>
 		    </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Parent Contact</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Parent Contact(required)</label>
 		    <div class="input-group">
-		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-		      <input type="text" class="form-control"  formControlName = "parent_contact">
+		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text">+91</label></span>
+		      <input type="number" class="form-control"  formControlName = "parent_contact">
 	        <p *ngIf="!studentForm.controls['parent_contact'].valid && studentForm.controls['parent_contact'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the parent contact</p>
 		    </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Gender</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Gender(required)</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <select type="text" class="form-control" placeholder="Gender"  formControlName = "gender">
@@ -151,25 +160,25 @@
 		      </select>
               <p *ngIf="!studentForm.controls['gender'].valid && studentForm.controls['gender'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the gender</p>
 		    </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Address</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Address(required)</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <input type="text" class="form-control"  formControlName = "address">
 		      <p *ngIf="!studentForm.controls['address'].valid && studentForm.controls['address'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the address</p>
 		    </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Birthday</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Birthday(required)</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <input type="date" class="form-control"  formControlName = "birthday">
 		      <p *ngIf="!studentForm.controls['birthday'].valid && studentForm.controls['birthday'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the birthday</p>
 		    </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Email</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Email(required)</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <input type="text" class="form-control" [readOnly] = "editMode"  formControlName = "email">
 		      <p *ngIf="!studentForm.controls['email'].valid && studentForm.controls['email'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the valid email</p>
 		    </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Class</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Class(required)</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <select type="text" #getClassVal class="form-control" formControlName = "class" (change)="getClassMethodForm(getClassVal.value)">
@@ -178,7 +187,7 @@
 		      </select>
 		      <p *ngIf="!studentForm.controls['class'].valid && studentForm.controls['class'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the class</p>
 		    </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Section</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Section(required)</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <select type="text" class="form-control" formControlName = "section">
@@ -186,7 +195,7 @@
 		      	<option *ngFor= "let getSectionForm of getSectionOfClassForm" [value]="getSectionForm.section">{{getSectionForm.section}}</option></select>
 		      	<p *ngIf="!studentForm.controls['section'].valid && studentForm.controls['section'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the section</p>
 		    </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Date of joining</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Date of joining(required)</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <input type="date" class="form-control"  formControlName = "date_of_join">
@@ -230,7 +239,7 @@
 		      <input type="text" class="form-control"  formControlName = "ifsc">
 		      <p *ngIf="!studentForm.controls['ifsc'].valid && studentForm.controls['ifsc'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the ifsc code</p>
 		    </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Category</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Category(required)</label>
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <select type="text" class="form-control" formControlName = "caste">
@@ -241,8 +250,30 @@
           <option value='ST'>ST</option>
           </select>
 		      <p *ngIf="!studentForm.controls['caste'].valid && studentForm.controls['caste'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the category</p>
-		    </div>            
-		    <button *ngIf="studentForm.valid"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block">Save</button>	</div>
+		    </div>
+        <div *ngIf="!editMode">  
+         <label for="basic-addon1" style="display:block;text-align:left">Upload Photo</label>
+         <input #fileInput type="file" name="image" class="form-control"/>
+         <button type="button" (click)="addFile()" class="btn btn-primary btn-sm">Add</button>
+         </div>
+         <div *ngIf="editMode">
+          <label for="basic-addon1" style="display:block;text-align:left">Edit Photo</label>
+         <input #fileInput type="file" name="image" class="form-control"/>
+         <button type="button" (click)="editFile()" class="btn btn-primary btn-sm">Edit</button>
+         </div>
+         <div *ngIf="editMode">
+         <div *ngIf="editMode">
+         <h5 align="right"> Assign
+            <ui-switch class="js-single" color="#1abc9c" switchColor="#fff" size="medium" [(ngModel)] = "status" (change) = "setValidation($event)" [checked]="statu" class="form-control"  formControlName = "status"></ui-switch>
+            </h5>
+
+         </div>
+         </div>
+        <br>
+        <br>           
+		    <button *ngIf="studentForm.valid && session===currentSession" (click) ="putStudent(studentForm.value)" type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block">Save</button>
+        <button *ngIf="studentForm.valid && session!==currentSession" (click) ="promoteStudent(studentForm.value)" type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block">Promote</button>
+        	</div>
 		     </form>          
 		    </perfect-scrollbar>
             <br>

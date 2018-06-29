@@ -22,6 +22,7 @@ public username:any;
 public password:any;
 public url:any = 'http://localhost:3000';
 public trueUser:boolean = true;
+public cookie:any;
 constructor(private http:Http,private cookieService: CookieService, public router: Router,public seeRoute: ActivatedRoute, public _ngZone: NgZone){
  
  this.initializeForm();
@@ -59,19 +60,35 @@ putLogin(value){
        this.cookieService.set('idSet',token._id);
 
        console.log(this.cookieService.getAll());
+       this.cookie = this.cookieService.getAll()['cookieSet'];
        console.log('Hit this line');
-       // this._ngZone.run(() => {
-       // this.router.navigate(['']);
-       this.router.navigate(['student-dashboard']);
-       console.log('hitted');
-    
-        
-          
-        
-       // this.router.navigate();
-       
-       
+       this.http.post(this.url+'/system/system_get',{
+         "access_token": this.cookie
+       }).subscribe((system)=>{
+         if(this.cookieService.getAll()['userSet'] == 'ADMIN'){
+            if(system.json()){
+           this.router.navigate(['student-dashboard']);
+           console.log('hitted');
+           }
 
+           else{
+             this.router.navigate(['system']);
+           }
+
+         }
+
+         else if(this.cookieService.getAll()['userSet'] == 'SUPERADMIN'){
+           this.router.navigate(['create-admin']);
+         }
+
+         else{
+           this.router.navigate(['student-dashboard']);
+         }
+        
+       })
+       
+    
+           
      }
   })
 }

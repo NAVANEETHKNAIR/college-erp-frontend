@@ -49,11 +49,13 @@ public feesForm:FormGroup;
 public students:any[] = [];
 public class_ref:any;
 public date:any;
+public currentSession:any;
 
   constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
-    this.session = session.session;
+      this.currentSession = session.session;
+    this.session = this.fetchsession.getReportSession();
     console.log("session from session service",this.session);
     console.log(this.cookieService.getAll()['cookieSet']);
     this.initializeForm();

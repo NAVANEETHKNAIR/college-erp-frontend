@@ -1,0 +1,63 @@
+<div class="card">
+  <div class="card-header">
+    <h5>Exam</h5>
+</div>
+
+
+<app-card [title]="'Manage Exam'" [classHeader]="true" [blockClass]="'table-border-style'">
+  <div class="card-body">
+    <div class="table-content crm-table">
+      <div class="project-table">
+        <div id="crm-contact" class="dt-responsive">
+          <div class="table-responsive">
+          <table class="table table-striped table-bordered full-data-table" [mfData]="libraryList | dataFilter : filterQuery" #mf="mfDataTable"
+                 [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <thead>
+            <tr>
+              <th>
+                <mfDefaultSorter  by="name">Name</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="name">ISBN</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="subject">Assigned Date</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="duration">Return Date</mfDefaultSorter>
+              </th>
+            </tr>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of mf.data;let i=index">
+              <td>{{item.title}}</td>
+              <td>{{item.isbn}}</td>
+              <td>{{item.assigned_from}}</td>
+              <td>{{item.assigned_duration}}</td>              
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <th>Name</th>
+              <th>ISBN</th>
+              <th>Assigned Date</th>
+              <th>Return Date</th>
+               
+              
+            </tr>
+            <tr>
+              <td colspan="10">
+                <mfBootstrapPaginator class="pagination-main f-right"></mfBootstrapPaginator>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-card>
+

@@ -30,15 +30,17 @@ import { SideMenuComponent } from './sidemenu/sidemenu.component';
 import { ProfileComponent } from './profile/profile.component';
 import { PayslipReportStaffComponent } from './payslip-report-staff/payslip-report-staff.component';
 import { FeesReportStudentComponent } from './fees-report-student/fees-report-student.component';
+import { ExamReportComponent } from './exam-report/exam-report.component';
+import { MarksReportComponent } from './marks-report/marks-report.component';
+import { LibraryReportComponent } from './library-report/library-report.component';
+import { RoutineReportComponent } from './routine-report/routine-report.component';
+import { SuperAdminComponent } from './super-admin/super-admin.component';
+
+
 
 import { 
          LoginGuardService,
-         AdminAuthorizeGuardService,
-         StudentAuthorizeGuardService,
-         LibrarianAuthorizeGuardService,
-         TeacherAuthorizeGuardService,
-         AccountantGuardService,
-         OtherAuthorizeGuardService
+         RolesGuardAuthorizeGuardService  
        } from './guards/admin-guard.service';
 import { ErrorComponent } from './error/error.component';
 import { ExpenseComponent } from './expense/expense.component';
@@ -134,165 +136,207 @@ const routes: Routes = [
   {
     path: '',
     component: SideMenuComponent,
-    canActivate: [LoginGuardService],
+    canActivate:[LoginGuardService],
+    canActivateChild:[LoginGuardService],
     
     children:[
- {
+  {
     path: '',
     redirectTo: 'student-dashboard',
-    pathMatch: 'full',
-    canActivateChild: [LoginGuardService]
-
-
-    
+    pathMatch: 'full',  
   }, 
 
   {
     path: 'student',
     component: StudentComponent,
-    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
   },
   {
     path: 'staff',
     component: StaffComponent,
-    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
   },
   {
     path: 'class',
     component: ClassComponent,
-    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
   },
   {
     path: 'subject',
     component: SubjectComponent,
-    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
   },
   {
     path: 'transport',
     component: TransportComponent,
-    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
   },
   {
     path: 'dormitory',
     component: DormitoryComponent,
-    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
   },
   {
     path: 'routine',
     component: RoutineComponent,
-    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
   },
   {
     path: 'library',
     component: LibraryComponent,
-    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService || LibrarianAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN','LIBRARIAN']}
 
   },
   {
     path: 'attendance-student',
     component: AttendanceStudentComponent,
-    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
 
   },
   {
     path: 'attendance-staff',
     component: AttendanceStaffComponent,
-    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
   },
   {
     path: 'exam',
     component: ExamComponent,
-    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
+  },
+  {
+    path: 'exam-report',
+    component: ExamReportComponent,
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['STUDENT']}
   },
   {
     path: 'payroll',
     component: PayrollComponent,
-    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService],
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
   },
   {
     path:'message',
     component: MessageComponent,
-    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
   },
   {
     path:'system',
     component: SystemComponent,
-    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
   },
   {
     path: 'calendar',
     component: CalendarComponent,
-    canActivateChild: [LoginGuardService,AdminAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
   },
   {
   path: 'student-dashboard',
   component: StudentdashboardComponent,
-  canActivateChild: [
-         LoginGuardService,
-         AdminAuthorizeGuardService ||
-         StudentAuthorizeGuardService ||
-         LibrarianAuthorizeGuardService ||
-         TeacherAuthorizeGuardService ||
-         AccountantGuardService ||
-         OtherAuthorizeGuardService
-       ]
+  canActivate: [RolesGuardAuthorizeGuardService],
+  data:{roles:['ADMIN','STUDENT','LIBRARIAN','TEACHER','ACCOUNTANT','OTHER']}
   
   },
   {
    path: 'attendance-student-record',
    component: AttendanceStudentRecordComponent,
-   canActivateChild: [LoginGuardService, StudentAuthorizeGuardService]
+   canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['STUDENT']}
   },
    {
    path: 'attendance-staff-record',
    component: AttendanceStudentRecordComponent,
-   canActivateChild: [LoginGuardService, StudentAuthorizeGuardService]
+   canActivate: [RolesGuardAuthorizeGuardService],
+   data:{roles:['TEACHER','ACCOUNTANT','LIBRARIAN','OTHER']}
   },
   {
    path: 'fees',
    component: FeesComponent,
-   canActivateChild: [LoginGuardService, AdminAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
   },
   {
    path: 'fees-report',
    component: FeesReportComponent,
-   canActivateChild: [LoginGuardService, AdminAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
   },
-    {
+  {
    path: 'fees-report-student',
    component: FeesReportStudentComponent,
-   canActivateChild: [LoginGuardService, StudentAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['STUDENT']}
   },
   {
    path: 'marks',
    component: MarksComponent,
-   canActivateChild: [LoginGuardService, AdminAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
+  },
+  {
+   path: 'marks-report',
+   component: MarksReportComponent,
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['STUDENT']}   
+  },
+  {
+   path: 'library-report',
+   component: LibraryReportComponent,
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['STUDENT']}   
+  },
+  {
+   path: 'routine-report',
+   component: RoutineReportComponent,
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['STUDENT']}   
   },
   {
    path: 'expense',
    component: ExpenseComponent,
-   canActivateChild: [LoginGuardService, AdminAuthorizeGuardService]
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
   },
   {
    path: 'payslip-report',
    component: PayslipReportComponent,
-   canActivateChild: [LoginGuardService, AdminAuthorizeGuardService] 
+   canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN']}
   },
-    {
+  {
    path: 'payslip-report-staff',
    component: PayslipReportStaffComponent,
-   canActivateChild: [LoginGuardService,
-         LibrarianAuthorizeGuardService ||
-         TeacherAuthorizeGuardService ||
-         AccountantGuardService ||
-         OtherAuthorizeGuardService] 
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['LIBRARIAN','ACCOUNTANT','TEACHER','OTHER']}
   },
   {
    path: 'profile',
    component: ProfileComponent,
-   canActivateChild: [LoginGuardService] 
-  },
+    canActivate: [RolesGuardAuthorizeGuardService],
+    data:{roles:['ADMIN','LIBRARIAN','ACCOUNTANT','TEACHER','OTHER','STUDENT']}   
+  }
   ]
+
+  },
+  {
+   path:'create-admin',
+   component: SuperAdminComponent,
+   canActivate: [LoginGuardService,RolesGuardAuthorizeGuardService],
+   data:{roles:['SUPERADMIN']}   
 
   },
   {
@@ -300,6 +344,7 @@ const routes: Routes = [
    component: LoginComponent,
 
   },
+
   {
     path:'404',
     component: ErrorComponent
@@ -310,7 +355,7 @@ const routes: Routes = [
     path: '**',
     component: ErrorComponent
 
-  },
+  }
 
 ];
 

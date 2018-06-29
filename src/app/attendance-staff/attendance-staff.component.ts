@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Http } from '@angular/http';
 import * as _  from 'underscore'; 
 import * as moment from 'moment';
@@ -15,7 +15,7 @@ import { SystemService } from '../system/service.system';
   styleUrls: ['./attendance-staff.component.scss']
 })
 export class AttendanceStaffComponent implements OnInit {
-
+@ViewChild('modalSmall') modalSmall:any;
 public data: any;
 public rowsOnPage = 10;
 public filterQuery = '';
@@ -40,6 +40,9 @@ public fetch:boolean = false;
 public cookie:any;
 public type:any;
 public datemodel:any;
+public currentSession:any;
+public staffSendSMS:any[] = [];
+
   constructor(public http: Http, public parseFormatter:NgbDateParserFormatter,public fetchsession:SystemService,public datePickerService:NgbDatepickerConfig,private cookieService: CookieService) {
   //this.initializeForm();
   var now = moment();
@@ -54,7 +57,8 @@ public datemodel:any;
     this.datePickerService.maxDate = {day:now.date(),month:now.month()+1,year:now.year()}
     //this.datePickerService.startDate = {month:1,year:now.year()} 
     this.fetchsession.getSession().subscribe((session)=>{
-    this.session = session.session;
+   this.currentSession = session.session;
+    this.session = this.fetchsession.getReportSession();
     console.log("session from session service",this.session);
     console.log(this.cookieService.getAll()['cookieSet']);
     this.cookie = this.cookieService.getAll()['cookieSet'];
@@ -88,6 +92,7 @@ ngOnInit() {
   closeMyModal(event) {
     console.log(event);
     ((event.target.parentElement.parentElement).parentElement).classList.remove('md-show');
+  
   }
 
 
@@ -229,13 +234,43 @@ reviseStatus(){
   this.finalize = false;
 }
 
+showModal(){
+  console.log(this.modalSmall);
+  this.modalSmall.dialogClass= "'modal-sm'";
+  this.modalSmall.show();
+
+}
+
+sendSMS(){
+  this.fetchsession.getMSG91().subscribe((msg91)=>{
+   if(msg91._id){
+     this.http.post(this.url+ '/msg91/send_msg91_attendance_staff',{
+    staffs:this.staffSendSMS,
+    date: this.date,
+    access_token:this.cookie
+  }).subscribe((message)=>{
+    console.log(message.json());
+  })
+   } 
+  })
+  
+}
+
+
+hideModal(){
+  this.modalSmall.hide();
+}
+
+
 finalizeStatus(){
   this.finalize = true;
+  this.showModal();
   if(this.savedAttendance){
     console.log("purana save hone se pehle staffList:",this.staffList);
     console.log("purana save hone se pehle checkList:",this.attendanceStatus);
     for(let i=0;i<this.staffList.length;i++){
-      this.sendAttendanceStatus[i] = {staff:this.staffList[i]['staff']['_id'],status:this.attendanceStatus[i]} 
+      this.sendAttendanceStatus[i] = {staff:this.staffList[i]['staff']['_id'],status:this.attendanceStatus[i]}
+      this.staffSendSMS[i] = {staff:this.staffList[i]['staff']['name'],status:this.attendanceStatus[i],contact:this.staffList[i]['staff']['phone']};
     }
     console.log("sendAttendanceStatus purana:",this.sendAttendanceStatus);
    this.http.post((this.url + '/attendance/attendance_' + this.staffTypeValue.toLowerCase()),{
@@ -258,17 +293,16 @@ else{
     console.log(" naya save hone se pehle checkList:",this.attendanceStatus);
 
     
-  //  this.http.post((this.url + '/attendance/attendance_' + this.staffTypeValue.toLowerCase()),{
-     
-  //     "date": this.date,
-  //     "staffs" : this.sendAttendanceStatus,
-  //     "finalize":true,
-  //     "session":this.session,
-  //     "access_token": this.cookie
-  // }).subscribe((attendance_staff)=>{
-  //   console.log(attendance_staff.json());
+//  this.http.post((this.url + '/attendance/attendance_' + this.staffTypeValue.toLowerCase()),{
+//     "date": this.date,
+//     "staffs" : this.sendAttendanceStatus,
+//     "finalize":true,
+//     "session":this.session,
+//     "access_token": this.cookie
+// }).subscribe((attendance_staff)=>{
+//   console.log(attendance_staff.json());
 
-  //})
+//})
 }
 }
 }

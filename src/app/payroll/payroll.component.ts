@@ -41,12 +41,14 @@ public status:any;
 public generatedPayslip:boolean = false;
 public index:number;
 public cookie:any;
+public currentSession:any;
   constructor(public http: Http, private cookieService: CookieService, public fetchsession: SystemService) {
   this.cookie = this.cookieService.getAll()['cookieSet'];
   this.initializeForm();
   console.log(this.payrollForm);
   this.fetchsession.getSession().subscribe((session)=>{
-    this.session = session.session;
+      this.currentSession = session.session;
+    this.session = this.fetchsession.getReportSession();
     console.log("session from session service",this.session);
     this.initializeForm();
   })
@@ -191,6 +193,7 @@ getStaff(staff){
   }
 
   addPayroll(i){
+    
   	this.editMode = false;
     this.index = i;
     this.user_id = this.staffList[i].user_id;

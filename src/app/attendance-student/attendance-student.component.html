@@ -45,12 +45,12 @@
               <tr>
               
               <td class="col-xs-12 col-sm-6 col-md-6" align="right">
-              <button type="button" class="btn btn-success btn-sm btn-outline" (click)="saveStatus()" [disabled] = "!date || finalize">Save</button>
+              <button type="button" class="btn btn-success btn-sm btn-outline" (click)="saveStatus()" [disabled] = "!date || finalize" *ngIf="session === currentSession">Save</button>
 
             </td>
             <td>
-              <button type="button" class="btn btn-primary btn-sm" *ngIf="!finalize" (click)="finalizeStatus()">Finalize</button>
-              <button type="button" class="btn btn-primary btn-sm" (click)="reviseStatus()" *ngIf="finalize">Revise</button>
+              <button type="button" class="btn btn-primary btn-sm" *ngIf="!finalize && session === currentSession" (click)="finalizeStatus()">Finalize</button>
+              <button type="button" class="btn btn-primary btn-sm" (click)="reviseStatus()" *ngIf="finalize && session === currentSession">Revise</button>
             </td>
              </tr>
              <br>
@@ -94,7 +94,7 @@
                
                 <div class="border-checkbox-section">
             <div class="border-checkbox-group border-checkbox-group-success">
-              <input class="border-checkbox" type="checkbox" id="checkbox{{i}}" [(ngModel)]="checkStatus[i]" (change) = "checkCheckbox(checkStatus[i],i)" [disabled]="finalize">
+              <input class="border-checkbox" type="checkbox" id="checkbox{{i}}" [(ngModel)]="checkStatus[i]" (change) = "checkCheckbox(checkStatus[i],i)" [disabled]="finalize || session !== currentSession">
               <label class="border-checkbox-label" for="checkbox{{i}}">{{ attendanceStatus[i] }}</label>
             </div>
           </div>
@@ -113,7 +113,7 @@
                
                 <div class="border-checkbox-section">
             <div class="border-checkbox-group border-checkbox-group-success">
-              <input class="border-checkbox" type="checkbox" id="checkbox{{i}}" [(ngModel)]="checkStatus[i]" (change) = "checkCheckbox(checkStatus[i],i)" [disabled] = "finalize">
+              <input class="border-checkbox" type="checkbox" id="checkbox{{i}}" [(ngModel)]="checkStatus[i]" (change) = "checkCheckbox(checkStatus[i],i)" [disabled] = "finalize || session !== currentSession">
               <label class="border-checkbox-label" for="checkbox{{i}}">{{ attendanceStatus[i] }}</label>
             </div>
           </div>
@@ -145,3 +145,21 @@
   </div>
 </app-card>
          
+<app-modal-basic #modalSmall [dialogClass]="'modal-sm'">
+  <div class="app-modal-header">
+    <h4 class="modal-title">Attendance Report</h4>
+    <button type="button" class="close basic-close" (click)="modalSmall.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="app-modal-body">
+   <h2>Send Attendance By SMS</h2>
+
+   <button type="button" class="btn btn-sm btn-success" style="text-align:center;" (click)="sendSMS()">Send</button>
+   <button type="button" class="btn btn-sm btn-primary" style="text-align:center;" (click)="hideModal()">Cancel</button>
+  </div>
+
+<!--   <div class="app-modal-footer">
+    <button *ngIf="startDate && endDate" type="button" class="btn btn-default ripple" (click)="hideModal()">Show Report</button>
+  </div> -->
+</app-modal-basic>

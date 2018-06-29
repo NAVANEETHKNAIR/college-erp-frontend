@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http,Response } from '@angular/http';
 import * as _  from 'underscore'; 
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
@@ -74,11 +74,13 @@ public filterQuery = '';
 public cookie:any;
 public session:any;
 public peopleList:any[] = [];
+public currentSession:any;
 
  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
-    this.session = session.session;
+   this.currentSession = session.session;
+    this.session = this.fetchsession.getReportSession();
     console.log("session from session service",this.session);
     this.initializeForm();
     
@@ -132,22 +134,36 @@ public peopleList:any[] = [];
   	}
     
     console.log(this.messageForm.value);
+     this.fetchsession.getMSG91().subscribe((msg91:any)=>{
+       if(msg91._id){
+         this.http.post(this.url + '/msg91/send_msg91',{
+           msg91: msg91._id,
+            to: this.messageForm.value.to,
+            message: this.messageForm.value.body,
+            access_token: this.cookie
+         }).subscribe((messageRecieved:Response)=>{
+           console.log(messageRecieved.json())
+           if(messageRecieved.json()){
+            this.http.post(this.url + '/message/message',{
+              messagebody: this.messageForm.value.body,
+              to:  this.messageForm.value.to,
+              date : this.messageForm.value.date,
+              time: this.messageForm.value.time,
+              session: this.session,
+              access_token: this.cookie
 
-    this.http.post(this.url + '/message/message',{
-    	messagebody: this.messageForm.value.body,
-    	to:  this.messageForm.value.to,
-    	date : this.messageForm.value.date,
-    	time: this.messageForm.value.time,
-      session: this.session,
-      access_token: this.cookie
+            }).subscribe((message)=>{
+              console.log("Message sent successfully:",message.json());
+            })
+           }
+          else{
+            console.log("Message not sent successfuly",messageRecieved.json());
+          }
 
-    }).subscribe((message)=>{
-    	console.log("Message sent successfully:",message);
-    })
-    
-
-  	
-  	console.log(value);
+          console.log(messageRecieved);
+         })
+       }
+     })
   }
 
   openMyModal(event) {

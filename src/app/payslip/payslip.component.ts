@@ -22,12 +22,14 @@ public netSalary:number;
 public netSalaryInWords:any;
 public looplen:any;
 public loopLenArray:any;
+public cookie:any;
+public currentSession:any;
  @Input('payslip') payslip:any;
  @Input('payslipfor') payslipfor:any;
  @Output('editPayslip') valueChange = new EventEmitter();
 
  constructor(private http: Http,private cookieService: CookieService){
-   
+   this.cookie = this.cookieService.getAll()['cookieSet'];
  }
 
  ngOnInit(){
@@ -56,7 +58,7 @@ public loopLenArray:any;
      }
      console.log(arr);
      return arr;
- }
+ } 
 
  editPayslipMethod(){
    this.valueChange.emit(false);

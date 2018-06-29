@@ -1,38 +1,46 @@
 <div class="card" style="position: relative;">
   <div class="card-header">
     <h5>System Settings</h5>
-
-  
-  </div>
+       <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="promoteSession()"> <i class="icofont icofont-plus m-r-5"></i>Promote Session
+    </button>
+   </div>
   <div class="card-body">
 
 	<form [formGroup]="systemForm">
 		   <div class="text-center">
-        <label for="basic-addon1" style="display:block;text-align:left">School Name</label>
+        <label for="basic-addon1" style="display:block;text-align:left">School Name(required)</label>
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <input type="text" class="form-control"  formControlName = "name">
 		      <p *ngIf="!systemForm.controls['name'].valid && systemForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the School name</p>
 		    </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Address</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Address(required)</label>
 		     <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <input type="text" class="form-control"  formControlName = "address">
 		        <p *ngIf="!systemForm.controls['address'].valid && systemForm.controls['address'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the address</p>
 		    </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Phone</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Phone(required)</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control"  formControlName = "phone">
             <p *ngIf="!systemForm.controls['phone'].valid && systemForm.controls['phone'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the phone</p>
         </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Email</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Email(required)</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control"  formControlName = "email">
             <p *ngIf="!systemForm.controls['email'].valid && systemForm.controls['email'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the valid email</p>
+        </div>
+         <label for="basic-addon1" style="display:block;text-align:left">Category(required)</label>
+        <div class="input-group">
+          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
+          <select type="text" class="form-control" #sessionReportValue [(ngModel)]="selectedSession" [ngModelOptions]="{standalone: true}" (change)="sessionReport(sessionReportValue.value)">
+<!--           <option style="display:none;"></option> -->
+          <option *ngFor="let sessionVal of sessionListArray" [value]="sessionVal">{{ sessionVal }}</option>
+          </select>
         </div> 
-        <label for="basic-addon1" style="display:block;text-align:left">Current Session</label>  
+        <label for="basic-addon1" style="display:block;text-align:left">Current Session(required)</label>  
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <input type="text" class="form-control"  formControlName = "current_session">
@@ -43,43 +51,32 @@
       </div>
 	</form>          
 
-
+<br>
+<br>
   <div class="row">
 
-  <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right twilio">
+  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-right twilio">
 
       <app-card  [blockClass]="'panels-wells'" >
       <div class="text-center">
       <div class="panel panel-success">
             <div class="panel-heading bg-success">
-              Twilio
+              MSG 91
             </div>
             <div class="panel-body" style="height:390px">
-           <form [formGroup] = "twilioForm">
+           <form [formGroup] = "msg91Form">
             <br>
-          <label for="basic-addon1" style="display:block;text-align:left">Twilio SID</label>
+          <label for="basic-addon1" style="display:block;text-align:left">Auth Token</label>
          <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-          <input type="text" class="form-control"  formControlName = "account_sid">
-            <p *ngIf="!twilioForm.controls['account_sid'].valid && twilioForm.controls['account_sid'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the appropriate account SID</p>
+          <input type="text" class="form-control"  formControlName = "auth_key">
+            <p *ngIf="!msg91Form.controls['auth_key'].valid && msg91Form.controls['auth_key'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the appropriate auth token</p>
         </div>
-                <label for="basic-addon1" style="display:block;text-align:left">Auth Token</label>
-         <div class="input-group">
-          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-          <input type="text" class="form-control"  formControlName = "auth_token">
-            <p *ngIf="!twilioForm.controls['auth_token'].valid && twilioForm.controls['auth_token'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the auth_token</p>
-        </div>
-                <label for="basic-addon1" style="display:block;text-align:left">Mobile Number</label>
-         <div class="input-group">
-          <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
-          <input type="text" class="form-control"  formControlName = "contact">
-            <p *ngIf="!twilioForm.controls['contact'].valid && twilioForm.controls['contact'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the contact number to send OTP</p>
-        </div>
-          <button *ngIf="twilioForm.valid && !editModeTwilio"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putTwilio(twilioForm.value)">Create</button>
-         <button *ngIf="twilioForm.valid && editModeTwilio"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putTwilioEdited(twilioForm.value)">Save</button>
+          <button *ngIf="msg91Form.valid && !editModeMSG91"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putMSG91(msg91Form.value)">Create</button>
+         <button *ngIf="msg91Form.valid && editModeMSG91"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putMSG91Edited(msg91Form.value)">Save</button>
       </form>
             </div>
-          </div>
+      </div>
         </div>
          </app-card>
     </div>
@@ -90,7 +87,7 @@
 
 
    
-    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 text-right">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 text-right">
 
       <app-card  [blockClass]="'panels-wells'">
       <div class="text-center">

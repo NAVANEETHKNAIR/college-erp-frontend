@@ -33,10 +33,14 @@ export class AttendanceStaffRecordComponent implements OnInit {
  public len:any;
  public filteredAttendance:any;
  public user:any;
+ public currentSession:any
+
+
   constructor(public http: Http, public fetchsession:SystemService, private cookieService: CookieService,public datePickerService:NgbDatepickerConfig,public parseFormatter:NgbDateParserFormatter){
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
-    this.session = session.session;
+   this.currentSession = session.session;
+    this.session = this.fetchsession.getReportSession();
     console.log("session from session service",this.session);
     this.getAttendance()
    
@@ -181,62 +185,6 @@ ngOnInit(){
 
   
 
-
-
-// filterAttendance(startDate,endDate){
-
-//   console.log('StartDate:',this.parseFormatter.format(startDate));
-//   console.log('endDate:', this.parseFormatter.format(endDate));
-//   let startIndex = 0;
-//   let endIndex = 0;
-//   let fromDate = this.parseFormatter.format(startDate);
-//   let toDate =   this.parseFormatter.format(endDate);
-//   if(fromDate <= endDate && fromDate <= this.attendanceList[this.attendanceList.length-1]['date']){
-//    for(let i=0;i<this.attendanceList.length;i++){
-//   	if(fromDate <= (this.attendanceList[i]['date'])){
-//        startIndex = i; 
-// 	   break;  	 
-//   	}
-
-//   	//2018-05-15 2018-05-10
-
-
-  	
-
-  	
-//   }
-
-//   for(let i= startIndex;i<this.attendanceList.length;i++){
-     
-//   	if(endDate === (this.attendanceList[i]['date'])){
-//   	   endIndex = i;
-//   	   break;
-//     }
-
-//     else if(endDate < (this.attendanceList[i]['date'])){
-//         endIndex = i-1;
-//         break;
-//     }
-
-//     else{
-//     	endIndex = this.attendanceList.length-1;
-//     }
-  
-  
-//   this.filteredAttendanceList = this.attendanceList.slice(startIndex,endIndex);
-//   console.log('startIndex:', startIndex);
-//   console.log('endIndex:', endIndex);
-
-
-//   }	
-//   }
-//   else{
-//   	  this.dateCorrect = false;
-//       return;
-//   }
-
-  
-// }
 
 
 

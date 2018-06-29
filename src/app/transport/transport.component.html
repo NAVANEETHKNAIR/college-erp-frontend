@@ -73,19 +73,19 @@
             <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
 		   <form [formGroup]="transportForm">
 		   <div class="text-center">
-		    <label for="basic-addon1" style="display:block;text-align:left">Vehicle Name</label> 
+		    <label for="basic-addon1" style="display:block;text-align:left">Vehicle Name(required)</label> 
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <input type="text" class="form-control"  formControlName = "name">
 		      <p *ngIf="!transportForm.controls['name'].valid && transportForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
 		    </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Vehicle Number</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Vehicle Number(required)</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" formControlName = "vehicle_num">
           <p *ngIf="!transportForm.controls['vehicle_num'].valid && transportForm.controls['vehicle_num'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the vehicle number</p>
         </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Fare</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Fare(required)</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control"  formControlName = "fare">

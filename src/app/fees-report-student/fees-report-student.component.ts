@@ -107,7 +107,9 @@ public user_id:any;
     console.log('OverDue is:',this.overdue);
     console.log("session from session service",this.session);
     console.log(this.cookieService.getAll()['cookieSet']);
-    if(this.user!=='admin')
+    if(this.user!=='admin'){
+
+
     this.http.post(this.url+ '/' + this.user + '/'+ this.user + '_get_for_user_id',{
           user_id: this.user_id,
           session: this.session,
@@ -116,6 +118,7 @@ public user_id:any;
       userDetail = userDetail.json();
       let student_id = userDetail._id;
       let class_ref = userDetail.class_ref;
+     
       this.http.post(this.url+ '/fees/get_fees_for_'+ this.user+ '_ref',{
         class_ref: class_ref,
         session: this.session,
@@ -189,11 +192,12 @@ public user_id:any;
           console.log('totalFeeSum:',this.totalFeeSum);
              
       })
-    })
     
+    })
+    }
   });
    
-  }
+ }
 
 
   ngOnInit(){

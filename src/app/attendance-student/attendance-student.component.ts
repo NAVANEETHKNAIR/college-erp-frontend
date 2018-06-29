@@ -19,7 +19,7 @@ export class AttendanceStudentComponent implements OnInit {
 //@ViewChild('t') t:ElementRef;
 
 
-
+@ViewChild('modalSmall') modalSmall:any;
 public checkStatus:any= [];
 public data: any;
 public rowsOnPage = 10;
@@ -52,6 +52,8 @@ public fetch:boolean;
 public sendAttendanceStatus:any = [];
 public savedAttendance = false; 
 public cookie:any;
+public currentSession:any;
+public studentSendSMS:any[] = [];
   constructor(public http: Http, public parseFormatter:NgbDateParserFormatter,public fetchsession:SystemService,public datePickerService:NgbDatepickerConfig,private cookieService: CookieService) {
   this.cookie = this.cookieService.getAll()['cookieSet'];
   var now = moment();
@@ -60,7 +62,8 @@ public cookie:any;
     this.date = this.parseFormatter.format({day:now.date(),month:now.month()+1,year:now.year()});
     this.datePickerService.maxDate = {day:now.date(),month:now.month()+1,year:now.year()}
     this.fetchsession.getSession().subscribe((session)=>{
-    this.session = session.session;
+      this.currentSession = session.session;
+    this.session = this.fetchsession.getReportSession();
     console.log("session from session service",this.session);
     console.log("cookie-set:",this.cookieService.getAll()['cookieSet']);
     
@@ -250,6 +253,35 @@ else{
 }
 }
 
+
+showModal(){
+  console.log(this.modalSmall);
+  this.modalSmall.dialogClass= "'modal-sm'";
+  this.modalSmall.show();
+
+}
+
+sendSMS(){
+  this.fetchsession.getMSG91().subscribe((msg91)=>{
+   if(msg91._id){
+     this.http.post(this.url+ '/msg91/send_msg91_attendance_student',{
+    msg91: msg91._id,
+    students:this.studentSendSMS,
+    date: this.date,
+    access_token:this.cookie
+  }).subscribe((message)=>{
+    console.log(message.json());
+  })
+   } 
+  })
+  
+}
+
+
+hideModal(){
+  this.modalSmall.hide();
+}
+
 reviseStatus(){
   this.finalize = false;
 }
@@ -258,7 +290,8 @@ finalizeStatus(){
   this.finalize = true;
   if(this.savedAttendance){
     for(let i=0;i<this.studentList.length;i++){
-      this.sendAttendanceStatus[i] = {student:this.studentList[i]['student']['_id'],status:this.attendanceStatus[i]} 
+      this.sendAttendanceStatus[i] = {student:this.studentList[i]['student']['_id'],status:this.attendanceStatus[i]}
+      this.studentSendSMS[i] = {name:this.studentList[i]['student']['name'],status:this.attendanceStatus[i],contact:this.studentList[i]['student']['parent_contact']} 
     }
     
    this.http.post((this.url + '/attendance/attendance_student'),{
@@ -270,6 +303,7 @@ finalizeStatus(){
       "access_token": this.cookie
   }).subscribe((attendance_student)=>{
     console.log(attendance_student.json());
+    this.modalSmall.show();
 
   })
 }
@@ -288,6 +322,7 @@ else{
       "access_token": this.cookie
   }).subscribe((attendance_student)=>{
     console.log(attendance_student.json());
+    this.modalSmall.show();
 
   })
 }

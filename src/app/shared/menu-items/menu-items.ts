@@ -35,7 +35,7 @@ const MENUITEMS = [
     label: 'Navigation',
     main: [
       {
-        state: 'dashboard',
+        state: 'dashboard\/dashboard',
         name: 'Dashboard',
         type: 'link',
         icon: 'ti-home'
@@ -58,7 +58,7 @@ const MENUITEMS = [
     label: 'UI Element',
     main: [
       {
-        state: 'basic',
+        state: 'dashboard/basic',
         name: 'Basic Components',
         type: 'sub',
         icon: 'ti-layout-grid2-alt',
@@ -102,7 +102,7 @@ const MENUITEMS = [
         ]
       },
       {
-        state: 'advance',
+        state: 'dashboard/advance',
         name: 'Advance Components',
         type: 'sub',
         icon: 'ti-crown',
@@ -128,7 +128,7 @@ const MENUITEMS = [
         ]
       },
       {
-        state: 'animations',
+        state: 'dashboard/animations',
         name: 'Animations',
         type: 'link',
         icon: 'ti-reload rotate-refresh'
@@ -139,7 +139,7 @@ const MENUITEMS = [
     label: 'Forms',
     main: [
       {
-        state: 'forms',
+        state: 'dashboard/forms',
         name: 'Form Components',
         type: 'sub',
         icon: 'ti-layers',
@@ -159,7 +159,7 @@ const MENUITEMS = [
           }
         ]
       }, {
-        state: 'picker',
+        state: 'dashboard/picker',
         main_state: 'forms',
         name: 'Form Picker',
         type: 'link',
@@ -615,17 +615,17 @@ const MENU = [
   },
   {
     label:'Time-Table',
-    link : '/routine',
+    link : '/routine-report',
     icon: 'ti-notepad'
   },
   {
     label:'Marks',
-    link:'/marks',
+    link:'/marks-report',
     icon: 'ti-bar-chart'
   },
   {
     label:'Exam',
-    link: '/exam',
+    link: '/exam-report',
     icon:'ti-layout-width-default'
   },
   {
@@ -635,7 +635,7 @@ const MENU = [
   },
   {
     label:'Library',
-    link: '/library',
+    link: '/library-report',
     icon: 'ti-book'
   },
   {
@@ -833,6 +833,11 @@ const MENU = [
     label:'Routine',
     link:'/routine',
     icon:'ti-check-box'
+  },
+  {
+    label: 'Library',
+    link: '/library',
+    icon: 'ti-book'
   },
   {
     label:'Message',

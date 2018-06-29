@@ -55,6 +55,7 @@ public class_ref:any;
 public date:any;
 public type:any;
 public staff:any;
+public currentSession:any;
 
   constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
    this.cookie = this.cookieService.getAll()['cookieSet'];

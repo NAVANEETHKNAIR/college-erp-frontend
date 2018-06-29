@@ -4,6 +4,7 @@ import * as _  from 'underscore';
 import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { CookieService } from 'ng2-cookies';
+import  { SystemService } from './service.system';
 //private cookieService: CookieService
 
 //import { ModalComponent } from '../components/advanced-component
@@ -19,14 +20,11 @@ public rowsOnPage = 10;
 public filterQuery = '';
 public sortBy = '';
 public sortOrder = 'desc';
-// public staffList:any;
-// public selectStaff:any;
 public systemForm:FormGroup;
-public twilioForm:FormGroup;
+public msg91Form:FormGroup;
 public nodemailerForm:FormGroup;
 public section:any;
-// public sectionForm: FormGroup;
-// public staffType:any[] = ['TEACHER','ACCOUNTANT','LIBRARIAN','OTHER STAFF'];
+public message_sid:any;
 public name:any = '';
 public erp_id:any = '';
 public systemName:any;
@@ -53,17 +51,21 @@ public mail:any;
 public client_id:any;
 public client_secret:any;
 public refresh_token:any;
-public _idtwilio:any;
+public _idmsg91:any;
 public _idnodemailer:any;
 public editModeNodemailer:boolean = false;
 public editModeTwilio: boolean = false;
 public cookie:any;
-  constructor(public http: Http,private cookieService: CookieService) {
+public changeSession:any;
+public sessionListArray:any;
+public selectedSession:any;
+public auth_key:any;
+  constructor(public http: Http,private cookieService: CookieService, public fetchsession:SystemService) {
   this.cookie = this.cookieService.getAll()['cookieSet'];
+  this.getSessionArray();
   this.initializeForm();
-  this.initializeFormTwilio();
+  this.initializeFormMSG91();
   this.initializeFormNodemailer();
-
 
 }
 
@@ -77,6 +79,7 @@ ngOnInit(){
         this.phone = system.phone;
         this.email = system.email;
         this.current_session = system.current_session;
+        this.selectedSession = system.current_session;
         this.initializeForm();
      }
   })
@@ -95,12 +98,17 @@ ngOnInit(){
   }
 
 
-  initializeFormTwilio(){
-     this.twilioForm = new FormGroup({
-       "account_sid" : new FormControl(this.account_sid,Validators.required),
-       "auth_token" : new FormControl(this.auth_token, Validators.required),
-       "contact": new FormControl(this.contact, Validators.required)
+  initializeFormMSG91(){
+     this.msg91Form = new FormGroup({
+       "auth_key" : new FormControl(this.auth_key,Validators.required),
      })
+  }
+
+
+
+  sessionReport(value){
+    console.log(value);
+    this.fetchsession.changeReportSession(value);
   }
   
 
@@ -112,11 +120,10 @@ ngOnInit(){
        "refresh_token" : new FormControl(this.refresh_token, Validators.required)
      })
  }
- 
-  
 
 
-  putSystem(value){
+
+ putSystem(value){
   	 console.log(value);
     this.http.post((this.url+'/system/system'),{
   
@@ -139,8 +146,38 @@ ngOnInit(){
          
   }
 
+    putMSG91(value){
+     console.log(value);
+    this.http.post((this.url+'/msg91/msg91_create'),{
   
-  
+      "auth_key": value.auth_key,
+      "access_token": this.cookie
+
+    }).subscribe((system:any)=>{               
+                console.log("data recieved",system);
+                if(system.json()){
+                  this.editMode = true;
+                }
+                
+               //this.initializeForm();
+             });
+
+         
+  }
+
+
+  putMSG91Edited(value){
+    this.fetchsession.getMSG91().subscribe((msg91)=>{
+      this._idmsg91 = msg91['_id']
+      this.http.post(this.url+ '/msg91/msg91_configure',{
+         _id: this._idmsg91,
+         access_token:this.cookie,
+         auth_key: value.auth_token
+      }).subscribe((savedMSG91)=>{
+        console.log(savedMSG91.json());
+      })
+    })
+  }
   
   putSystemEdited(value){
       console.log("editedsystem",value);
@@ -161,50 +198,7 @@ ngOnInit(){
                
   }
 
-    putTwilio(value){
-     console.log(value);
-    this.http.post((this.url+'/twilio/configure_twilio'),{
   
-      "account_sid": value.account_sid,
-      "auth_token": value.auth_token,
-      "contact": value.contact,
-      "access_token": this.cookie
-      
-
-    }).subscribe((twilio:any)=>{               
-                console.log("data recieved",twilio);
-                if(twilio.json()){
-                  this.editMode = true;
-                }
-                
-               //this.initializeForm();
-             });
-
-         
-  }
-
-  
-  
-  
-  putTwilioEdited(value){
-
-      console.log("editedsystem",value);
-      this.http.post((this.url + '/twilio/edit_twilio'),{
-          "_id": this._idtwilio,
-          "account_sid": value.account_sid,
-          "auth_token": value.auth_token,
-          "contact": value.contact,
-          "access_token": this.cookie
-      }).subscribe((neweditedsystem)=>{
-          console.log(neweditedsystem.json());
-              
-              
-                   //this.initializeForm();
-    });
-               
-  }
-
-
   putNodemailer(value){
      console.log(value);
     this.http.post((this.url+'/nodemailer/configure_nodemailer'),{
@@ -227,9 +221,6 @@ ngOnInit(){
 
          
   }
-
-  
-  
   
   putNodemailerEdited(value){
       console.log("editedsystem",value);
@@ -244,6 +235,38 @@ ngOnInit(){
           console.log(neweditedsystem.json());
 
     });
+
 }
+
+  promoteSession(){
+      this.changeSession = ((new Date()).getFullYear()).toString();
+      console.log(this.changeSession);
+      this.http.post(this.url + '/system/promote_session',{
+        access_token: this.cookie,
+        changeSession: this.changeSession
+        // changeSession: "2019"
+      }).subscribe((data:any)=>{
+         console.log(data.json());
+         data = data.json();
+         this.getSessionArray();
+         if(data.current_session){
+                   this.current_session = data.current_session;
+                   this.initializeForm();  
+         }
+   
+    
+      })
+ }
+
+  getSessionArray(){
+  //this.changeSession
+  this.http.post(this.url+ '/system/get_session_array',{
+    "access_token":this.cookie
+  }).subscribe((data:any)=>{
+    data = data.json();
+    this.sessionListArray = data.sessionArray;
+  })
+}
+
 
 }

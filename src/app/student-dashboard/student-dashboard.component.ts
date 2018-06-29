@@ -40,15 +40,14 @@ export class StudentdashboardComponent implements OnInit {
   public user:any;
   public userdetail:any;
   public isUser:boolean = false;
-
+  public currentSession:any;
  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService, private router: Router) {
    this.cookie = this.cookieService.getAll()['cookieSet'];
    console.log(this.cookie);
    this.fetchsession.getSession().subscribe((session)=>{
-    this.session = session.session;
-    console.log("session from session service",this.session);
-    console.log('Hitting....');
-    
+   this.currentSession = session.session;
+    this.session = this.fetchsession.getReportSession();
+     console.log('current session:', this.currentSession);
     this.http.post(this.url + '/calendar/calendar_get_all',{
     	session: this.session,
       access_token: this.cookie

@@ -2,8 +2,7 @@
   <div class="card-header">
     <h5>Fees</h5>
 
-<!--     <button type="button" class="btn btn-primary waves-effect waves-light f-right d-inline-block md-trigger" (click)="modalOverflow.show()"> <i class="icofont icofont-plus m-r-5"></i> Add Student
-    </button> -->
+
   
   </div>
   <div class="card-body">
@@ -120,14 +119,14 @@
           <div [formGroupName]= "j">
           <div class="row">
           <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9">
-          <label for="basic-addon1" style="display:block;text-align:left">Description</label>
+          <label for="basic-addon1" style="display:block;text-align:left">Description(required)</label>
           <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" formControlName = "description">
           <p *ngIf="!feesForm.controls.feesArray.controls[j]['controls']['description'].valid && feesForm.controls['feesArray']['controls'][j].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the description</p>
          </div>
 
-          <label for="basic-addon1" style="display:block;text-align:left">Amount</label>
+          <label for="basic-addon1" style="display:block;text-align:left">Amount(required)</label>
           <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" formControlName = "amount">

@@ -31,6 +31,7 @@ public alldormitory:any;
 public editMode:boolean;
 public id:any;
 public cookie:any;
+public currentSession:any;
   //import { SystemService } from '../system/service.system';
   constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
    this.cookie = this.cookieService.getAll()['cookieSet'];

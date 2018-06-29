@@ -115,13 +115,13 @@
             <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
         <form [formGroup]="examForm">
        <div class="text-center">
-        <label for="basic-addon1" style="display:block;text-align:left">Exam name</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Exam name(required)</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" placeholder="Name" formControlName = "name">
           <p *ngIf="!examForm.controls['name'].valid && examForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
         </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Subject</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Subject(required)</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <select type="text" class="form-control" placeholder="Enter the Subject" formControlName = "subject_ref">
@@ -130,7 +130,7 @@
           </select>
           <p *ngIf="!examForm.controls['subject_ref'].valid && examForm.controls['subject_ref'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the Subject name</p>
         </div>
-           <label for="basic-addon1" style="display:block;text-align:left">Date of Exam</label>
+           <label for="basic-addon1" style="display:block;text-align:left">Date of Exam(required)</label>
           <div class="input-group">
          <input type="text" [readOnly]= true class="form-control" placeholder="yyyy-mm-dd"
              name="dp2" formControlName = "date"  ngbDatepicker #dp2="ngbDatepicker">
@@ -141,13 +141,13 @@
          </div>
       <p *ngIf="!examForm.controls['date'].valid && examForm.controls['date'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the date</p>
         </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Total Marks</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Total Marks(required)</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control"  formControlName = "total_marks">
           <p *ngIf="!examForm.controls['total_marks'].valid && examForm.controls['total_marks'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the total marks</p>
         </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Duration</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Duration(required)</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="time" class="form-control"  formControlName = "duration">

@@ -111,7 +111,7 @@ public cookie:any;
     }).subscribe((classname:any)=>{          	   
           console.log(classname.json());
            this.id = (classname.json())._id;
-          this.http.post((this.url+'/newClass/get_class_all'),{})
+          this.http.post((this.url+'/newClass/get_class_all'),{access_token:this.cookie})
              .subscribe((newClass)=>{
                this.classList = newClass.json();
                console.log("classList",this.classList);

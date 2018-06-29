@@ -1,0 +1,75 @@
+<div class="card">
+  <div class="card-header">
+    <h5>Exam</h5>
+</div>
+
+
+<app-card [title]="'Manage Exam'" [classHeader]="true" [blockClass]="'table-border-style'">
+  <div class="card-body">
+    <div class="table-content crm-table">
+      <div class="project-table">
+        <div id="crm-contact" class="dt-responsive">
+          <div class="table-responsive">
+          <table class="table table-striped table-bordered full-data-table" [mfData]="examList | dataFilter : filterQuery" #mf="mfDataTable"
+                 [mfRowsOnPage]="rowsOnPage" [(mfSortBy)]="sortBy" [(mfSortOrder)]="sortOrder">
+            <thead>
+            <tr>
+               <th>
+                <mfDefaultSorter by="date">Date</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="name">Name</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="subject">Subject</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter  by="duration">Duration</mfDefaultSorter>
+              </th>
+               <th>
+                <mfDefaultSorter by="total_marks">Total Marks</mfDefaultSorter>
+              </th>
+              <th>
+                <mfDefaultSorter>Action</mfDefaultSorter>
+              </th>
+            </tr>
+            <tr>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of mf.data;let i=index" >
+              <td>{{item.date}}</td>
+              <td>{{item.name}}</td>
+              <td>{{item.subject_ref.name}}</td>
+              <td>{{item.duration}} hrs.</td>
+              <td>{{item.total_marks}}</td>              
+              <td class="action-icon">
+                <button type="button" (click)="editExam(i)" class="m-r-15 crm-action-edit text-muted text-primary"><i class="icofont icofont-ui-edit"></i></button>
+                <a href="javascript:;" class="crm-action-delete text-muted text-danger"><i class="icofont icofont-delete-alt"></i></a>
+              </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+              <th>Date</th>
+              <th>Name</th>
+              <th>Subject</th>
+              <th>Duration</th>
+              <th>Total Marks</th>
+              <th>Action</th>
+              
+            </tr>
+            <tr>
+              <td colspan="10">
+                <mfBootstrapPaginator class="pagination-main f-right"></mfBootstrapPaginator>
+              </td>
+            </tr>
+            </tfoot>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-card>
+

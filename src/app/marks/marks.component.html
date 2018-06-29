@@ -167,3 +167,22 @@
         </ngx-datatable-column>
       </ngx-datatable>
 </div>
+
+<app-modal-basic #modalSmall [dialogClass]="'modal-sm'">
+  <div class="app-modal-header">
+    <h4 class="modal-title">Attendance Report</h4>
+    <button type="button" class="close basic-close" (click)="modalSmall.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="app-modal-body">
+   <h2>Send Marks By SMS</h2>
+
+   <button type="button" class="btn btn-sm btn-success" style="text-align:center;" (click)="sendSMS()">Send</button>
+   <button type="button" class="btn btn-sm btn-primary" style="text-align:center;" (click)="hideModal()">Cancel</button>
+  </div>
+
+<!--   <div class="app-modal-footer">
+    <button *ngIf="startDate && endDate" type="button" class="btn btn-default ripple" (click)="hideModal()">Show Report</button>
+  </div> -->
+</app-modal-basic>

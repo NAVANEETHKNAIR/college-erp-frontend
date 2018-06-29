@@ -98,19 +98,19 @@
             <perfect-scrollbar class="overflow-container" [style.width]="'100%'" [style.height]="'500px'">
 		   <form [formGroup]="dormitoryForm">
 		   <div class="text-center">
-		    <label for="basic-addon1" style="display:block;text-align:left">Name</label> 
+		    <label for="basic-addon1" style="display:block;text-align:left">Name(required)</label> 
 		    <div class="input-group">
 		      <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
 		      <input type="text" class="form-control" placeholder="Name" formControlName = "name">
 		      <p *ngIf="!dormitoryForm.controls['name'].valid && dormitoryForm.controls['name'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the name</p>
 		    </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Room Number</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Room Number(required)</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" placeholder="Room Number" formControlName = "room_num">
           <p *ngIf="!dormitoryForm.controls['room_num'].valid && dormitoryForm.controls['room_num'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the room number</p>
         </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Category</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Category(required)</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <select type="text" class="form-control" #roomType (change)="changeRoomType(roomType.value)" placeholder="Room Type" formControlName = "room_type">
@@ -120,7 +120,7 @@
           </select> 
           <p *ngIf="!dormitoryForm.controls['room_type'].valid && dormitoryForm.controls['room_type'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the room type</p>
         </div>
-        <label for="basic-addon1" style="display:block;text-align:left">Price</label>
+        <label for="basic-addon1" style="display:block;text-align:left">Price(required)</label>
         <div class="input-group">
           <span class="input-group-prepend"  id="basic-addon1"><label class="input-group-text"><i class="icofont icofont-user"></i></label></span>
           <input type="text" class="form-control" placeholder="Fare" formControlName = "fare">
