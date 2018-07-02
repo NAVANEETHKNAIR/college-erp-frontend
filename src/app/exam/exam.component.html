@@ -153,8 +153,8 @@
           <input type="time" class="form-control"  formControlName = "duration">
           <p *ngIf="!examForm.controls['duration'].valid && examForm.controls['duration'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the duration of exam</p>
         </div>
-        <button *ngIf="examForm.valid && !editMode"  type="submit" (click) = "putExam(examForm.value)" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" >Save</button>
-        <button *ngIf="examForm.valid && editMode"  type="submit" (click) = "putExamEdited(examForm.value)" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" >Save</button> </div>
+        <button *ngIf="examForm.valid && !editMode"  type="submit" (click) = "putExam(examForm.value,$event)" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" >Save</button>
+        <button *ngIf="examForm.valid && editMode"  type="submit" (click) = "putExamEdited(examForm.value,$event)" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" >Save</button> </div>
          </form>          
         </perfect-scrollbar>
             <br>

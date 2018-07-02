@@ -109,8 +109,8 @@
 		      <input type="text" class="form-control" placeholder="Section" formControlName = "section">
 		        <p *ngIf="!classForm.controls['section'].valid && classForm.controls['section'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the section</p>
 		    </div>            
-		    <button *ngIf="classForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putClass(classForm.value)">Save</button>
-         <button *ngIf="classForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putClassEdited(classForm.value)">Save</button>
+		    <button *ngIf="classForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putClass(classForm.value,$event)">Save</button>
+         <button *ngIf="classForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putClassEdited(classForm.value,$event)">Save</button>
       </div>
 		     </form>          
 		    </perfect-scrollbar>

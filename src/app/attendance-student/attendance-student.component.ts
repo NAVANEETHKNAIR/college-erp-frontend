@@ -54,6 +54,7 @@ public savedAttendance = false;
 public cookie:any;
 public currentSession:any;
 public studentSendSMS:any[] = [];
+public time:any;
   constructor(public http: Http, public parseFormatter:NgbDateParserFormatter,public fetchsession:SystemService,public datePickerService:NgbDatepickerConfig,private cookieService: CookieService) {
   this.cookie = this.cookieService.getAll()['cookieSet'];
   var now = moment();
@@ -262,18 +263,44 @@ showModal(){
 }
 
 sendSMS(){
-  this.fetchsession.getMSG91().subscribe((msg91)=>{
+      let date:any;
+     date = (new Date()).toLocaleString();
+    date = date.split(",");
+   let dateArr = date[0].split('/');
+   (+dateArr[0] < 9)? (dateArr[0]= '0' + dateArr[0]):(dateArr[0]=dateArr[0])
+    (+dateArr[1] < 9)? (dateArr[1]= '0' + dateArr[1]):(dateArr[1]=dateArr[1])
+   this.date = (dateArr[2] + '-' + dateArr[0] + '-' + dateArr[1]);
+    this.time = date[1];
+   this.fetchsession.getMSG91().subscribe((msg91)=>{
    if(msg91._id){
-     this.http.post(this.url+ '/msg91/send_msg91_attendance_student',{
+    this.http.post(this.url+ '/msg91/send_msg91_attendance_student',{
     msg91: msg91._id,
     students:this.studentSendSMS,
     date: this.date,
     access_token:this.cookie
-  }).subscribe((message)=>{
-    console.log(message.json());
-  })
-   } 
-  })
+  }).subscribe((messageRecieved:any)=>{
+           console.log(messageRecieved.json())
+           if(messageRecieved.json()){
+            this.http.post(this.url + '/message/message',{
+              messagebody: 'Sent Attendance Status Staff for date  ' + this.date,
+              to:  _.pluck(this.studentSendSMS,'contact'),
+              date : this.date,
+              time: this.time,
+              session: this.session,
+              access_token: this.cookie
+
+            }).subscribe((message)=>{
+              console.log("Message sent successfully:",message.json());
+            })
+           }
+          else{
+            console.log("Message not sent successfully",messageRecieved.json());
+          }
+
+          console.log(messageRecieved);
+         })
+       }
+     })
   
 }
 

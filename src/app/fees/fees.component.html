@@ -141,7 +141,7 @@
         </div>
         </div>
       </div>
-      <button *ngIf="feesForm.valid"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "generateFees(feesForm.value)">Generate Fees</button>
+      <button *ngIf="feesForm.valid"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "generateFees(feesForm.value,$event)">Generate Fees</button>
    </form>
   </perfect-scrollbar>
 </div>

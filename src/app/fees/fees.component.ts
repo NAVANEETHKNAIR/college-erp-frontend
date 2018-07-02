@@ -6,6 +6,7 @@ import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { SystemService } from '../system/service.system';
 import { CookieService } from 'ng2-cookies';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SwalService } from '../swal/swal.service';
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-fees',
@@ -51,7 +52,7 @@ public class_ref:any;
 public date:any;
 public currentSession:any;
 
-  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
+  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService, private swal: SwalService) {
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
       this.currentSession = session.session;
@@ -130,7 +131,7 @@ public currentSession:any;
     (<FormArray>this.feesForm.controls['feesArray']).removeAt(i); 
   }
 
-  generateFees(value){
+  generateFees(value,event){
     this.students = [];
     console.log(this.checkStatus);
     console.log(value);
@@ -151,6 +152,8 @@ public currentSession:any;
 
     }).subscribe((fees)=>{
       console.log(fees.json());
+     event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+     this.swal.openSuccessSwal(); 
     })
 
   }

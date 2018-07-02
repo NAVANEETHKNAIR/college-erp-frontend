@@ -6,6 +6,7 @@ import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { NgbDateParserFormatter, NgbDateStruct, NgbDatepickerConfig  } from '@ng-bootstrap/ng-bootstrap';
 import { CookieService } from 'ng2-cookies';
 import { SystemService } from '../system/service.system';
+import { SwalService } from '../swal/swal.service';
 //private cookieService: CookieService
 //import { ModalComponent } from '../components/advanced-component
 @Component({
@@ -41,7 +42,8 @@ public currentSession:any;
     public fetchsession:SystemService, 
     public parseFormatter:NgbDateParserFormatter,
     public datePickerService:NgbDatepickerConfig,
-    private cookieService: CookieService){
+    private cookieService: CookieService,
+    private swal: SwalService){
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
     
@@ -125,7 +127,7 @@ getExpense(value){
          this.categoryExist = false;
          this.categoryNew = "";
          this.modalSmall.hide();
-
+         this.swal.openSuccessSwal(); 
       }
       else{
         this.categoryExist = true;
@@ -136,7 +138,7 @@ getExpense(value){
     })
   }
 
-  putExpense(value){
+  putExpense(value,event){
      this.http.post(this.url+ '/expense/expense',{
        title: value.title,
        amount: value.amount,
@@ -146,10 +148,13 @@ getExpense(value){
        access_token: this.cookie
      }).subscribe((expense)=>{
        console.log(expense.json());
+       this.getExpense(value.category);
+       event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+       this.swal.openSuccessSwal(); 
      })
   }
   
-  putEditedExpense(value){
+  putEditedExpense(value,event){
      this.http.post(this.url+ '/expense/expense',{
        _id: this.id,
        title: value.title,
@@ -160,6 +165,9 @@ getExpense(value){
        access_token: this.cookie
      }).subscribe((expense)=>{
        console.log(expense.json());
+       event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+       this.swal.openSuccessSwal(); 
+       this.getExpense(value.category);
      })
   }
 
@@ -185,19 +193,3 @@ getExpense(value){
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

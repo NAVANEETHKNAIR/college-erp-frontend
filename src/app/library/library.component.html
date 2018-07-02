@@ -121,8 +121,8 @@
         </div>
 
          
-		    <button *ngIf="bookForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putBook(bookForm.value)">Save</button>
-        <button *ngIf="bookForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedBook(bookForm.value)">Save</button>
+		    <button *ngIf="bookForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putBook(bookForm.value,$event)">Save</button>
+        <button *ngIf="bookForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedBook(bookForm.value,$event)">Save</button>
 
 
        </div>

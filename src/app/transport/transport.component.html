@@ -91,8 +91,8 @@
           <input type="text" class="form-control"  formControlName = "fare">
           <p *ngIf="!transportForm.controls['fare'].valid && transportForm.controls['fare'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the fare</p>
         </div>        
-		    <button *ngIf="transportForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putTransport(transportForm.value)">Save</button>
-        <button *ngIf="transportForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedTransport(transportForm.value)">Save</button>
+		    <button *ngIf="transportForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putTransport(transportForm.value,$event)">Save</button>
+        <button *ngIf="transportForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedTransport(transportForm.value,$event)">Save</button>
 
 
        </div>

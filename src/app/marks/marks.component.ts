@@ -6,6 +6,7 @@ import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { NgbDateParserFormatter, NgbDateStruct, NgbDatepickerConfig  } from '@ng-bootstrap/ng-bootstrap';
 import { SystemService } from '../system/service.system';
 import { CookieService } from 'ng2-cookies';
+import { SwalService } from '../swal/swal.service';
 //private cookieService: CookieService
 //import { ModalComponent } from '../components/advanced-component
 @Component({
@@ -70,7 +71,8 @@ public examName:any;
     public fetchsession:SystemService, 
     public parseFormatter:NgbDateParserFormatter,
     public datePickerService:NgbDatepickerConfig,
-    private cookieService: CookieService){
+    private cookieService: CookieService,
+    private swal: SwalService){
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
     
@@ -192,6 +194,7 @@ public examName:any;
         }
         this.rows = [...this.studentList];
         console.log('This line is not hit');
+
       }
 
    })
@@ -233,7 +236,8 @@ sendSMS(){
      exam:this.examName,
      access_token:this.cookie
   }).subscribe((messageSent)=>{
-    console.log(messageSent.json());
+    this.swal.openSuccessSwal();
+    
   })
   })
   

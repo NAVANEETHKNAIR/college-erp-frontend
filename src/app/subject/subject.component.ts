@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { CookieService } from 'ng2-cookies';
 import { SystemService } from '../system/service.system';
+import { SwalService } from '../swal/swal.service';
 //private cookieService: CookieService
 //import { ModalComponent } from '../components/advanced-component
 @Component({
@@ -28,7 +29,7 @@ public allSubject:any;
 public editMode:boolean;
 public id:any;
 public cookie:any;
-  constructor(public http: Http, private cookieService: CookieService, public fetchsession: SystemService) {
+  constructor(public http: Http, private cookieService: CookieService, public fetchsession: SystemService, public swal: SwalService) {
   this.cookie = this.cookieService.getAll()['cookieSet'];
   this.initializeForm();
   console.log(this.subjectForm);
@@ -68,9 +69,9 @@ getallSubject(){
    });
   }
   
-  putSubject(value){
+  putSubject(value,event){
   	 console.log(value);
- 
+     console.log(event);
   	// let class_ref:any = _.where(this.getClassAll,{name:value.class,section:value.section})[0];
     this.http.post((this.url+'/subject/subject'),{
     	"name":value.name,
@@ -80,12 +81,15 @@ getallSubject(){
 
     }).subscribe((subject:any)=>{
         this.getallSubject();
+        console.log(event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList);
+        event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+        this.swal.openSuccessSwal();
            // this.getStaffMethod(value.type);
               	   
         });    
   }
 
-  putEditedSubject(value){
+  putEditedSubject(value,event){
     console.log(value);
 
     this.http.post((this.url+ '/subject/subject_edit'),{
@@ -97,6 +101,8 @@ getallSubject(){
     }).subscribe((editedSubject)=>{
       console.log(editedSubject.json());
       this.getallSubject();
+       event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+      this.swal.openSuccessSwal();
 
     })
   }

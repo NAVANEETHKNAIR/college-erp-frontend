@@ -226,8 +226,8 @@
          </div>
         <br>
         <br>                  
-		    <button *ngIf="staffForm.valid && session==currentSession"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block"  (click) ="putStaff(staffForm.value)">Save</button>
-        <button *ngIf="staffForm.valid && session!==currentSession" (click) ="promoteStaff(staffForm.value)" type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block">Promote</button>
+		    <button *ngIf="staffForm.valid && session==currentSession"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block"  (click) ="putStaff(staffForm.value,$event)">Save</button>
+        <button *ngIf="staffForm.valid && session!==currentSession" (click) ="promoteStaff(staffForm.value,$event)" type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block">Promote</button>
         	</div>
 		     </form>          
 		    </perfect-scrollbar>

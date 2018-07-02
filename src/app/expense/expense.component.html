@@ -132,8 +132,8 @@
         </button>
          </div>
          </div>
-		    <button *ngIf="expenseForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putExpense(expenseForm.value)">Save</button>
-        <button *ngIf="expenseForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedExpense(expenseForm.value)">Save</button>
+		    <button *ngIf="expenseForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putExpense(expenseForm.value,$event)">Save</button>
+        <button *ngIf="expenseForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedExpense(expenseForm.value,$event)">Save</button>
 
 
        </div>
@@ -154,7 +154,7 @@
     </span>
 
     <input type="text" class="form-control"  [(ngModel)]="categoryNew">
-    <button type="submit" *ngIf="categoryNew" class="btn btn-sm btn-success text-center" (click)="categorySave(categoryNew)">Submit</button>
+    <button type="submit" *ngIf="categoryNew" class="btn btn-sm btn-success text-center" (click)="categorySave(categoryNew,$event)">Submit</button>
     <p *ngIf="categoryExist" style="color:red;display:block;width:100%;text-align:left">Category Already Exist</p>
   </div>
 </div>

@@ -47,6 +47,7 @@ import { MarksReportComponent } from './marks-report/marks-report.component';
 import { LibraryReportComponent } from './library-report/library-report.component';
 import { RoutineReportComponent } from './routine-report/routine-report.component';
 import { SuperAdminComponent } from './super-admin/super-admin.component';
+import { SwalService} from './swal/swal.service';
 
 
 @NgModule({
@@ -103,7 +104,8 @@ import { SuperAdminComponent } from './super-admin/super-admin.component';
   providers: [ 
                SystemService, 
                LoginGuardService,
-               RolesGuardAuthorizeGuardService 
+               RolesGuardAuthorizeGuardService,
+               SwalService 
               ],
   bootstrap: [AppComponent]
 })

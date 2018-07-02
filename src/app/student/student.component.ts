@@ -6,6 +6,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { SystemService } from '../system/service.system';
 import { CookieService } from 'ng2-cookies';
+import { SwalService } from '../swal/swal.service';
 //import {FileUploader} from 'ng2-file-upload';
 
 //import { ModalComponent } from '../components/advanced-component
@@ -62,8 +63,9 @@ public img:any[] = [];
 public currentSession:any;
 public guardian:any;
 public status:any;
+
   //import { SystemService } from '../system/service.system';
- constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService,private sanitizer: DomSanitizer) {
+ constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService,private swal: SwalService) {
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
     this.currentSession = session.session;
@@ -171,7 +173,7 @@ public status:any;
    });
   }
   
-  putStudent(value){
+  putStudent(value,event){
   	 console.log(value);
 
   	let class_ref:any = _.where(this.getClassAll,{name:value.class,section:value.section})[0];
@@ -229,6 +231,8 @@ public status:any;
 
                     }).subscribe((message)=>{
                       console.log("Message sent successfully:",message);
+                     event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+                     this.swal.openSuccessSwal(); 
                     })
                    }
                   else{
@@ -262,6 +266,8 @@ public status:any;
 
                     }).subscribe((message)=>{
                       console.log("Message sent successfully:",message);
+                     event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+                     this.swal.openSuccessSwal(); 
                     })
                    }
                   else{
@@ -298,7 +304,7 @@ public status:any;
 
   }
 
-  promoteStudent(value){
+  promoteStudent(value,event){
      console.log(value);
 
     let class_ref:any = _.where(this.getClassAll,{name:value.class,section:value.section})[0];
@@ -355,6 +361,8 @@ public status:any;
 
                     }).subscribe((message)=>{
                       console.log("Message sent successfully:",message);
+                       event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+                       this.swal.openSuccessSwal(); 
                     })
                    }
                   else{
@@ -388,6 +396,8 @@ public status:any;
 
                     }).subscribe((message)=>{
                       console.log("Message sent successfully:",message);
+                     event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+                     this.swal.openSuccessSwal(); 
                     })
                    }
                   else{

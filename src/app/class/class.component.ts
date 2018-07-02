@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { SystemService } from '../system/service.system';
 import { CookieService } from 'ng2-cookies';
+import { SwalService } from '../swal/swal.service';
 //import { ModalComponent } from '../components/advanced-component
 @Component({
   selector: 'app-class',
@@ -40,7 +41,7 @@ public sectionList:any;
 public cookie:any;
 
 //import { SystemService } from '../system/service.system';
-  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
+  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService, private swal: SwalService) {
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
     this.session = session.session;
@@ -98,7 +99,7 @@ public cookie:any;
 
 
 
-  putClass(value){
+  putClass(value,event){
   	 console.log(value);
     this.http.post((this.url+'/newClass/class_create'),{
   
@@ -119,6 +120,10 @@ public cookie:any;
                this.name = _.pluck((_.where(this.classList,{_id:this.id})),'name')[0];
                console.log("name inside putClassEdited",this.name);
                this.getClassMethod(this.name);
+                event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+               this.swal.openSuccessSwal();
+
+
                //this.initializeForm();
              });
 
@@ -140,7 +145,7 @@ public cookie:any;
 
   }
   
-  putClassEdited(editedClass){
+  putClassEdited(editedClass,event){
         console.log("editedClass",editedClass);
         this.http.post((this.url + '/newClass/class_edit'),{
             "_id": this.id,
@@ -160,6 +165,8 @@ public cookie:any;
                      console.log("name inside putClassEdited",this.name);
                      this.getClassMethod(this.name);
                      //this.initializeForm();
+                      event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+                      this.swal.openSuccessSwal();
                    });
                
                 

@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { CalendarEvent } from 'angular-calendar';
 import { Subject } from 'rxjs';
+import { SwalService } from '../swal/swal.service';
 import {
   startOfDay,
   endOfDay,
@@ -47,7 +48,7 @@ public idList:any[] = [];
 public events:CalendarEvent[] = [];
 public cookie:any;
 
-constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
+constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService, private swal: SwalService) {
     this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
     this.session = session.session;
@@ -100,7 +101,7 @@ initializeForm(){
 	})
 }
 
-createEvent(value){
+createEvent(value,eventVal){
     console.log(value);
    	this.color = this.colorType(value.type);
     let endType = value.end.split("-");
@@ -127,12 +128,15 @@ createEvent(value){
 	color : this.color
     })
  	 this.idList.push(event.json()._id);
+   eventVal.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+   this.swal.openSuccessSwal();
  	 this.refresh.next();
+  
  })
 
 }
 
-editEvent(value){
+editEvent(value,eventVal){
   this.color = this.colorType(value.type);
   //console.log(value);
   console.log("event  index");
@@ -158,6 +162,8 @@ editEvent(value){
 	end : endOfDay(end),
 	color : this.color
    }
+    eventVal.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+    this.swal.openSuccessSwal();
  	 this.refresh.next();
  })
 

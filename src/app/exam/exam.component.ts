@@ -6,6 +6,7 @@ import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { NgbDateParserFormatter, NgbDateStruct, NgbDatepickerConfig  } from '@ng-bootstrap/ng-bootstrap';
 import { SystemService } from '../system/service.system';
 import { CookieService } from 'ng2-cookies';
+import { SwalService } from '../swal/swal.service';
 //private cookieService: CookieService
 //import { ModalComponent } from '../components/advanced-component
 @Component({
@@ -56,7 +57,8 @@ public currentSession:any;
     public fetchsession:SystemService, 
     public parseFormatter:NgbDateParserFormatter,
     public datePickerService:NgbDatepickerConfig,
-    private cookieService: CookieService){
+    private cookieService: CookieService,
+    private swal: SwalService){
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
     
@@ -182,7 +184,7 @@ public currentSession:any;
   }
 
 
-  putExam(value){
+  putExam(value,event){
       
       console.log(value);
       this.http.post(this.url + '/exam/exam',{
@@ -200,12 +202,14 @@ public currentSession:any;
                .subscribe((exam)=>{
                  this.examList = exam.json();
                  console.log("After save",this.examList);
+                 event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+                 this.swal.openSuccessSwal();                 
                })
       })
   }
 
 
- putExamEdited(value){
+ putExamEdited(value,event){
       
       this.http.post(this.url + '/exam/exam_edit',{
          _id: this.id,
@@ -221,6 +225,8 @@ public currentSession:any;
          this.http.post(this.url + '/exam/exam_get_class',{class_ref:this.class_ref,session:this.session,access_token: this.cookie})
                .subscribe((exam)=>{
                  this.examList = exam.json();
+                 event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+                 this.swal.openSuccessSwal(); 
                })
       })
   }

@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { SystemService } from '../system/service.system';
 import { CookieService } from 'ng2-cookies';
+import { SwalService } from '../swal/swal.service';
 //private cookieService: CookieService
 //import { ModalComponent } from '../components/advanced-component
 @Component({
@@ -32,7 +33,7 @@ public id:any;
 public cookie:any;
 public currentSession:any;
   //import { SystemService } from '../system/service.system';
-  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
+  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService, private swal: SwalService) {
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
       this.currentSession = session.session;
@@ -75,7 +76,7 @@ getallTransport(){
    });
   }
   
-  putTransport(value){
+  putTransport(value,event){
   	 console.log(value);
  
   	// let class_ref:any = _.where(this.getClassAll,{name:value.class,section:value.section})[0];
@@ -89,12 +90,14 @@ getallTransport(){
 
     }).subscribe((transport:any)=>{
         this.getallTransport();
+       event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+       this.swal.openSuccessSwal(); 
            // this.getStaffMethod(value.type);
               	   
         });    
   }
 
-  putEditedTransport(value){
+  putEditedTransport(value,event){
     console.log(value);
 
     this.http.post((this.url+ '/transport/transport_edit'),{
@@ -108,6 +111,8 @@ getallTransport(){
     }).subscribe((editedtransport)=>{
       console.log(editedtransport.json());
       this.getallTransport();
+       event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+       this.swal.openSuccessSwal(); 
 
     })
   }

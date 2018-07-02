@@ -119,8 +119,8 @@
           <input type="time" class="form-control" placeholder="End Time" formControlName = "end_time">
           <p *ngIf="!routineForm.controls['end_time'].valid && routineForm.controls['end_time'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the end time</p>
         </div>
-		    <button *ngIf="routineForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putRoutine(routineForm.value)">Save</button>
-        <button *ngIf="routineForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedRoutine(routineForm.value)">Save</button>
+		    <button *ngIf="routineForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putRoutine(routineForm.value,$event)">Save</button>
+        <button *ngIf="routineForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedRoutine(routineForm.value,$event)">Save</button>
 
 
        </div>

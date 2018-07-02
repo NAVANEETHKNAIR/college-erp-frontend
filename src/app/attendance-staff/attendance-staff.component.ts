@@ -42,7 +42,7 @@ public type:any;
 public datemodel:any;
 public currentSession:any;
 public staffSendSMS:any[] = [];
-
+public time:any;
   constructor(public http: Http, public parseFormatter:NgbDateParserFormatter,public fetchsession:SystemService,public datePickerService:NgbDatepickerConfig,private cookieService: CookieService) {
   //this.initializeForm();
   var now = moment();
@@ -242,17 +242,44 @@ showModal(){
 }
 
 sendSMS(){
-  this.fetchsession.getMSG91().subscribe((msg91)=>{
+      let date:any;
+     date = (new Date()).toLocaleString();
+    date = date.split(",");
+   let dateArr = date[0].split('/');
+   (+dateArr[0] < 9)? (dateArr[0]= '0' + dateArr[0]):(dateArr[0]=dateArr[0])
+    (+dateArr[1] < 9)? (dateArr[1]= '0' + dateArr[1]):(dateArr[1]=dateArr[1])
+   this.date = (dateArr[2] + '-' + dateArr[0] + '-' + dateArr[1]);
+    this.time = date[1];
+   this.fetchsession.getMSG91().subscribe((msg91)=>{
    if(msg91._id){
-     this.http.post(this.url+ '/msg91/send_msg91_attendance_staff',{
+    this.http.post(this.url+ '/msg91/send_msg91_attendance_staff',{
+    msg91: msg91._id,
     staffs:this.staffSendSMS,
     date: this.date,
     access_token:this.cookie
-  }).subscribe((message)=>{
-    console.log(message.json());
-  })
-   } 
-  })
+  }).subscribe((messageRecieved:any)=>{
+           console.log(messageRecieved.json())
+           if(messageRecieved.json()){
+            this.http.post(this.url + '/message/message',{
+              messagebody: 'Sent Attendance Status Staff for date  ' + this.date,
+              to:  _.pluck(this.staffSendSMS,'contact'),
+              date : this.date,
+              time: this.time,
+              session: this.session,
+              access_token: this.cookie
+
+            }).subscribe((message)=>{
+              console.log("Message sent successfully:",message.json());
+            })
+           }
+          else{
+            console.log("Message not sent successfully",messageRecieved.json());
+          }
+
+          console.log(messageRecieved);
+         })
+       }
+     })
   
 }
 
@@ -281,6 +308,7 @@ finalizeStatus(){
       "access_token": this.cookie
   }).subscribe((attendance_staff)=>{
     console.log(attendance_staff.json());
+    this.showModal();
 
   })
 }
@@ -293,16 +321,16 @@ else{
     console.log(" naya save hone se pehle checkList:",this.attendanceStatus);
 
     
-//  this.http.post((this.url + '/attendance/attendance_' + this.staffTypeValue.toLowerCase()),{
-//     "date": this.date,
-//     "staffs" : this.sendAttendanceStatus,
-//     "finalize":true,
-//     "session":this.session,
-//     "access_token": this.cookie
-// }).subscribe((attendance_staff)=>{
-//   console.log(attendance_staff.json());
+ this.http.post((this.url + '/attendance/attendance_' + this.staffTypeValue.toLowerCase()),{
+    "date": this.date,
+    "staffs" : this.sendAttendanceStatus,
+    "finalize":true,
+    "session":this.session,
+    "access_token": this.cookie
+}).subscribe((attendance_staff)=>{
+  console.log(attendance_staff.json());
 
-//})
+})
 }
 }
 }

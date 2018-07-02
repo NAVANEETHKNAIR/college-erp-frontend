@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { SystemService } from '../system/service.system';
 import { CookieService } from 'ng2-cookies';
+import { SwalService } from '../swal/swal.service';
 //private cookieService: CookieService
 //import { ModalComponent } from '../components/advanced-component
 @Component({
@@ -37,8 +38,9 @@ public id:any;
 public invalidStudent:boolean = false;
 public assigned_id:any;
 public cookie:any;
+public assigned_id_edit:any;
   //import { SystemService } from '../system/service.system';
-  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
+  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService, private swal: SwalService) {
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
     this.session = session.session;
@@ -114,7 +116,7 @@ getAllBooks(){
 
 
   
-  putBook(value){
+  putBook(value,event){
   	 console.log(value);
      // if(value.assigned_to == ''){
      //   value.assigned_to = undefined;
@@ -143,6 +145,8 @@ getAllBooks(){
 
     }).subscribe((book:any)=>{
         this.getAllBooks();
+         event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+         this.swal.openSuccessSwal(); 
            // this.getStaffMethod(value.type);
                    
         });
@@ -159,6 +163,8 @@ getAllBooks(){
 
 
     }).subscribe((book:any)=>{
+       event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+       this.swal.openSuccessSwal(); 
         this.getAllBooks();
            // this.getStaffMethod(value.type);
                    
@@ -168,7 +174,7 @@ getAllBooks(){
         
   }
 
-  putEditedBook(value){
+  putEditedBook(value,event){
     console.log(value);
         console.log(value);
      // if(value.assigned_to == ''){
@@ -187,7 +193,7 @@ getAllBooks(){
       "_id": this.id,
       "title": value.title,
       "isbn": value.isbn,
-      "assigned_to": this.assigned_id._id,
+      "assigned_to": this.assigned_id_edit,
       "assigned": value.assigned,
       "assigned_from": value.assigned_from,
       "assigned_duration": value.assigned_duration,
@@ -196,7 +202,9 @@ getAllBooks(){
 
     }).subscribe((editedbook)=>{
       console.log(editedbook.json());
-      this.getAllBooks();
+       event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+       this.swal.openSuccessSwal(); 
+       this.getAllBooks();
 
     })
     }
@@ -212,6 +220,8 @@ getAllBooks(){
 
     }).subscribe((editedbook)=>{
       console.log(editedbook.json());
+     event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+     this.swal.openSuccessSwal(); 
       this.getAllBooks();
 
     })
@@ -266,7 +276,10 @@ getAllBooks(){
      this.assigned = (this.allBook[index])['assigned'];
      this.assigned_from = (this.allBook[index])['assigned_from'];
 
-     if(this.allBook[index]['assigned_to']){this.assigned_to = (this.allBook[index])['assigned_to']['erp_id'];}
+     if(this.allBook[index]['assigned_to']){
+       this.assigned_to = (this.allBook[index])['assigned_to']['erp_id'];
+       this.assigned_id_edit = (this.allBook[index])['assigned_to']['_id'];
+     }
      this.assigned_duration = (this.allBook[index])['assigned_duration'];
   	 
 

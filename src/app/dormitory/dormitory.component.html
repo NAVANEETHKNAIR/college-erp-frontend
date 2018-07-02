@@ -126,8 +126,8 @@
           <input type="text" class="form-control" placeholder="Fare" formControlName = "fare">
           <p *ngIf="!dormitoryForm.controls['fare'].valid && dormitoryForm.controls['fare'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the price</p>
         </div>         
-		    <button *ngIf="dormitoryForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putdormitory(dormitoryForm.value)">Save</button>
-        <button *ngIf="dormitoryForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedDormitory(dormitoryForm.value)">Save</button>
+		    <button *ngIf="dormitoryForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putdormitory(dormitoryForm.value,$event)">Save</button>
+        <button *ngIf="dormitoryForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedDormitory(dormitoryForm.value,$event)">Save</button>
 
 
        </div>

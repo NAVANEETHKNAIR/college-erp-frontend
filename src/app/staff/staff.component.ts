@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { SystemService } from '../system/service.system';
 import { CookieService } from 'ng2-cookies';
+import { SwalService } from '../swal/swal.service';
 //private cookieService: CookieService
 //import { ModalComponent } from '../components/advanced-component
 @Component({
@@ -48,7 +49,7 @@ public image:any = null;
 public currentSession:any;
 public status:boolean;
  
-  constructor(public http: Http,public fetchsession:SystemService, private cookieService: CookieService) {
+  constructor(public http: Http,public fetchsession:SystemService, private cookieService: CookieService, private swal: SwalService) {
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
     this.currentSession = session.session;
@@ -128,7 +129,7 @@ public status:boolean;
   }
 
 
-    promoteStaff(value){
+    promoteStaff(value,event){
      console.log(value);
 
 
@@ -188,6 +189,8 @@ public status:boolean;
 
                     }).subscribe((message)=>{
                       console.log("Message sent successfully:",message);
+                      event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+                      this.swal.openSuccessSwal(); 
                     })
                    }
                   else{
@@ -222,6 +225,8 @@ public status:boolean;
 
                     }).subscribe((message)=>{
                       console.log("Message sent successfully:",message);
+                      event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+                      this.swal.openSuccessSwal(); 
                     })
                    }
                   else{
@@ -238,7 +243,7 @@ public status:boolean;
   }
 
   
-  putStaff(value){
+  putStaff(value,event){
   	 console.log(value);
 
 
@@ -334,6 +339,8 @@ public status:boolean;
 
                     }).subscribe((message)=>{
                       console.log("Message sent successfully:",message);
+                      event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+                      this.swal.openSuccessSwal(); 
                     })
                    }
                   else{
@@ -398,16 +405,12 @@ public status:boolean;
       this.status =  (this.staffList[staff]).status;
   		this.caste = (this.staffList[staff]).caste;
       this.image = (this.staffList[staff]).image? (this.staffList[staff]).image._id:null;
-
-
-  		// console.log("section before editing",this.section);
-  		// this.getClassMethodForm(this.class);
         this.initializeForm();
         console.log(this.staffForm);
         this.openMyModal('effect-13');
   }
 
-addFile() {
+addFile(){
 let fi = this.fileInput.nativeElement;
 if (fi.files && fi.files[0]) {
     let fileToUpload = fi.files[0];

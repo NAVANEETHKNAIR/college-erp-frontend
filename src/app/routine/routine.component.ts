@@ -5,7 +5,8 @@ import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { SystemService } from '../system/service.system';
 import { CookieService } from 'ng2-cookies';
-//private cookieService: CookieService
+import { SwalService } from '../swal/swal.service';
+//private cookieService: CookieService/
 
 //import { ModalComponent } from '../components/advanced-component
 @Component({
@@ -56,14 +57,20 @@ public editedArray:any;
 public cookie:any;
 public currentSession:any;
   //import { SystemService } from '../system/service.system';
-  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {
+  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService, private swal: SwalService) {
    this.cookie = this.cookieService.getAll()['cookieSet'];
    this.fetchsession.getSession().subscribe((session)=>{
        this.currentSession = session.session;
     this.session = this.fetchsession.getReportSession();
     console.log("session from session service",this.session);
     this.initializeForm();
-    
+    this.http.post((this.url+ '/teacher/teacher_get_all'),{ access_token: this.cookie,session: this.session})
+     .subscribe((data)=>{
+       console.log("Teacher:",data.json());
+       this.getTeacherAll = data.json();
+      
+
+     });
   });
    this.initializeForm();
   }
@@ -87,13 +94,7 @@ ngOnInit() {
  ngAfterViewInit(){
  
   
-  this.http.post((this.url+ '/teacher/teacher_get_all'),{ access_token: this.cookie,session: this.session})
-     .subscribe((data)=>{
-       console.log(data.json());
-       this.getTeacherAll = data.json();
-      
-
-     });
+  
 
   this.http.post((this.url+ '/subject/subject_get_all'),{ access_token: this.cookie,session:this.session})
      .subscribe((data)=>{
@@ -203,7 +204,7 @@ makeScheduler(){
    });
   }
   
-  putRoutine(value){
+  putRoutine(value,event){
   	 console.log(value);
  
   	// let class_ref:any = _.where(this.getClassAll,{name:value.class,section:value.section})[0];
@@ -222,11 +223,13 @@ makeScheduler(){
         //this.getallroutine();
            // this.getStaffMethod(value.type);
            console.log("routine aaya hai save hoke:",routine.json());
+             event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+             this.swal.openSuccessSwal(); 
             this.getSectionMethod(this.selectSection);  	   
         });    
   }
 
-  putEditedRoutine(value:any){
+  putEditedRoutine(value:any,event){
     console.log(value);
 
     this.http.post((this.url+ '/routine/routine_edit'),{
@@ -243,6 +246,8 @@ makeScheduler(){
     }).subscribe((editedroutine)=>{
       console.log(editedroutine.json());
       console.log("Lo ji lo aa gya edited routine edit hoke...")
+           event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+          this.swal.openSuccessSwal(); 
          this.getSectionMethod(this.selectSection);
       //this.getallroutine();
 

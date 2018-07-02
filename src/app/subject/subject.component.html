@@ -77,8 +77,8 @@
 		    </div>
 
          
-		    <button *ngIf="subjectForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putSubject(subjectForm.value)">Save</button>
-        <button *ngIf="subjectForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedSubject(subjectForm.value)">Save</button>
+		    <button *ngIf="subjectForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putSubject(subjectForm.value,$event)">Save</button>
+        <button *ngIf="subjectForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click)= "putEditedSubject(subjectForm.value,$event)">Save</button>
 
 
        </div>

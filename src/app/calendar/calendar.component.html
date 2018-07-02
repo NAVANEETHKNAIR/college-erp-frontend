@@ -67,8 +67,8 @@
 		      </select>
 		        <p *ngIf="!calendarForm.controls['end'].valid && calendarForm.controls['end'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the event type</p>
 		    </div>           
-		    <button *ngIf="calendarForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "createEvent(calendarForm.value)">Save</button>
-         <button *ngIf="calendarForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "editEvent(calendarForm.value)">Save</button>
+		    <button *ngIf="calendarForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "createEvent(calendarForm.value,$event)">Save</button>
+         <button *ngIf="calendarForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "editEvent(calendarForm.value,$event)">Save</button>
       </div>
 		     </form>          
 		    </perfect-scrollbar>
