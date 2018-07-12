@@ -19,6 +19,6 @@
   "include": [
     "src/**/*",
     "node_modules/squeezebox/index.ts",
-    "node_modules/ngx-quill-editor/index.ts"
+    //"node_modules/ngx-quill-editor/index.ts"
   ]
 }
