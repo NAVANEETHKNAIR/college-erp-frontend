@@ -45,7 +45,7 @@ public date:any;
 public subject_ref:any;
 public duration:any;
 public total_marks:any;
-public url:any = 'http://localhost:3000';
+public url:any = 'http://159.89.171.240:3000';
 public class_ref: any;
 public subjectList:any =  [];
 public id:any;
@@ -73,7 +73,7 @@ public currentSession:any;
  
     console.log(this.datePickerService);
     this.date = this.parseFormatter.format({day:now.date(),month:now.month()+1,year:now.year()});
-    this.datePickerService.maxDate = {day:now.date(),month:now.month()+1,year:now.year()}
+    //this.datePickerService.maxDate = {day:now.date(),month:now.month()+1,year:now.year()}
        
     
    this.initializeForm();

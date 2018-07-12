@@ -44,7 +44,7 @@ public editMode:boolean;
 public session:any = '';
 public attendanceStatus:any = [];
 public finalize:boolean = false;
-public url:any = 'http://localhost:3000';
+public url:any = 'http://159.89.171.240:3000';
 public class_ref: any;
 public date:any;
 public datenow:any;

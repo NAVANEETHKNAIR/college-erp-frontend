@@ -17,7 +17,7 @@ export class AttendanceStaffRecordComponent implements OnInit {
   
  public cookie:any;
  public session:any;
- public url:any = 'http://localhost:3000';
+ public url:any = 'http://159.89.171.240:3000';
  public totalAttendance:any;
  public attendanceList:any;
  public filteredAttendanceList:any;
@@ -91,9 +91,6 @@ getAttendance(){
 }
 
 
-
-//2018-05-21 startDate 2018-05-16 2018-05-18 2018-05-22
-
 filterAttendance(startDate,endDate){
 
   console.log('StartDate:',this.parseFormatter.format(startDate));
@@ -134,7 +131,7 @@ filterAttendance(startDate,endDate){
 
    	else if(toDate < this.attendanceList[j+startIndex]['date']){
    		endIndex = j+startIndex-1;
-   		console.log("anurag",j)
+   		//console.log("anurag",j)
    		break;
    	}
     
@@ -181,7 +178,7 @@ ngOnInit(){
  }
 
 
-}
+ }
 
   
 

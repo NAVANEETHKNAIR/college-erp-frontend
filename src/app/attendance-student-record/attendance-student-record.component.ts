@@ -17,7 +17,7 @@ export class AttendanceStudentRecordComponent implements OnInit {
   
  public cookie:any;
  public session:any;
- public url:any = 'http://localhost:3000';
+ public url:any = 'http://159.89.171.240:3000';
  public totalAttendance:any;
  public attendanceList:any;
  public filteredAttendanceList:any;

@@ -33,7 +33,7 @@ public erp_id:any = '';
 public className:any;
 public filterClass:any;
 public session:any = '';
-public url:any = 'http://localhost:3000';
+public url:any = 'http://159.89.171.240:3000';
 public urladd:any;
 public editMode:boolean;
 public classList:any;
@@ -118,6 +118,7 @@ public user_id:any;
       userDetail = userDetail.json();
       let student_id = userDetail._id;
       let class_ref = userDetail.class_ref;
+      
      
       this.http.post(this.url+ '/fees/get_fees_for_'+ this.user+ '_ref',{
         class_ref: class_ref,

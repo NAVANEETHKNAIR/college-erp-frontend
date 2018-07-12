@@ -46,8 +46,8 @@
 		      <input type="text" class="form-control"  formControlName = "current_session">
 		      <p *ngIf="!systemForm.controls['current_session'].valid && systemForm.controls['current_session'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the current session</p>
 		    </div>
-		    <button *ngIf="systemForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putSystem(systemForm.value)">Save</button>
-         <button *ngIf="systemForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putSystemEdited(systemForm.value)">Save</button>
+		    <button *ngIf="systemForm.valid && !editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putSystem(systemForm.value,$event)">Save</button>
+         <button *ngIf="systemForm.valid && editMode"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putSystemEdited(systemForm.value,$event)">Save</button>
       </div>
 	</form>          
 
@@ -72,8 +72,8 @@
           <input type="text" class="form-control"  formControlName = "auth_key">
             <p *ngIf="!msg91Form.controls['auth_key'].valid && msg91Form.controls['auth_key'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the appropriate auth token</p>
         </div>
-          <button *ngIf="msg91Form.valid && !editModeMSG91"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putMSG91(msg91Form.value)">Create</button>
-         <button *ngIf="msg91Form.valid && editModeMSG91"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putMSG91Edited(msg91Form.value)">Save</button>
+          <button *ngIf="msg91Form.valid && !editModeMSG91"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putMSG91(msg91Form.value,$event)">Create</button>
+         <button *ngIf="msg91Form.valid && editModeMSG91"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putMSG91Edited(msg91Form.value,$event)">Save</button>
       </form>
             </div>
       </div>
@@ -122,8 +122,8 @@
           <input type="text" class="form-control"  formControlName = "refresh_token">
             <p *ngIf="!nodemailerForm.controls['refresh_token'].valid && nodemailerForm.controls['refresh_token'].touched" style="color:red;display:block;width:100%;text-align:left" >Please enter the refresh token </p>
         </div>
-          <button *ngIf="nodemailerForm.valid && !editModeNodemailer"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putNodemailer(nodemailerForm.value)">Create</button>
-         <button *ngIf="nodemailerForm.valid && editModeNodemailer"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putNodemailerEdited(nodemailerForm.value)">Save</button>
+          <button *ngIf="nodemailerForm.valid && !editModeNodemailer"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putNodemailer(nodemailerForm.value,$event)">Create</button>
+         <button *ngIf="nodemailerForm.valid && editModeNodemailer"  type="submit" class="btn btn-primary waves-effect m-r-20 f-w-600 d-inline-block" (click) = "putNodemailerEdited(nodemailerForm.value,$event)">Save</button>
       </form>
             </div>
           </div>

@@ -6,7 +6,7 @@ import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { CalendarEvent } from 'angular-calendar';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router'
-
+//import * as io from 'socket.io-client';
 import {
   startOfDay,
   endOfDay,
@@ -33,7 +33,7 @@ export class StudentdashboardComponent implements OnInit {
   public cookie:any;
   public  viewDate: Date = new Date();
   public session:any;
-  public url:any = 'http://localhost:3000';
+  public url:any = 'http://159.89.171.240:3000';
   public events:any = [];
   public activeDayIsOpen:any;
   public view = 'month';
@@ -41,8 +41,32 @@ export class StudentdashboardComponent implements OnInit {
   public userdetail:any;
   public isUser:boolean = false;
   public currentSession:any;
+  public socket:any;
+  public paymentString = '';
  constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService, private router: Router) {
+   // this.socket = io.connect('http://159.89.171.240:3000/');
+   // this.socket.on('connect', (socket)=> {
+   //  console.log('Connected!');
+   // });
+   // this.socket.on('payment',(value)=>{
+   //    console.log(value);
+   //    this.paymentString = 'Balance of Rs. ' + value.student_count*1 + ' is due till date '+ (new Date()).toLocaleDateString();
+   // })
+  //this.socket.emit('CH01', 'me', 'test msg');
+   let date = (new Date()).toLocaleDateString().split('/');
+
+   let dateString = (date[2]+ '-'+ ((+date[0]>10)?date[0]:('0' + date[0])) + '-01');
    this.cookie = this.cookieService.getAll()['cookieSet'];
+   if(this.cookieService.getAll()['userSet'] === 'ADMIN'){
+     this.http.post(this.url+ '/payment/payment',{
+       date: dateString,
+       access_token: this.cookie
+     }).subscribe((payment:any)=>{
+       console.log(payment);
+       payment = payment.json();
+       this.paymentString = 'Balance of Rs. ' + payment.student_count*30 + ' is due till date '+ (new Date()).toLocaleDateString();
+     })
+   }  
    console.log(this.cookie);
    this.fetchsession.getSession().subscribe((session)=>{
    this.currentSession = session.session;

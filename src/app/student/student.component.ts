@@ -51,14 +51,14 @@ public ifsc:any = '';
 public caste :any = '';
 public editMode:boolean;
 public session:any = '';
-public url:any = 'http://localhost:3000';
+public url:any = 'http://159.89.171.240:3000';
 public cookie:any;
 public dormitory_id:any = "";
 public vehicle_id: any = "";
 public correctDorm:boolean = true;
 public correctVehicle:boolean = true;
 //public uploader:FileUploader;
-public image:any = null;
+public image:any = '';
 public img:any[] = [];
 public currentSession:any;
 public guardian:any;
@@ -350,11 +350,11 @@ public status:any;
                      date = (new Date()).toLocaleString();
                     date = date.split(",");
                     let time = date[1];
-                   if(messageRecieved.json().message){
+                   if(messageRecieved.json()){
                     this.http.post(this.url + '/message/message',{
                       messagebody: 'Student Updated',
                       to:  [this.studentForm.value.parent_contact,this.studentForm.value._contact],
-                      date : this.studentForm.value.date_of_joining,
+                      date : this.studentForm.value.date_of_join,
                       time: time,
                       session: this.session,
                       access_token: this.cookie
@@ -385,11 +385,11 @@ public status:any;
                      date = (new Date()).toLocaleString();
                     date = date.split(",");
                     let time = date[1];
-                   if(messageRecieved.json().message){
+                   if(messageRecieved.json()){
                     this.http.post(this.url + '/message/message',{
                       messagebody: 'Student Created',
                       to:  this.studentForm.value.student_contact,
-                      date : this.studentForm.value.date_of_joining,
+                      date : this.studentForm.value.date_of_join,
                       time: time,
                       session: this.session,
                       access_token: this.cookie
@@ -401,7 +401,7 @@ public status:any;
                     })
                    }
                   else{
-                    console.log("Message not sent successfuly",messageRecieved.json());
+                    console.log("Message not sent successfully",messageRecieved.json());
                   }
                  })
                }
@@ -434,7 +434,7 @@ public status:any;
   		this.account_name = '';
   		this.account_number = '';
   		this.ifsc ='';
-      this.image = null;
+      this.image = '';
   		this.caste ='';
       this.status = true;
   		
@@ -468,7 +468,7 @@ public status:any;
   		this.account_number = (this.studentList[student]).account_number;
   		this.ifsc = (this.studentList[student]).ifsc;
   		this.caste = (this.studentList[student]).caste;
-      this.image = (this.studentList[student]).image? (this.studentList[student]).image._id:null;
+      this.image = (this.studentList[student]).image? (this.studentList[student]).image._id:'';
       this.status = (this.studentList[student]).status;
 
   		console.log("section before editing",this.section);

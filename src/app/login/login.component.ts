@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit{
 public loginForm: FormGroup;
 public username:any;
 public password:any;
-public url:any = 'http://localhost:3000';
+public url:any = 'http://159.89.171.240:3000';
 public trueUser:boolean = true;
 public cookie:any;
 constructor(private http:Http,private cookieService: CookieService, public router: Router,public seeRoute: ActivatedRoute, public _ngZone: NgZone){
@@ -82,6 +82,7 @@ putLogin(value){
          }
 
          else{
+           
            this.router.navigate(['student-dashboard']);
          }
         

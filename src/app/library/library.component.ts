@@ -31,7 +31,7 @@ public assigned:boolean = false;
 public assigned_duration:any;
 public isbn:any;
 public session:any = '';
-public url:any = 'http://localhost:3000';
+public url:any = 'http://159.89.171.240:3000';
 public allBook:any;
 public editMode:boolean;
 public id:any;

@@ -50,14 +50,14 @@ public ifsc:any = '';
 public caste :any = '';
 public editMode:boolean;
 public session:any = '';
-public url:any = 'http://localhost:3000';
+public url:any = 'http://159.89.171.240:3000';
 public cookie:any;
 public dormitory_id:any = "";
 public vehicle_id: any = "";
 public correctDorm:boolean = true;
 public correctVehicle:boolean = true;
 //public uploader:FileUploader;
-public image:any = null;
+public image:any = '';
 public img:any[] = [];
 public currentSession:any;
 public status:boolean;
@@ -250,7 +250,7 @@ public status:boolean;
   		this.account_name = '';
   		this.account_number = '';
   		this.ifsc ='';
-      this.image = null;
+      this.image = '';
   		this.caste ='';
   		
   		console.log("section before editing",this.section);
@@ -282,7 +282,7 @@ public status:boolean;
   		this.ifsc = (this.adminList[admin]).ifsc;
   		this.caste = (this.adminList[admin]).caste;
       this.status =  (this.adminList[admin]).status;
-      this.image = (this.adminList[admin]).image? (this.adminList[admin]).image._id:null;
+      this.image = (this.adminList[admin]).image? (this.adminList[admin]).image._id:'';
 
   		console.log("section before editing",this.section);
         this.initializeForm() ;
@@ -300,8 +300,10 @@ if (fi.files && fi.files[0]) {
         .subscribe(res => {
             console.log(res.json());
             let val = res.json();
-            if(typeof val !== 'string')
-            this.image = val['_id'];
+            if(typeof val !== 'string'){
+                  this.image = val['_id']; 
+            }
+        
           
         });
     
@@ -317,8 +319,10 @@ editFile(){
         .subscribe(res => {
             console.log(res.json());
             let val = res.json();
-            if(typeof val !== 'string')
-            this.image = val['_id'];
+            if(typeof val !== 'string'){
+                this.image = val['_id'];
+            }
+          
           
         });
     

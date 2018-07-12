@@ -9,7 +9,9 @@ import {NavigationEnd, Router} from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'app';
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) { 
+
+  }
 
   ngOnInit() {
     this.router.events.subscribe((evt) => {
@@ -17,6 +19,7 @@ export class AppComponent implements OnInit {
         return;
       }
       window.scrollTo(0, 0);
+
     });
   }
 }

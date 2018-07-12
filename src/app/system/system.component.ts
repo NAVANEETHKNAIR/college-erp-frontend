@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { CookieService } from 'ng2-cookies';
 import  { SystemService } from './service.system';
+import { SwalService } from '../swal/swal.service';
 //private cookieService: CookieService
 
 //import { ModalComponent } from '../components/advanced-component
@@ -30,7 +31,7 @@ public erp_id:any = '';
 public systemName:any;
 public filtersystem:any;
 public session:any = '';
-public url:any = 'http://localhost:3000';
+public url:any = 'http://159.89.171.240:3000';
 public urladd:any;
 public editMode:boolean;
 public systemList:any;
@@ -60,7 +61,7 @@ public changeSession:any;
 public sessionListArray:any;
 public selectedSession:any;
 public auth_key:any;
-  constructor(public http: Http,private cookieService: CookieService, public fetchsession:SystemService) {
+  constructor(public http: Http,private cookieService: CookieService, public fetchsession:SystemService,private swal: SwalService) {
   this.cookie = this.cookieService.getAll()['cookieSet'];
   this.getSessionArray();
   this.initializeForm();
@@ -123,8 +124,9 @@ ngOnInit(){
 
 
 
- putSystem(value){
+ putSystem(value,event){
   	 console.log(value);
+     console.log(event);
     this.http.post((this.url+'/system/system'),{
   
     	"name": value.name,
@@ -138,6 +140,9 @@ ngOnInit(){
                 console.log("data recieved",system);
                 if(system.json()){
                   this.editMode = true;
+                    event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+                 this.swal.openSuccessSwal();
+
                 }
                 
                //this.initializeForm();
@@ -146,8 +151,9 @@ ngOnInit(){
          
   }
 
-    putMSG91(value){
+    putMSG91(value,event){
      console.log(value);
+     console.log(event);
     this.http.post((this.url+'/msg91/msg91_create'),{
   
       "auth_key": value.auth_key,
@@ -157,6 +163,9 @@ ngOnInit(){
                 console.log("data recieved",system);
                 if(system.json()){
                   this.editMode = true;
+                  event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+                 this.swal.openSuccessSwal();
+
                 }
                 
                //this.initializeForm();
@@ -166,7 +175,8 @@ ngOnInit(){
   }
 
 
-  putMSG91Edited(value){
+  putMSG91Edited(value,event){
+    console.log(event);
     this.fetchsession.getMSG91().subscribe((msg91)=>{
       this._idmsg91 = msg91['_id']
       this.http.post(this.url+ '/msg91/msg91_configure',{
@@ -175,12 +185,16 @@ ngOnInit(){
          auth_key: value.auth_token
       }).subscribe((savedMSG91)=>{
         console.log(savedMSG91.json());
+        event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+       this.swal.openSuccessSwal();
+
       })
     })
   }
   
-  putSystemEdited(value){
+  putSystemEdited(value,event){
       console.log("editedsystem",value);
+      console.log(event);
       this.http.post((this.url + '/system/system'),{
           "_id": this._id,
           "name": value.name,
@@ -190,6 +204,9 @@ ngOnInit(){
           "current_session": value.current_session,
           "access_token": this.cookie
       }).subscribe((neweditedsystem)=>{
+          event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+          this.swal.openSuccessSwal();
+
           console.log(neweditedsystem.json());
               
               
@@ -199,8 +216,10 @@ ngOnInit(){
   }
 
   
-  putNodemailer(value){
+  putNodemailer(value,event){
      console.log(value);
+     console.log(event);
+
     this.http.post((this.url+'/nodemailer/configure_nodemailer'),{
   
       "mail": value.mail,
@@ -214,6 +233,9 @@ ngOnInit(){
                 console.log("data recieved",twilio);
                 if(twilio.json()){
                   this.editMode = true;
+               event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+              this.swal.openSuccessSwal();
+
                 }
                 
                //this.initializeForm();
@@ -222,17 +244,21 @@ ngOnInit(){
          
   }
   
-  putNodemailerEdited(value){
+  putNodemailerEdited(value,event){
       console.log("editedsystem",value);
+      console.log(event);
       this.http.post((this.url + '/nodemailer/edit_nodemailer'),{
           "_id": this._idnodemailer,
-           "mail": value.mail,
+          "mail": value.mail,
           "client_id": value.client_id,
           "client_secret": value.client_secret,
           "refresh_token": value.refresh_token,
           "access_token": this.cookie
       }).subscribe((neweditedsystem)=>{
           console.log(neweditedsystem.json());
+          event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+         this.swal.openSuccessSwal();
+
 
     });
 
@@ -264,6 +290,7 @@ ngOnInit(){
     "access_token":this.cookie
   }).subscribe((data:any)=>{
     data = data.json();
+    console.log("SessionArray",data);
     this.sessionListArray = data.sessionArray;
   })
 }

@@ -17,7 +17,7 @@ export class ProfileComponent{
 public cookie:any;
 public user:any;
 public session:any;
-public url:any = 'http://localhost:3000'
+public url:any = 'http://159.89.171.240:3000'
 public userDetail:any;
 public img='';
 constructor(public http: Http,public fetchsession:SystemService,private cookieService: CookieService) {

@@ -27,7 +27,7 @@ public fare:number;
 public room_num:any;
 public room_type:any;
 public session:any = '';
-public url:any = 'http://localhost:3000';
+public url:any = 'http://159.89.171.240:3000';
 public alldormitory:any;
 public editMode:boolean;
 public id:any;

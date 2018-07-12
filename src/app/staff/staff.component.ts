@@ -40,12 +40,12 @@ public account_number:any = '';
 public ifsc:any = '';
 public caste :any = '';
 public session:any = '';
-public url:any = 'http://localhost:3000';
+public url:any = 'http://159.89.171.240:3000';
 public urladd:any;
 public editMode:boolean;
 public cookie:any;
 public img:any = [];
-public image:any = null;
+public image:any = '';
 public currentSession:any;
 public status:boolean;
  
@@ -246,10 +246,10 @@ public status:boolean;
   putStaff(value,event){
   	 console.log(value);
 
-
+     console.log(event);
      console.log("value:",value.type)
 
-  	// let class_ref:any = _.where(this.getClassAll,{name:value.class,section:value.section})[0];
+  	//let class_ref:any = _.where(this.getClassAll,{name:value.class,section:value.section})[0];
     this.http.post((this.url + '/' + value.type.toLowerCase() + '/' + value.type.toLowerCase()),{
     	"username":value.email,
     	"password":"12345",
@@ -295,17 +295,20 @@ public status:boolean;
                      date = (new Date()).toLocaleString();
                     date = date.split(",");
                     let time = date[1];
-                   if(messageRecieved.json().acco){
+                    console.log("Message",Boolean(messageRecieved.json()));
+                   if(messageRecieved.json()){
                     this.http.post(this.url + '/message/message',{
                       messagebody:  value.type + 'Updated',
                       to:  this.staffForm.value.staff_contact,
-                      date : this.staffForm.value.date_of_joining,
+                      date : this.staffForm.value.date_of_join,
                       time: time,
                       session: this.session,
                       access_token: this.cookie
 
                     }).subscribe((message)=>{
                       console.log("Message sent successfully:",message);
+                      event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove('md-show');
+                      this.swal.openSuccessSwal();
                     })
                    }
                   else{
@@ -324,15 +327,16 @@ public status:boolean;
                     user: staff.json()
 
                  }).subscribe((messageRecieved:any)=>{
+                    console.log("messageRecieved:",messageRecieved)
                      let date:any;
                      date = (new Date()).toLocaleString();
                     date = date.split(",");
                     let time = date[1];
-                   if(messageRecieved.json().message){
+                   if(messageRecieved.json()){
                     this.http.post(this.url + '/message/message',{
                       messagebody: value.type + 'Created',
                       to:  this.staffForm.value.staff_contact,
-                      date : this.staffForm.value.date_of_joining,
+                      date : this.staffForm.value.date_of_join,
                       time: time,
                       session: this.session,
                       access_token: this.cookie
@@ -344,7 +348,7 @@ public status:boolean;
                     })
                    }
                   else{
-                    console.log("Message not sent successfuly",messageRecieved.json());
+                    console.log("Message not sent successfully",messageRecieved.json());
                   }
                  })
                }
@@ -375,7 +379,7 @@ public status:boolean;
   		this.ifsc ='';
       this.status = true;
   		this.caste ='';
-      this.image = null;
+      this.image = '';
   		// console.log("section before editing",this.section);
         this.initializeForm();
         console.log(this.staffForm);
@@ -387,7 +391,7 @@ public status:boolean;
   }
 
   editStaff(staff){
-
+ 
      this.editMode = true;
   	  this.name = (this.staffList[staff]).name;
   		this.gender =  (this.staffList[staff]).gender;
@@ -404,7 +408,7 @@ public status:boolean;
   		this.ifsc = (this.staffList[staff]).ifsc;
       this.status =  (this.staffList[staff]).status;
   		this.caste = (this.staffList[staff]).caste;
-      this.image = (this.staffList[staff]).image? (this.staffList[staff]).image._id:null;
+      this.image = (this.staffList[staff]).image? (this.staffList[staff]).image._id:'';
         this.initializeForm();
         console.log(this.staffForm);
         this.openMyModal('effect-13');

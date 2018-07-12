@@ -55,7 +55,7 @@ export class MessageComponent implements OnInit {
  public body:any;
  public date:string;
  public time:string;
- public url:any = 'http://localhost:3000';
+ public url:any = 'http://159.89.171.240:3000';
  public getClassAll:any;
  public filterClass:any;
  public selectClass:boolean = false;

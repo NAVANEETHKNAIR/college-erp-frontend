@@ -61,7 +61,7 @@ public cookie:any;
 })
 
 export class RolesGuardAuthorizeGuardService implements CanActivate{
-
+	public user:any;
 	constructor(public cookieService: CookieService, public router: Router){
 	}
 

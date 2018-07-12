@@ -9,7 +9,7 @@ import { CookieService } from 'ng2-cookies';
 
 @Injectable()
 export class SystemService {
- public url:any = 'http://localhost:3000';
+ public url:any = 'http://159.89.171.240:3000';
  public sessionData:any;
  public cookie: any;
  public userId: any;

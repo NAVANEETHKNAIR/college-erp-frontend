@@ -41,7 +41,7 @@ public type:any = '';
 public color:any;
 public editMode:boolean = false;
 public index:number;
-public url:any = 'http://localhost:3000';
+public url:any = 'http://159.89.171.240:3000';
 public session:any;
 public idList:any[] = [];
 //public events:CalendarEvent[] = [];
